@@ -1,2 +1,0 @@
-# tatoo
-Generated project
