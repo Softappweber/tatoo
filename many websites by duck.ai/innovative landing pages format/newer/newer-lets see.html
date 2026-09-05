@@ -1,0 +1,1198 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BulkMail Pro — Premium Bulk Email</title>
+  <style>
+    :root{
+      --bg0:#04050a;
+      --bg1:#070a14;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.09);
+      --stroke:rgba(255,255,255,.12);
+      --stroke2:rgba(255,255,255,.18);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.72);
+      --muted2:rgba(255,255,255,.55);
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --shadow2: 0 10px 30px rgba(0,0,0,.35);
+
+      --brandA:#7c3aed; /* violet */
+      --brandB:#22d3ee; /* cyan */
+      --brandC:#06b6d4; /* teal */
+      --good:#34d399;
+
+      --r1:18px;
+      --r2:26px;
+
+      --max:1100px;
+      --focus: 0 0 0 4px rgba(34,211,238,.18);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      overflow-x:hidden;
+      background:
+        radial-gradient(950px 520px at 15% -10%, rgba(124,58,237,.38), transparent 60%),
+        radial-gradient(900px 460px at 95% 5%, rgba(34,211,238,.28), transparent 55%),
+        radial-gradient(780px 440px at 40% 110%, rgba(6,182,212,.18), transparent 52%),
+        linear-gradient(180deg, var(--bg0), var(--bg1) 60%, #04040a);
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    button, input, textarea{ font:inherit; }
+    img{ max-width:100%; display:block; }
+
+    .grain{
+      pointer-events:none;
+      position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.26'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay;
+      opacity:.10;
+      z-index:0;
+    }
+
+    .wrap{ position:relative; z-index:1; }
+
+    .container{
+      width:min(var(--max), calc(100% - 34px));
+      margin:0 auto;
+    }
+
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(180deg, rgba(4,5,10,.86), rgba(4,5,10,.58));
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900; letter-spacing:.2px;
+    }
+    .logo{
+      width:36px; height:36px; border-radius:14px;
+      background:
+        radial-gradient(14px 14px at 30% 30%, rgba(255,255,255,.55), transparent 55%),
+        linear-gradient(135deg, rgba(124,58,237,1), rgba(34,211,238,1));
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow: 0 14px 40px rgba(124,58,237,.22);
+      position:relative; overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+      transform: rotate(18deg) translateX(-35%);
+      animation: shine 7s ease-in-out infinite;
+      opacity:.65;
+    }
+    @keyframes shine{
+      0%,38%{ transform: rotate(18deg) translateX(-55%); opacity:0; }
+      48%{ opacity:1; }
+      72%,100%{ transform: rotate(18deg) translateX(60%); opacity:0; }
+    }
+
+    .links{ display:flex; align-items:center; gap:18px; color:var(--muted); font-weight:700; font-size:14px; }
+    .links a{
+      padding:10px 10px; border-radius:12px;
+      transition: background .2s ease, color .2s ease, transform .2s ease;
+    }
+    .links a:hover{
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      transform: translateY(-1px);
+    }
+
+    .btn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:11px 14px;
+      border-radius:14px;
+      cursor:pointer;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+      display:inline-flex; align-items:center; gap:10px;
+      font-weight:850; letter-spacing:.2px;
+      white-space:nowrap;
+      user-select:none;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.085);
+      box-shadow: var(--shadow2);
+    }
+    .btn:focus{ outline:none; box-shadow: var(--focus); }
+    .btn-primary{
+      border-color: rgba(255,255,255,.18);
+      background:
+        radial-gradient(120px 80px at 20% 20%, rgba(255,255,255,.20), transparent 60%),
+        linear-gradient(135deg, rgba(124,58,237,1), rgba(34,211,238,1));
+      box-shadow:
+        0 22px 70px rgba(124,58,237,.20),
+        0 22px 70px rgba(34,211,238,.10);
+    }
+    .btn-primary:hover{
+      background:
+        radial-gradient(120px 80px at 20% 20%, rgba(255,255,255,.26), transparent 60%),
+        linear-gradient(135deg, rgba(124,58,237,1), rgba(34,211,238,1));
+      border-color: rgba(255,255,255,.26);
+    }
+    .btn-ghost{
+      background: transparent;
+      border-color: rgba(255,255,255,.14);
+      color:var(--muted);
+    }
+
+    .menuBtn{
+      display:none;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      font-weight:900;
+      cursor:pointer;
+    }
+    .mobilePanel{ display:none; padding:0 0 14px; }
+    .mobilePanel .stack{
+      display:flex; flex-direction:column; gap:10px;
+    }
+
+    /* Hero */
+    .hero{ padding:46px 0 18px; }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .kicker{
+      display:inline-flex; align-items:center; gap:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding:9px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      font-weight:850;
+      font-size:13px;
+      margin-bottom:14px;
+    }
+    .kdot{
+      width:9px; height:9px; border-radius:99px;
+      background: linear-gradient(135deg, var(--brandA), var(--brandB));
+      box-shadow: 0 0 0 4px rgba(124,58,237,.14);
+    }
+
+    h1{
+      margin:0 0 12px;
+      font-size: clamp(32px, 4.2vw, 50px);
+      letter-spacing:-.8px;
+      line-height:1.04;
+    }
+    .grad{
+      background: linear-gradient(90deg, rgba(124,58,237,1), rgba(34,211,238,1), rgba(6,182,212,1));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .sub{
+      margin:0 0 18px;
+      color:var(--muted);
+      line-height:1.75;
+      font-weight:650;
+      max-width:60ch;
+      font-size:15px;
+    }
+
+    .heroActions{
+      display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+      margin: 6px 0 16px;
+    }
+    .microTrust{
+      display:flex; gap:10px; flex-wrap:wrap;
+      color:var(--muted2);
+      font-weight:750;
+      font-size:13px;
+      margin-top:10px;
+    }
+    .microTrust .chip{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius:999px;
+      padding:10px 12px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .check{
+      width:18px; height:18px;
+      border-radius:7px;
+      background: rgba(52,211,153,.12);
+      border:1px solid rgba(52,211,153,.24);
+      display:grid; place-items:center;
+      color:rgba(52,211,153,1);
+      font-size:12px; font-weight:950;
+    }
+
+    /* Product panel */
+    .panel{
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(520px 220px at 20% 0%, rgba(124,58,237,.22), transparent 60%),
+        radial-gradient(420px 180px at 95% 40%, rgba(34,211,238,.16), transparent 55%),
+        rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .panel:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: linear-gradient(135deg, rgba(124,58,237,.28), rgba(34,211,238,.18), transparent 60%);
+      opacity:.62;
+      mask: linear-gradient(#000, transparent 60%);
+      pointer-events:none;
+    }
+    .panelInner{ position:relative; z-index:1; padding:16px; }
+
+    .panelTop{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      margin-bottom:12px;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding:9px 11px; border-radius:999px;
+      color:var(--muted);
+      font-weight:900; font-size:13px;
+    }
+    .spark{
+      width:10px; height:10px; border-radius:99px;
+      background: linear-gradient(135deg, var(--brandB), var(--brandA));
+      box-shadow: 0 0 0 4px rgba(34,211,238,.12);
+    }
+    .status{
+      font-weight:950; font-size:13px;
+      color:rgba(52,211,153,1);
+      display:flex; align-items:center; gap:10px;
+      padding:9px 11px; border-radius:999px;
+      border:1px solid rgba(52,211,153,.22);
+      background: rgba(52,211,153,.08);
+    }
+    .pulse{
+      width:10px; height:10px; border-radius:99px;
+      background: rgba(52,211,153,1);
+      box-shadow: 0 0 0 0 rgba(52,211,153,.35);
+      animation: p 1.5s ease-out infinite;
+    }
+    @keyframes p{
+      0%{ box-shadow: 0 0 0 0 rgba(52,211,153,.32); }
+      100%{ box-shadow: 0 0 0 14px rgba(52,211,153,0); }
+    }
+
+    .kpiRow{
+      display:grid; grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    .kpi{
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.20);
+      padding:13px 13px 12px;
+      min-height:92px;
+    }
+    .kpi .lbl{ color:var(--muted2); font-weight:850; font-size:13px; margin-bottom:8px; }
+    .kpi .val{ font-weight:980; letter-spacing:-.6px; font-size:26px; }
+    .kpi .subv{ margin-top:8px; color:rgba(52,211,153,1); font-weight:900; font-size:13px; display:flex; align-items:center; gap:8px; }
+    .miniArrow{
+      width:18px; height:18px; border-radius:8px;
+      background: rgba(52,211,153,.14);
+      border:1px solid rgba(52,211,153,.24);
+      display:grid; place-items:center;
+      font-size:12px;
+    }
+
+    .composer{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.20);
+      padding:12px;
+    }
+    .composerHeader{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom:10px;
+    }
+    .seg{
+      display:flex; gap:8px; flex-wrap:wrap;
+      color:var(--muted2); font-size:12px; font-weight:850;
+    }
+    .seg button{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color:var(--muted2);
+      padding:7px 10px;
+      border-radius:999px;
+      cursor:pointer;
+      transition: all .18s ease;
+      user-select:none;
+    }
+    .seg button.active{
+      border-color: rgba(255,255,255,.22);
+      color:var(--text);
+      background: rgba(255,255,255,.08);
+    }
+    .composerGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+    }
+    .fieldRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .field{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      padding:10px 10px;
+      color:var(--muted);
+      font-size:13px; font-weight:750;
+      min-height:44px;
+    }
+    .field b{ color:var(--text); font-weight:950; letter-spacing:-.2px; }
+    .barWrap{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      padding:12px;
+    }
+    .barTitle{
+      display:flex; justify-content:space-between; gap:10px;
+      color:var(--muted2); font-weight:900; font-size:12px; margin-bottom:10px;
+    }
+    .bars{
+      width:100%;
+      height:122px;
+      display:flex;
+      align-items:flex-end;
+      gap:10px;
+      padding:2px 2px 0;
+    }
+    .bar{
+      flex:1;
+      border-radius:12px 12px 8px 8px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(34,211,238,.78), rgba(124,58,237,.62));
+      position:relative;
+      overflow:hidden;
+      transform-origin: bottom;
+      animation: pop .55s ease both;
+    }
+    .bar:after{
+      content:"";
+      position:absolute; inset:-30% -30% auto -30%;
+      height:72%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.24), transparent);
+      transform: translateX(-30%) rotate(10deg);
+      opacity:.55;
+    }
+    @keyframes pop{
+      from{ transform: scaleY(.7); opacity:.65; }
+      to{ transform: scaleY(1); opacity:1; }
+    }
+
+    /* Section */
+    .section{ padding:28px 0; }
+    .secHead{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:14px; flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .secHead h2{
+      margin:0;
+      font-size:22px;
+      letter-spacing:-.3px;
+    }
+    .secHead p{
+      margin:0;
+      color:var(--muted);
+      font-weight:680;
+      line-height:1.7;
+      max-width:62ch;
+    }
+
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    .card{
+      border-radius: var(--r1);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+      min-height:150px;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,.20);
+      background: rgba(255,255,255,.06);
+    }
+    .card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(240px 80px at 18% 0%, rgba(124,58,237,.20), transparent 60%),
+        radial-gradient(240px 80px at 92% 30%, rgba(34,211,238,.16), transparent 60%);
+      opacity:.55;
+      pointer-events:none;
+    }
+    .card > *{ position:relative; z-index:1; }
+
+    .ico{
+      width:44px; height:44px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      display:grid; place-items:center;
+      margin-bottom:10px;
+    }
+    .ico svg{ width:22px; height:22px; }
+    .card h3{
+      margin:0 0 8px;
+      font-size:15.5px;
+      letter-spacing:-.2px;
+    }
+    .card p{
+      margin:0;
+      color:var(--muted);
+      font-weight:670;
+      line-height:1.7;
+      font-size:13.8px;
+    }
+
+    /* Pricing */
+    .pricingGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:12px;
+    }
+    .priceCard{
+      border-radius: var(--r1);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      padding:16px;
+      min-height:320px;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .priceCard:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(320px 120px at 22% 0%, rgba(124,58,237,.22), transparent 62%),
+        radial-gradient(320px 120px at 92% 35%, rgba(34,211,238,.16), transparent 56%);
+      opacity:.55;
+      pointer-events:none;
+    }
+    .priceCard > *{ position:relative; z-index:1; }
+    .tag{
+      align-self:flex-start;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      padding:8px 10px;
+      border-radius:999px;
+      color:var(--muted);
+      font-weight:920;
+      font-size:13px;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .tag .star{
+      width:18px; height:18px; border-radius:9px;
+      background: rgba(124,58,237,.18);
+      border:1px solid rgba(124,58,237,.30);
+      display:grid; place-items:center;
+      color: rgba(124,58,237,1);
+      font-size:12px;
+    }
+    .price{
+      font-size:38px;
+      font-weight:980;
+      letter-spacing:-.9px;
+      margin-top:2px;
+    }
+    .per{
+      font-size:14px;
+      color:var(--muted2);
+      font-weight:850;
+      margin-left:6px;
+      letter-spacing:.2px;
+    }
+    .priceDesc{
+      margin:0;
+      color:var(--muted);
+      font-weight:680;
+      line-height:1.65;
+      font-size:13.7px;
+    }
+    .list{
+      list-style:none;
+      padding:0; margin:0;
+      display:flex; flex-direction:column; gap:9px;
+      color:var(--muted);
+      font-weight:680;
+      font-size:13.6px;
+    }
+    .list li{ display:flex; align-items:flex-start; gap:10px; }
+    .tick{
+      width:18px; height:18px;
+      border-radius:7px;
+      background: rgba(52,211,153,.12);
+      border:1px solid rgba(52,211,153,.22);
+      color: rgba(52,211,153,1);
+      display:grid; place-items:center;
+      font-weight:950; font-size:12px;
+      flex:0 0 auto;
+      margin-top:1px;
+    }
+
+    .priceCard.reco{
+      border-color: rgba(255,255,255,.20);
+      background:
+        radial-gradient(500px 200px at 20% 0%, rgba(124,58,237,.26), transparent 60%),
+        radial-gradient(520px 220px at 90% 40%, rgba(34,211,238,.18), transparent 55%),
+        rgba(255,255,255,.04);
+    }
+
+    /* CTA */
+    .ctaPanel{
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(820px 300px at 15% 0%, rgba(124,58,237,.24), transparent 60%),
+        radial-gradient(820px 300px at 90% 30%, rgba(34,211,238,.18), transparent 58%),
+        rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      padding:18px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      align-items:center;
+      overflow:hidden;
+      position:relative;
+    }
+    .ctaPanel:after{
+      content:"";
+      position:absolute; inset:-80px -80px auto auto;
+      width:240px; height:240px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.20), transparent 55%);
+      transform: rotate(20deg);
+      opacity:.6; pointer-events:none;
+    }
+    .ctaPanel > *{ position:relative; z-index:1; }
+
+    .ctaPanel h2{
+      margin:0 0 8px;
+      font-size:22px;
+      letter-spacing:-.3px;
+    }
+    .ctaPanel p{
+      margin:0;
+      color:var(--muted);
+      font-weight:680;
+      line-height:1.7;
+      font-size:14px;
+    }
+
+    form{
+      display:flex; gap:10px; flex-wrap:wrap;
+      justify-content:flex-end;
+      align-items:center;
+    }
+    .input{
+      flex: 1 1 220px;
+      min-width:210px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color:var(--text);
+      padding:12px 12px;
+      outline:none;
+      font-weight:800;
+    }
+    .input::placeholder{ color: rgba(255,255,255,.45); font-weight:700; }
+    .input:focus{ box-shadow: var(--focus); border-color: rgba(34,211,238,.30); }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.70);
+      border:1px solid rgba(255,255,255,.16);
+      color:var(--text);
+      padding:12px 14px;
+      border-radius:16px;
+      box-shadow: var(--shadow2);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .22s ease, transform .22s ease;
+      z-index:200;
+      max-width: calc(100% - 24px);
+    }
+    .toast.show{
+      opacity:1;
+      transform: translateX(-50%) translateY(-6px);
+    }
+    .toast .t1{ font-weight:980; letter-spacing:-.2px; margin-bottom:3px; }
+    .toast .t2{ color:var(--muted); font-weight:700; font-size:13px; line-height:1.45; }
+
+    footer{
+      padding:18px 0 34px;
+      color:var(--muted2);
+      font-weight:680;
+      font-size:13px;
+    }
+    .footRow{
+      border-top:1px solid rgba(255,255,255,.08);
+      padding-top:16px;
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      flex-wrap:wrap;
+    }
+    .footLinks{ display:flex; gap:12px; flex-wrap:wrap; }
+    .footLinks a{
+      padding:8px 10px; border-radius:12px;
+      border:1px solid transparent;
+      transition: all .2s ease;
+      color:var(--muted2);
+    }
+    .footLinks a:hover{
+      color:var(--text);
+      border-color: rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+
+    @media (max-width: 980px){
+      .heroGrid{ grid-template-columns: 1fr; }
+      .pricingGrid{ grid-template-columns: 1fr; }
+      .grid3{ grid-template-columns: 1fr; }
+      .grid2{ grid-template-columns: 1fr; }
+      .ctaPanel{ grid-template-columns: 1fr; }
+      form{ justify-content:flex-start; }
+    }
+    @media (max-width: 760px){
+      .links{ display:none; }
+      .menuBtn{ display:inline-flex; align-items:center; justify-content:center; }
+      .mobilePanel{ display:block; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+  <div class="wrap">
+    <header>
+      <div class="container">
+        <div class="nav">
+          <a class="brand" href="#top">
+            <span class="logo" aria-hidden="true"></span>
+            <span>BulkMail Pro</span>
+          </a>
+
+          <nav class="links" aria-label="Primary navigation">
+            <a href="#features">Features</a>
+            <a href="#deliverability">Deliverability</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#contact">Get Demo</a>
+          </nav>
+
+          <button class="menuBtn" id="menuBtn" type="button" aria-label="Open menu">Menu</button>
+
+          <div style="display:flex; gap:10px; align-items:center;">
+            <a class="btn btn-ghost" href="#pricing">Compare</a>
+            <a class="btn btn-primary" href="#contact">Start Demo <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+
+        <div id="mobilePanel" class="mobilePanel" style="display:none;">
+          <div class="stack">
+            <a class="btn" style="justify-content:center;" href="#features">Features</a>
+            <a class="btn" style="justify-content:center;" href="#deliverability">Deliverability</a>
+            <a class="btn" style="justify-content:center;" href="#pricing">Pricing</a>
+            <a class="btn btn-primary" style="justify-content:center;" href="#contact">Get Demo <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container">
+          <div class="heroGrid">
+            <div>
+              <div class="kicker"><span class="kdot"></span> Email + Bulk Outreach — built for inbox</div>
+              <h1>
+                Bulk email campaigns, <span class="grad">delivered</span> with confidence.
+              </h1>
+              <p class="sub">
+                Segmentation, templates, scheduling, analytics और compliance—सब premium तरीके से.
+                छोटा, तेज़, और खास तौर पर bulk sends के लिए designed.
+              </p>
+
+              <div class="heroActions">
+                <a class="btn btn-primary" href="#contact">Request a Demo <span aria-hidden="true">→</span></a>
+                <a class="btn btn-ghost" href="#features">See Key Features <span aria-hidden="true">↗</span></a>
+              </div>
+
+              <div class="microTrust" role="list" aria-label="Highlights">
+                <div class="chip" role="listitem"><span class="check">✓</span> Smart Segments</div>
+                <div class="chip" role="listitem"><span class="check">✓</span> Inbox-First</div>
+                <div class="chip" role="listitem"><span class="check">✓</span> GDPR/Unsub-ready</div>
+              </div>
+            </div>
+
+            <aside class="panel" aria-label="Campaign preview">
+              <div class="panelInner">
+                <div class="panelTop">
+                  <div class="pill"><span class="spark" aria-hidden="true"></span> Campaign Console</div>
+                  <div class="status"><span class="pulse" aria-hidden="true"></span> Inbox health: Great</div>
+                </div>
+
+                <div class="kpiRow">
+                  <div class="kpi">
+                    <div class="lbl">Open rate</div>
+                    <div class="val" id="kOpen">38.2%</div>
+                    <div class="subv"><span class="miniArrow">↑</span><span id="kOpenDelta">+4.1% </span>week</div>
+                  </div>
+                  <div class="kpi">
+                    <div class="lbl">Deliverability</div>
+                    <div class="val" id="kDeliv">97.4%</div>
+                    <div class="subv"><span class="miniArrow">↑</span><span id="kDelivDelta">+1.6% </span>week</div>
+                  </div>
+                </div>
+
+                <div class="composer">
+                  <div class="composerHeader">
+                    <div class="seg" role="tablist" aria-label="Time range">
+                      <button type="button" class="active" data-range="7d" role="tab" aria-selected="true">7D</button>
+                      <button type="button" data-range="30d" role="tab" aria-selected="false">30D</button>
+                      <button type="button" data-range="90d" role="tab" aria-selected="false">90D</button>
+                    </div>
+                    <div style="color:var(--muted2); font-weight:900; font-size:12px;">A/B ready</div>
+                  </div>
+
+                  <div class="composerGrid">
+                    <div class="fieldRow">
+                      <div class="field">Segment: <b id="segName">Engaged Users</b></div>
+                      <div class="field">Template: <b id="tplName">Nova Dark</b></div>
+                    </div>
+
+                    <div class="barWrap">
+                      <div class="barTitle">
+                        <span>Delivery trend</span>
+                        <span id="trendLabel" style="color:rgba(52,211,153,1);">Consistent</span>
+                      </div>
+                      <div class="bars" id="bars" aria-hidden="true"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="container">
+          <div class="secHead">
+            <div>
+              <h2>Core features (bulk-ready)</h2>
+              <p>ये वो चीज़ें हैं जो bulk emailing में सच में matter करती हैं—automation, targeting, templates, और reliable reporting.</p>
+            </div>
+          </div>
+
+          <div class="grid3">
+            <div class="card">
+              <div class="ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16v16H4z"></path>
+                  <path d="M8 9h8M8 13h6"></path>
+                </svg>
+              </div>
+              <h3>Smart Segmentation</h3>
+              <p>Subscribers को rules के हिसाब से group करो: tags, activity, last-opened, list source—सब dynamic.</p>
+            </div>
+
+            <div class="card">
+              <div class="ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7z"></path>
+                </svg>
+              </div>
+              <h3>High-converting Templates</h3>
+              <p>Drag-like precision वाला UI: sections, modular blocks, personalization tokens, reusable templates.</p>
+            </div>
+
+            <div class="card">
+              <div class="ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 8v4l3 3"></path>
+                  <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+                </svg>
+              </div>
+              <h3>Scheduling + Throttling</h3>
+              <p>Timing control, rate limits, और safe delivery pacing ताकि inbox health stable रहे.</p>
+            </div>
+
+            <div class="card">
+              <div class="ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 19V5"></path>
+                  <path d="M4 19h16"></path>
+                  <path d="M8 15v-4"></path>
+                  <path d="M12 15V8"></path>
+                  <path d="M16 15v-6"></path>
+                </svg>
+              </div>
+              <h3>Analytics that makes sense</h3>
+              <p>Opens, clicks, bounces, spam reports, ROI signals—सब campaign-level और segment-level.</p>
+            </div>
+
+            <div class="card">
+              <div class="ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z"></path>
+                  <path d="M9 12l2 2 4-5"></path>
+                </svg>
+              </div>
+              <h3>Compliance & Unsubscribe</h3>
+              <p>One-click unsubscribe, legal-ready footer, consent-aware sending patterns (GDPR-friendly flows).</p>
+            </div>
+
+            <div class="card">
+              <div class="ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <path d="M8.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"></path>
+                  <path d="M20 8v6"></path>
+                  <path d="M23 11h-6"></path>
+                </svg>
+              </div>
+              <h3>Team Roles + Collaboration</h3>
+              <p>Approvals, roles, activity logs—so bulk sends कभी भी “accident” नहीं बनते.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="deliverability">
+        <div class="container">
+          <div class="secHead">
+            <div>
+              <h2>Deliverability-first controls</h2>
+              <p>Inbox health को prioritize करो: bounce handling, domain setup checks, and safe send behavior.</p>
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="card" style="min-height:180px;">
+              <div class="ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16v16H4z"></path>
+                  <path d="M7 12h10"></path>
+                  <path d="M7 8h6"></path>
+                </svg>
+              </div>
+              <h3>Domain & authentication readiness</h3>
+              <p>SPF/DKIM/DMARC checklist + monitoring cues—ताकि “looks good” हमेशा “lands good” भी रहे.</p>
+            </div>
+
+            <div class="card" style="min-height:180px;">
+              <div class="ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 21s-7-4.5-7-10A7 7 0 0 1 19 11c0 5.5-7 10-7 10Z"></path>
+                  <path d="M12 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
+                </svg>
+              </div>
+              <h3>Bounce & complaint protection</h3>
+              <p>Hard/soft bounce handling logic, suppression patterns, और complaint signals—avoid reputation damage.</p>
+            </div>
+
+            <div class="card" style="min-height:180px;">
+              <div class="ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2v20"></path>
+                  <path d="M17 7h-5"></path>
+                  <path d="M17 17h-5"></path>
+                  <path d="M7 7h0"></path>
+                </svg>
+              </div>
+              <h3>Automation + triggers</h3>
+              <p>Welcome, re-engage, cart-followups, event-driven sends—rules based journeys with guardrails.</p>
+            </div>
+
+            <div class="card" style="min-height:180px;">
+              <div class="ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 8v13H3V8"></path>
+                  <path d="M7 8V5a5 5 0 0 1 10 0v3"></path>
+                </svg>
+              </div>
+              <h3>Safe previews & versioning</h3>
+              <p>Before send: test segments, preview tokens, and publish versions—no surprises in production.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="pricing">
+        <div class="container">
+          <div class="secHead">
+            <div>
+              <h2>Simple pricing</h2>
+              <p>चुनो जो आपके volume और team stage के हिसाब से सही लगे। सब plans में core deliverability शामिल.</p>
+            </div>
+          </div>
+
+          <div class="pricingGrid">
+            <div class="priceCard">
+              <div class="tag"><span class="star">✦</span> Starter</div>
+              <div>
+                <div class="price">$19<span class="per">/mo</span></div>
+                <p class="priceDesc">Small lists, newsletters, और early outreach.</p>
+              </div>
+              <ul class="list">
+                <li><span class="tick">✓</span> 1,000 contacts</li>
+                <li><span class="tick">✓</span> Templates + scheduling</li>
+                <li><span class="tick">✓</span> Basic analytics</li>
+                <li><span class="tick">✓</span> Unsubscribe footer</li>
+              </ul>
+              <a class="btn btn-ghost" href="#contact" style="margin-top:auto; justify-content:center;">Get Starter</a>
+            </div>
+
+            <div class="priceCard reco">
+              <div class="tag"><span class="star">★</span> Pro</div>
+              <div>
+                <div class="price">$49<span class="per">/mo</span></div>
+                <p class="priceDesc">सबसे popular—automation, segmentation, और deep reporting.</p>
+              </div>
+              <ul class="list">
+                <li><span class="tick">✓</span> 10,000 contacts</li>
+                <li><span class="tick">✓</span> Smart segments</li>
+                <li><span class="tick">✓</span> A/B tests</li>
+                <li><span class="tick">✓</span> Deliverability insights</li>
+              </ul>
+              <a class="btn btn-primary" href="#contact" style="margin-top:auto; justify-content:center;">Go Pro</a>
+            </div>
+
+            <div class="priceCard">
+              <div class="tag"><span class="star">⚡</span> Scale</div>
+              <div>
+                <div class="price">$129<span class="per">/mo</span></div>
+                <p class="priceDesc">Teams और larger volume के लिए built—roles + protection.</p>
+              </div>
+              <ul class="list">
+                <li><span class="tick">✓</span> 50,000 contacts</li>
+                <li><span class="tick">✓</span> Team roles & approvals</li>
+                <li><span class="tick">✓</span> Automation journeys</li>
+                <li><span class="tick">✓</span> Priority support</li>
+              </ul>
+              <a class="btn btn-ghost" href="#contact" style="margin-top:auto; justify-content:center;">Talk to Sales</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="container">
+          <div class="ctaPanel">
+            <div>
+              <h2>Launch your next premium email campaign</h2>
+              <p>Demo request भेजो—हम आपको template + deliverability checklist के साथ walkthrough देंगे.</p>
+            </div>
+
+            <form id="leadForm">
+              <input class="input" id="email" type="email" placeholder="Work email (e.g., name@company.com)" required />
+              <button class="btn btn-primary" type="submit">Request Demo <span aria-hidden="true">→</span></button>
+            </form>
+          </div>
+
+          <footer>
+            <div class="footRow">
+              <div>© <span id="year"></span> BulkMail Pro — Premium Bulk Email.</div>
+              <div class="footLinks">
+                <a href="#features">Features</a>
+                <a href="#deliverability">Deliverability</a>
+                <a href="#pricing">Pricing</a>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">
+      <div class="t1" id="toastTitle">Submitted</div>
+      <div class="t2" id="toastMsg">Thanks! We'll reach you soon.</div>
+    </div>
+  </div>
+
+  <script>
+    // Mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const mobilePanel = document.getElementById('mobilePanel');
+    let mobileOpen = false;
+
+    if(menuBtn && mobilePanel){
+      menuBtn.addEventListener('click', () => {
+        mobileOpen = !mobileOpen;
+        mobilePanel.style.display = mobileOpen ? 'block' : 'none';
+      });
+    }
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Toast helper
+    const toast = document.getElementById('toast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMsg = document.getElementById('toastMsg');
+    let toastTimer = null;
+
+    function showToast(title, msg){
+      toastTitle.textContent = title;
+      toastMsg.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+
+    // Fake chart + KPI range switch
+    const barsEl = document.getElementById('bars');
+    const segName = document.getElementById('segName');
+    const tplName = document.getElementById('tplName');
+    const trendLabel = document.getElementById('trendLabel');
+
+    const kOpen = document.getElementById('kOpen');
+    const kOpenDelta = document.getElementById('kOpenDelta');
+    const kDeliv = document.getElementById('kDeliv');
+    const kDelivDelta = document.getElementById('kDelivDelta');
+
+    const btns = document.querySelectorAll('.seg button');
+
+    const ranges = {
+      '7d': {
+        open: '38.2%', openD:'+4.1%',
+        deliv:'97.4%', delivD:'+1.6%',
+        seg:'Engaged Users', tpl:'Nova Dark',
+        trend:'Consistent',
+        bars:[55,62,48,66,70,61,74]
+      },
+      '30d': {
+        open: '36.7%', openD:'+6.3%',
+        deliv:'96.6%', delivD:'+2.4%',
+        seg:'Warm Leads', tpl:'Launch Pro',
+        trend:'Improving',
+        bars:[40,48,52,50,58,60,65,62,69,73]
+      },
+      '90d': {
+        open: '34.9%', openD:'+8.8%',
+        deliv:'95.9%', delivD:'+3.1%',
+        seg:'Segmented Lists', tpl:'Black Gold',
+        trend:'Strong baseline',
+        bars:[28,34,31,38,40,44,46,43,49,54,56,52,58,60]
+      }
+    };
+
+    function renderBars(arr){
+      barsEl.innerHTML = '';
+      const max = Math.max(...arr);
+      arr.forEach((v, i) => {
+        const b = document.createElement('div');
+        b.className = 'bar';
+        const h = Math.round((v / max) * 100);
+        b.style.height = `calc(${h}% + 8px)`;
+        b.style.animationDelay = `${i * 35}ms`;
+        barsEl.appendChild(b);
+      });
+    }
+
+    function applyRange(range){
+      const d = ranges[range] || ranges['7d'];
+      kOpen.textContent = d.open;
+      kOpenDelta.textContent = d.openD;
+      kDeliv.textContent = d.deliv;
+      kDelivDelta.textContent = d.delivD;
+      segName.textContent = d.seg;
+      tplName.textContent = d.tpl;
+      trendLabel.textContent = d.trend;
+      renderBars(d.bars);
+    }
+
+    btns.forEach(b => {
+      b.addEventListener('click', () => {
+        btns.forEach(x => {
+          x.classList.remove('active');
+          x.setAttribute('aria-selected','false');
+        });
+        b.classList.add('active');
+        b.setAttribute('aria-selected','true');
+        applyRange(b.dataset.range);
+      });
+    });
+
+    // Init
+    applyRange('7d');
+
+    // Lead form
+    const form = document.getElementById('leadForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      showToast('Demo requested', `We’ll send a demo link to: ${email}`);
+      form.reset();
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if(!id || id === '#') return;
+        const el = document.querySelector(id);
+        if(!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior:'smooth', block:'start' });
+
+        if(mobileOpen){
+          mobileOpen = false;
+          mobilePanel.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

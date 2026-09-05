@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeCalc Pro | Position Size & Risk Calculator</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0f1119;
+            --surface: #1a1d2e;
+            --surface2: #242840;
+            --bull: #00e676;
+            --bear: #ff1744;
+            --gold: #ffd740;
+            --accent: #448aff;
+            --text: #e8eaf6;
+            --muted: #8b8fa3;
+            --border: rgba(255,255,255,0.06);
+            --input-bg: #141725;
+            --shadow: 0 8px 40px rgba(0,0,0,0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background-image: 
+                radial-gradient(ellipse at 30% 20%, rgba(0,230,118,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(255,61,90,0.04) 0%, transparent 60%);
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Input Panel */
+        .input-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.8rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-header .icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--bull), #00c853);
+            border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; box-shadow: 0 4px 20px rgba(0,230,118,0.2);
+        }
+
+        .panel-header h2 {
+            font-size: 1.3rem; font-weight: 800; letter-spacing: -0.3px;
+        }
+
+        .panel-header .badge {
+            font-size: 0.65rem; background: rgba(0,230,118,0.15); color: var(--bull);
+            padding: 0.2rem 0.7rem; border-radius: 20px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.78rem; font-weight: 600; color: var(--muted);
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.4rem;
+        }
+
+        .form-group label .hint {
+            font-size: 0.65rem; color: var(--accent); font-weight: 500; text-transform: none;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper .prefix {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            color: var(--muted); font-weight: 700; font-size: 0.9rem; z-index: 1;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .input-wrapper input, .input-wrapper select {
+            width: 100%; padding: 0.85rem 1rem 0.85rem 2.4rem;
+            background: var(--input-bg); border: 1.5px solid var(--border);
+            border-radius: 14px; color: #fff; font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem; font-weight: 600; transition: all 0.3s;
+        }
+
+        .input-wrapper select {
+            padding-left: 1rem; cursor: pointer;
+        }
+
+        .input-wrapper input:focus, .input-wrapper select:focus {
+            outline: none; border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(68,138,255,0.08);
+        }
+
+        .input-wrapper input.error {
+            border-color: var(--bear);
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .trade-type-toggle {
+            display: flex; gap: 0.5rem; margin-bottom: 1.2rem;
+        }
+
+        .trade-type-btn {
+            flex: 1; padding: 0.7rem; text-align: center; border-radius: 12px;
+            font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.3s;
+            background: var(--input-bg); border: 1.5px solid var(--border); color: var(--muted);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .trade-type-btn.active {
+            background: rgba(0,230,118,0.1); border-color: var(--bull); color: var(--bull);
+            box-shadow: 0 0 20px rgba(0,230,118,0.1);
+        }
+
+        .trade-type-btn.bear.active {
+            background: rgba(255,23,68,0.1); border-color: var(--bear); color: var(--bear);
+            box-shadow: 0 0 20px rgba(255,23,68,0.1);
+        }
+
+        .calculate-btn {
+            width: 100%; padding: 1rem; margin-top: 1rem;
+            background: linear-gradient(135deg, var(--accent), #5c6bff);
+            color: #fff; border: none; border-radius: 14px;
+            font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem;
+            cursor: pointer; transition: all 0.3s; letter-spacing: 0.3px;
+            box-shadow: 0 10px 30px rgba(68,138,255,0.3);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(68,138,255,0.45);
+        }
+
+        .calculate-btn:active { transform: scale(0.97); }
+
+        .reset-btn {
+            width: 100%; padding: 0.7rem; margin-top: 0.6rem;
+            background: transparent; border: 1px solid var(--border); color: var(--muted);
+            border-radius: 14px; font-family: 'Inter', sans-serif; font-weight: 600;
+            font-size: 0.85rem; cursor: pointer; transition: all 0.3s;
+        }
+
+        .reset-btn:hover { border-color: rgba(255,255,255,0.2); color: #fff; }
+
+        /* Results Panel */
+        .results-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            display: flex; flex-direction: column;
+        }
+
+        .results-panel .panel-header {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .results-panel .panel-header .icon {
+            background: linear-gradient(135deg, var(--gold), #ff9100);
+            box-shadow: 0 4px 20px rgba(255,215,64,0.2);
+        }
+
+        .results-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+            margin: 1.5rem 0; flex: 1;
+        }
+
+        .result-card {
+            background: var(--surface2); border: 1px solid var(--border);
+            border-radius: 16px; padding: 1.2rem; text-align: center;
+            transition: all 0.3s;
+        }
+
+        .result-card:hover { border-color: rgba(255,255,255,0.1); transform: translateY(-2px); }
+
+        .result-card.highlight {
+            border-color: var(--bull); background: rgba(0,230,118,0.05);
+        }
+
+        .result-card.danger {
+            border-color: var(--bear); background: rgba(255,23,68,0.05);
+        }
+
+        .result-label {
+            font-size: 0.68rem; color: var(--muted); text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 0.5rem; font-weight: 600;
+        }
+
+        .result-value {
+            font-family: 'JetBrains Mono', monospace; font-size: 1.6rem;
+            font-weight: 800; color: #fff; letter-spacing: -0.5px;
+        }
+
+        .result-value.green { color: var(--bull); }
+        .result-value.red { color: var(--bear); }
+        .result-value.gold { color: var(--gold); }
+
+        .result-sub {
+            font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem;
+        }
+
+        .summary-strip {
+            background: var(--surface2); border: 1px solid var(--border);
+            border-radius: 16px; padding: 1.2rem 1.5rem; margin-top: auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .summary-label { font-weight: 700; color: #fff; font-size: 0.9rem; }
+        .summary-value {
+            font-family: 'JetBrains Mono', monospace; font-size: 1.2rem;
+            font-weight: 800; color: var(--gold);
+        }
+
+        .empty-state {
+            text-align: center; padding: 3rem 1rem; color: var(--muted);
+        }
+
+        .empty-state .big-emoji { font-size: 4rem; margin-bottom: 1rem; }
+        .empty-state p { font-size: 0.9rem; }
+
+        /* Warning Strip */
+        .warning-strip {
+            display: none; background: rgba(255,23,68,0.08); border: 1px solid rgba(255,23,68,0.2);
+            border-radius: 12px; padding: 0.8rem 1rem; margin-top: 1rem;
+            color: var(--bear); font-size: 0.75rem; font-weight: 600; text-align: center;
+        }
+
+        .warning-strip.show { display: block; }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .main-container { grid-template-columns: 1fr; }
+            .results-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 450px) {
+            .results-grid { grid-template-columns: 1fr; }
+            .input-panel, .results-panel { padding: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <!-- INPUT PANEL -->
+        <div class="input-panel">
+            <div class="panel-header">
+                <div class="icon">🎯</div>
+                <div>
+                    <h2>Trade Calculator</h2>
+                    <span class="badge">⚡ Live</span>
+                </div>
+            </div>
+
+            <!-- Trade Type -->
+            <div class="form-group">
+                <label>Trade Direction</label>
+                <div class="trade-type-toggle" id="tradeTypeToggle">
+                    <button class="trade-type-btn active" onclick="setTradeType('long', this)">📈 Long (Buy)</button>
+                    <button class="trade-type-btn bear" onclick="setTradeType('short', this)">📉 Short (Sell)</button>
+                </div>
+            </div>
+
+            <!-- Capital -->
+            <div class="form-group">
+                <label>Total Trading Capital <span class="hint">Your account balance</span></label>
+                <div class="input-wrapper">
+                    <span class="prefix">₹</span>
+                    <input type="number" id="capital" placeholder="1,00,000" min="1000" step="1000" oninput="liveCalculate()">
+                </div>
+            </div>
+
+            <!-- Risk % -->
+            <div class="form-group">
+                <label>Risk Per Trade (%) <span class="hint">Recommended: 1-2%</span></label>
+                <div class="input-wrapper">
+                    <span class="prefix">%</span>
+                    <input type="number" id="riskPercent" placeholder="2" min="0.1" max="10" step="0.1" value="2" oninput="liveCalculate()">
+                </div>
+            </div>
+
+            <!-- Entry Price -->
+            <div class="form-group">
+                <label>Entry Price</label>
+                <div class="input-wrapper">
+                    <span class="prefix">₹</span>
+                    <input type="number" id="entryPrice" placeholder="1450.00" min="0.05" step="0.05" oninput="liveCalculate()">
+                </div>
+            </div>
+
+            <!-- Stop Loss -->
+            <div class="form-group">
+                <label>Stop Loss Price</label>
+                <div class="input-wrapper">
+                    <span class="prefix">₹</span>
+                    <input type="number" id="stopLoss" placeholder="1430.00" min="0.05" step="0.05" oninput="liveCalculate()">
+                </div>
+            </div>
+
+            <!-- Target Price (Optional) -->
+            <div class="form-group">
+                <label>Target Price <span class="hint">Optional</span></label>
+                <div class="input-wrapper">
+                    <span class="prefix">₹</span>
+                    <input type="number" id="targetPrice" placeholder="1500.00" min="0.05" step="0.05" oninput="liveCalculate()">
+                </div>
+            </div>
+
+            <button class="calculate-btn" onclick="calculateAll()">🔢 Calculate Position Size</button>
+            <button class="reset-btn" onclick="resetAll()">↺ Reset All Fields</button>
+        </div>
+
+        <!-- RESULTS PANEL -->
+        <div class="results-panel" id="resultsPanel">
+            <div class="panel-header">
+                <div class="icon">📊</div>
+                <h2>Trade Summary</h2>
+            </div>
+
+            <div id="emptyState" class="empty-state">
+                <div class="big-emoji">📝</div>
+                <p>Enter your trade parameters<br>and click <strong>Calculate</strong> to see results</p>
+            </div>
+
+            <div id="resultsContent" style="display:none; flex:1; display:flex; flex-direction:column;">
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-label">💵 Risk Amount</div>
+                        <div class="result-value red" id="riskAmount">₹0</div>
+                        <div class="result-sub">Max loss this trade</div>
+                    </div>
+                    <div class="result-card highlight">
+                        <div class="result-label">📦 Position Size</div>
+                        <div class="result-value green" id="positionSize">0</div>
+                        <div class="result-sub">Shares / Lots to buy</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">💰 Capital Used</div>
+                        <div class="result-value gold" id="capitalUsed">₹0</div>
+                        <div class="result-sub" id="capitalPercent">of total capital</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">🎯 Risk:Reward</div>
+                        <div class="result-value" id="riskReward" style="color:#fff;">—</div>
+                        <div class="result-sub" id="rrQuality"></div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">📉 Stop Loss %</div>
+                        <div class="result-value red" id="slPercent">0%</div>
+                        <div class="result-sub">from entry price</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">📈 Target Gain</div>
+                        <div class="result-value green" id="targetGain">₹0</div>
+                        <div class="result-sub" id="targetPercent">if target hits</div>
+                    </div>
+                </div>
+
+                <div class="warning-strip" id="warningStrip">
+                    ⚠️ Position size exceeds 25% of capital. Consider reducing risk % or widening stop loss.
+                </div>
+
+                <div class="summary-strip">
+                    <span class="summary-label">📋 Trade Plan:</span>
+                    <span class="summary-value" id="tradePlan">—</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Trade type
+        let tradeType = 'long';
+
+        function setTradeType(type, btn) {
+            tradeType = type;
+            document.querySelectorAll('.trade-type-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            liveCalculate();
+        }
+
+        function getVal(id) {
+            const val = parseFloat(document.getElementById(id).value);
+            return isNaN(val) || val <= 0 ? null : val;
+        }
+
+        function formatINR(num) {
+            return '₹' + Math.round(num).toLocaleString('en-IN');
+        }
+
+        function formatNum(num, decimals = 2) {
+            return num.toFixed(decimals);
+        }
+
+        function liveCalculate() {
+            // Only auto-calculate if all required fields are filled
+            const capital = getVal('capital');
+            const riskPercent = getVal('riskPercent');
+            const entry = getVal('entryPrice');
+            const stopLoss = getVal('stopLoss');
+            
+            if (capital && riskPercent && entry && stopLoss) {
+                calculateAll();
+            }
+        }
+
+        function calculateAll() {
+            const capital = getVal('capital');
+            const riskPercent = getVal('riskPercent');
+            const entry = getVal('entryPrice');
+            const stopLoss = getVal('stopLoss');
+            const target = getVal('targetPrice');
+
+            // Validation
+            if (!capital || !riskPercent || !entry || !stopLoss) {
+                showEmptyState();
+                highlightEmpty(capital, 'capital');
+                highlightEmpty(riskPercent, 'riskPercent');
+                highlightEmpty(entry, 'entryPrice');
+                highlightEmpty(stopLoss, 'stopLoss');
+                return;
+            }
+
+            if (tradeType === 'long' && stopLoss >= entry) {
+                alert('⚠️ For LONG trade, Stop Loss must be BELOW Entry Price');
+                document.getElementById('stopLoss').classList.add('error');
+                setTimeout(() => document.getElementById('stopLoss').classList.remove('error'), 500);
+                return;
+            }
+
+            if (tradeType === 'short' && stopLoss <= entry) {
+                alert('⚠️ For SHORT trade, Stop Loss must be ABOVE Entry Price');
+                document.getElementById('stopLoss').classList.add('error');
+                setTimeout(() => document.getElementById('stopLoss').classList.remove('error'), 500);
+                return;
+            }
+
+            if (riskPercent > 10) {
+                alert('⚠️ Risk per trade should not exceed 10%. Please reduce.');
+                return;
+            }
+
+            // CALCULATIONS
+            const riskAmount = (capital * riskPercent) / 100;
+            
+            // Stop loss distance (absolute)
+            const slDistance = Math.abs(entry - stopLoss);
+            
+            // Position Size = Risk Amount / Stop Loss Distance
+            const positionSize = Math.floor(riskAmount / slDistance);
+            
+            // Capital used
+            const capitalUsed = positionSize * entry;
+            const capitalUsedPercent = (capitalUsed / capital) * 100;
+            
+            // Stop Loss %
+            const slPercent = (slDistance / entry) * 100;
+            
+            // Target calculations
+            let targetGain = 0;
+            let targetPercent = 0;
+            let riskReward = null;
+            let rrQuality = '';
+
+            if (target && target > 0) {
+                const targetDistance = Math.abs(target - entry);
+                targetGain = targetDistance * positionSize;
+                targetPercent = (targetGain / capital) * 100;
+                riskReward = targetDistance / slDistance;
+                
+                if (riskReward >= 3) rrQuality = 'Excellent ⭐';
+                else if (riskReward >= 2) rrQuality = 'Good ✅';
+                else if (riskReward >= 1.5) rrQuality = 'Decent 👍';
+                else rrQuality = 'Poor ⚠️';
+            }
+
+            // DISPLAY RESULTS
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('resultsContent').style.display = 'flex';
+            document.getElementById('resultsContent').style.flexDirection = 'column';
+
+            document.getElementById('riskAmount').textContent = formatINR(riskAmount);
+            document.getElementById('positionSize').textContent = positionSize;
+            document.getElementById('capitalUsed').textContent = formatINR(capitalUsed);
+            document.getElementById('capitalPercent').textContent = `(${formatNum(capitalUsedPercent, 1)}% of capital)`;
+            document.getElementById('slPercent').textContent = formatNum(slPercent, 2) + '%';
+            
+            if (riskReward) {
+                document.getElementById('riskReward').textContent = '1:' + formatNum(riskReward, 1);
+                document.getElementById('riskReward').style.color = riskReward >= 2 ? 'var(--bull)' : riskReward >= 1.5 ? 'var(--gold)' : 'var(--bear)';
+                document.getElementById('rrQuality').textContent = rrQuality;
+            } else {
+                document.getElementById('riskReward').textContent = '—';
+                document.getElementById('riskReward').style.color = '#fff';
+                document.getElementById('rrQuality').textContent = 'Set target price';
+            }
+
+            document.getElementById('targetGain').textContent = target ? formatINR(targetGain) : '—';
+            document.getElementById('targetPercent').textContent = target ? `(+${formatNum(targetPercent, 2)}%)` : '';
+
+            // Trade plan summary
+            document.getElementById('tradePlan').textContent = 
+                `${tradeType === 'long' ? 'BUY' : 'SELL'} ${positionSize} @ ${formatINR(entry)} | SL: ${formatINR(stopLoss)} | Risk: ${formatINR(riskAmount)}`;
+
+            // Warning strip
+            const warningStrip = document.getElementById('warningStrip');
+            if (capitalUsedPercent > 25) {
+                warningStrip.classList.add('show');
+            } else {
+                warningStrip.classList.remove('show');
+            }
+
+            // Clear error states
+            document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+        }
+
+        function highlightEmpty(value, id) {
+            if (!value) {
+                document.getElementById(id).classList.add('error');
+                setTimeout(() => document.getElementById(id).classList.remove('error'), 500);
+            }
+        }
+
+        function showEmptyState() {
+            document.getElementById('emptyState').style.display = 'block';
+            document.getElementById('resultsContent').style.display = 'none';
+        }
+
+        function resetAll() {
+            document.getElementById('capital').value = '';
+            document.getElementById('riskPercent').value = '2';
+            document.getElementById('entryPrice').value = '';
+            document.getElementById('stopLoss').value = '';
+            document.getElementById('targetPrice').value = '';
+            document.getElementById('warningStrip').classList.remove('show');
+            document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+            showEmptyState();
+        }
+
+        // Quick Preset Examples
+        console.log('📊 TradeCalc Pro Ready!');
+        console.log('Try these presets:');
+        console.log('Capital: 100000 | Risk: 2% | Entry: 1450 | SL: 1430 | Target: 1500');
+        console.log('→ Position Size: 100 shares | Risk: ₹2,000 | R:R = 1:2.5');
+    </script>
+
+</body>
+</html>

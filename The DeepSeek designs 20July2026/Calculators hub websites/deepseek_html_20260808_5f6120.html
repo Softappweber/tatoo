@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChemCalc · 50+ Chemistry & more</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Font: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+    body {
+      background: var(--bg-body);
+      color: var(--text-primary);
+      transition: background 0.2s, color 0.2s;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+    }
+    :root {
+      --bg-body: #f4f6fa;
+      --bg-card: #ffffff;
+      --bg-calc: #f8fafc;
+      --text-primary: #0b1a2e;
+      --text-secondary: #1f3a57;
+      --text-muted: #4a5f7a;
+      --border-light: #e2e8f0;
+      --shadow: 0 12px 30px rgba(0,0,0,0.06);
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --tag-bg: #eef2ff;
+      --tag-text: #1e40af;
+    }
+    [data-theme="dark"] {
+      --bg-body: #0f172a;
+      --bg-card: #1e293b;
+      --bg-calc: #1a2539;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-light: #334155;
+      --shadow: 0 12px 30px rgba(0,0,0,0.5);
+      --accent: #60a5fa;
+      --accent-hover: #3b82f6;
+      --tag-bg: #1e293b;
+      --tag-text: #93c5fd;
+    }
+    [data-theme="gradient-1"] {
+      --bg-body: linear-gradient(145deg, #fdfcfb 0%, #e2d1c3 100%);
+      --bg-card: rgba(255,255,255,0.7);
+      --bg-calc: rgba(255,255,255,0.5);
+      --text-primary: #1e1a1a;
+      --text-secondary: #3d2e2a;
+      --text-muted: #5b4b45;
+      --border-light: #d6c9c0;
+      --shadow: 0 12px 30px rgba(0,0,0,0.08);
+      --accent: #a05f4b;
+      --accent-hover: #834c3b;
+      --tag-bg: #efe4db;
+      --tag-text: #6b3f2f;
+    }
+    [data-theme="gradient-2"] {
+      --bg-body: linear-gradient(135deg, #e0f2fe 0%, #fae8ff 100%);
+      --bg-card: rgba(255,255,255,0.6);
+      --bg-calc: rgba(255,255,255,0.3);
+      --text-primary: #1a1a3e;
+      --text-secondary: #2d2d5e;
+      --text-muted: #4b4b7a;
+      --border-light: #c7d6f0;
+      --shadow: 0 12px 30px rgba(0,0,0,0.05);
+      --accent: #6d5cbf;
+      --accent-hover: #5a4aa8;
+      --tag-bg: #e1d9ff;
+      --tag-text: #3f2f8a;
+    }
+    .app { max-width: 1440px; margin: 0 auto; }
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .top-bar h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .top-bar h1 i { color: var(--accent); }
+    .theme-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      background: var(--bg-card);
+      padding: 0.4rem 0.9rem;
+      border-radius: 40px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-light);
+    }
+    .theme-btn {
+      background: transparent;
+      border: none;
+      padding: 0.35rem 1rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: 0.15s;
+      border: 1px solid transparent;
+    }
+    .theme-btn:hover { background: var(--tag-bg); }
+    .theme-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+    }
+    .category-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2.8rem;
+    }
+    .category {
+      background: var(--bg-card);
+      border-radius: 32px;
+      padding: 1.8rem 2rem 2.2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-light);
+      backdrop-filter: blur(2px);
+      transition: 0.2s;
+    }
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--border-light);
+      padding-bottom: 0.7rem;
+    }
+    .category-header i { color: var(--accent); width: 2rem; font-size: 1.6rem; }
+    .calc-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.8rem 1rem;
+    }
+    .calc-btn {
+      background: var(--bg-calc);
+      border: 1px solid var(--border-light);
+      border-radius: 40px;
+      padding: 0.7rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.15s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      white-space: nowrap;
+    }
+    .calc-btn i { font-size: 0.95rem; color: var(--accent); width: 1.2rem; text-align: center; }
+    .calc-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.15);
+    }
+    .calc-btn:hover i { color: white; }
+    .calc-btn:active { transform: scale(0.96); }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--bg-card);
+      border-radius: 40px;
+      max-width: 540px;
+      width: 100%;
+      padding: 2rem 2rem 1.8rem;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+      border: 1px solid var(--border-light);
+      animation: modalIn 0.2s ease;
+      position: relative;
+    }
+    @keyframes modalIn {
+      0% { opacity: 0; transform: scale(0.94) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      font-size: 1.6rem;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: 0.1s;
+    }
+    .modal-close:hover { color: var(--text-primary); transform: rotate(90deg); }
+    .modal-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .modal-title i { color: var(--accent); }
+    .modal-sub {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 0.6rem;
+    }
+    .calc-input-group { display: flex; flex-direction: column; gap: 0.9rem; margin: 1.2rem 0; }
+    .calc-input-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem 1rem;
+    }
+    .calc-input-row label {
+      font-weight: 500;
+      min-width: 70px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    .calc-input-row input,
+    .calc-input-row select {
+      flex: 1;
+      min-width: 120px;
+      background: var(--bg-body);
+      border: 1px solid var(--border-light);
+      border-radius: 30px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: 0.15s;
+    }
+    .calc-input-row input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .calc-input-row input[type="number"] { -moz-appearance: textfield; }
+    .calc-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin: 1.5rem 0 1rem;
+    }
+    .calc-actions button {
+      background: var(--accent);
+      border: none;
+      padding: 0.7rem 1.8rem;
+      border-radius: 40px;
+      font-weight: 600;
+      color: white;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+      border: 1px solid transparent;
+    }
+    .calc-actions button:hover { background: var(--accent-hover); transform: scale(1.01); }
+    .calc-actions button.secondary {
+      background: var(--bg-calc);
+      color: var(--text-secondary);
+      box-shadow: none;
+      border: 1px solid var(--border-light);
+    }
+    .calc-actions button.secondary:hover { background: var(--border-light); }
+    .result-box {
+      background: var(--bg-body);
+      border-radius: 24px;
+      padding: 1rem 1.5rem;
+      margin-top: 0.8rem;
+      border-left: 4px solid var(--accent);
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      word-break: break-word;
+    }
+    .result-box small {
+      font-weight: 400;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      display: block;
+      margin-top: 0.2rem;
+    }
+    .copy-badge {
+      cursor: pointer;
+      float: right;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+    }
+    .copy-badge:hover { background: var(--accent); color: white; }
+    .footer-note {
+      margin-top: 3rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border-light);
+      padding-top: 2rem;
+      opacity: 0.7;
+    }
+    @media (max-width: 640px) {
+      body { padding: 1rem; }
+      .top-bar { flex-direction: column; align-items: stretch; }
+      .theme-picker { justify-content: center; flex-wrap: wrap; }
+      .category { padding: 1.2rem; }
+      .calc-list { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+      .modal-box { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="top-bar">
+    <h1><i class="fas fa-flask"></i> ChemCalc · 50+</h1>
+    <div class="theme-picker" id="themePicker">
+      <button class="theme-btn active" data-theme="light"><i class="fas fa-sun"></i> Light</button>
+      <button class="theme-btn" data-theme="dark"><i class="fas fa-moon"></i> Dark</button>
+      <button class="theme-btn" data-theme="gradient-1"><i class="fas fa-palette"></i> G1</button>
+      <button class="theme-btn" data-theme="gradient-2"><i class="fas fa-paint-brush"></i> G2</button>
+    </div>
+  </div>
+  <div class="category-grid" id="categoryGrid"></div>
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box" id="modalBox">
+      <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+      <div class="modal-title" id="modalTitle"><i class="fas fa-cog"></i> Calculator</div>
+      <div class="modal-sub" id="modalSub">enter values</div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+  <div class="footer-note">⚡ 50+ calculators · chemistry focused · click any tile</div>
+</div>
+<script>
+  (function() {
+    // ---------- MOLAR MASS HELPER ----------
+    const atomicMasses = {
+      H:1.008, He:4.0026, Li:6.941, Be:9.012, B:10.81, C:12.011, N:14.007, O:15.999, F:18.998,
+      Ne:20.18, Na:22.99, Mg:24.305, Al:26.982, Si:28.085, P:30.974, S:32.065, Cl:35.45,
+      Ar:39.948, K:39.098, Ca:40.078, Sc:44.956, Ti:47.867, V:50.942, Cr:51.996, Mn:54.938,
+      Fe:55.845, Co:58.933, Ni:58.693, Cu:63.546, Zn:65.38, Ga:69.723, Ge:72.63, As:74.922,
+      Se:78.96, Br:79.904, Kr:83.798, Rb:85.468, Sr:87.62, Y:88.906, Zr:91.224, Nb:92.906,
+      Mo:95.95, Tc:98, Ru:101.07, Rh:102.906, Pd:106.42, Ag:107.868, Cd:112.414, In:114.818,
+      Sn:118.71, Sb:121.76, Te:127.6, I:126.904, Xe:131.293, Cs:132.905, Ba:137.327, La:138.905,
+      Ce:140.116, Pr:140.908, Nd:144.243, Pm:145, Sm:150.36, Eu:151.964, Gd:157.25, Tb:158.925,
+      Dy:162.5, Ho:164.93, Er:167.259, Tm:168.934, Yb:173.054, Lu:174.967, Hf:178.49, Ta:180.948,
+      W:183.84, Re:186.207, Os:190.23, Ir:192.217, Pt:195.084, Au:196.967, Hg:200.59, Tl:204.38,
+      Pb:207.2, Bi:208.98, Po:209, At:210, Rn:222, Fr:223, Ra:226, Ac:227, Th:232.038, Pa:231.036,
+      U:238.029, Np:237, Pu:244, Am:243, Cm:247, Bk:247, Cf:251, Es:252, Fm:257, Md:258, No:259,
+      Lr:266, Rf:267, Db:268, Sg:269, Bh:270, Hs:277, Mt:278, Ds:281, Rg:282, Cn:285, Nh:286,
+      Fl:289, Mc:289, Lv:293, Ts:294, Og:294
+    };
+    function parseFormula(formula) {
+      const f = formula.replace(/\s/g,'');
+      if (!f) return null;
+      let mass = 0, i = 0;
+      while (i < f.length) {
+        let el = '';
+        if (i+1 < f.length && f[i+1] >= 'a' && f[i+1] <= 'z') {
+          el = f[i] + f[i+1];
+          i += 2;
+        } else {
+          el = f[i];
+          i++;
+        }
+        let num = '';
+        while (i < f.length && f[i] >= '0' && f[i] <= '9') {
+          num += f[i];
+          i++;
+        }
+        const count = parseInt(num) || 1;
+        if (!atomicMasses[el]) return null;
+        mass += atomicMasses[el] * count;
+      }
+      return mass;
+    }
+
+    // ---------- CATEGORIES ----------
+    const CATEGORIES = [
+      { name: "Chemistry", icon: "fa-flask", calculators: [
+        { id: "molar_mass", label: "Molar Mass", icon: "fa-weight-scale", fields: [ { label: "Formula (e.g. H2O)", key: "formula", type: "text", placeholder: "H2O" } ], compute: (v) => { const m = parseFormula(v.formula || ''); return m ? `Molar mass: ${m.toFixed(3)} g/mol` : "Invalid formula"; } },
+        { id: "mole_mass", label: "Mole ↔ mass", icon: "fa-arrows-left-right", fields: [ { label: "Moles", key: "mol", type: "number", placeholder: "2" }, { label: "Molar mass (g/mol)", key: "mm", type: "number", placeholder: "18" } ], compute: (v) => { const mol=parseFloat(v.mol||0), mm=parseFloat(v.mm||0); return `Mass = ${(mol*mm).toFixed(3)} g`; } },
+        { id: "mole_particles", label: "Mole ↔ particles", icon: "fa-atom", fields: [ { label: "Moles", key: "mol", type: "number", placeholder: "1" } ], compute: (v) => { const mol=parseFloat(v.mol||0); return `Particles = ${(mol*6.022e23).toExponential(4)}`; } },
+        { id: "limiting_reactant", label: "Limiting reactant", icon: "fa-flask", fields: [ { label: "Mole A", key: "a", type: "number", placeholder: "2" }, { label: "Mole B", key: "b", type: "number", placeholder: "3" }, { label: "Stoich A", key: "sa", type: "number", placeholder: "1" }, { label: "Stoich B", key: "sb", type: "number", placeholder: "1" } ], compute: (v) => { const a=parseFloat(v.a||0), b=parseFloat(v.b||0), sa=parseFloat(v.sa||1), sb=parseFloat(v.sb||1); if(sa===0||sb===0) return "Stoich >0"; const ratioA=a/sa, ratioB=b/sb; return ratioA < ratioB ? `A is limiting (ratio ${ratioA.toFixed(3)})` : (ratioB < ratioA ? `B is limiting` : "Both are equal"); } },
+        { id: "percent_yield", label: "Percent yield", icon: "fa-percent", fields: [ { label: "Actual yield (g)", key: "actual", type: "number", placeholder: "15" }, { label: "Theoretical yield (g)", key: "theo", type: "number", placeholder: "20" } ], compute: (v) => { const a=parseFloat(v.actual||0), t=parseFloat(v.theo||0); if(t===0) return "Theoretical >0"; return `Yield = ${(a/t*100).toFixed(2)}%`; } },
+        { id: "empirical", label: "Empirical formula", icon: "fa-chart-simple", fields: [ { label: "Mass % C", key: "c", type: "number", placeholder: "40" }, { label: "Mass % H", key: "h", type: "number", placeholder: "6.7" }, { label: "Mass % O", key: "o", type: "number", placeholder: "53.3" } ], compute: (v) => { const c=parseFloat(v.c||0), h=parseFloat(v.h||0), o=parseFloat(v.o||0); const molC=c/12.011, molH=h/1.008, molO=o/15.999; const min=Math.min(molC,molH,molO); if(min===0) return "Mass % >0"; const rC=molC/min, rH=molH/min, rO=molO/min; return `Empirical: C${Math.round(rC)}H${Math.round(rH)}O${Math.round(rO)}`; } },
+        { id: "molecular", label: "Molecular formula", icon: "fa-cube", fields: [ { label: "Empirical mass (g/mol)", key: "em", type: "number", placeholder: "30" }, { label: "Molar mass (g/mol)", key: "mm", type: "number", placeholder: "90" } ], compute: (v) => { const em=parseFloat(v.em||0), mm=parseFloat(v.mm||0); if(em===0) return "Empirical mass >0"; const n=mm/em; return `n = ${n.toFixed(3)} (multiply subscripts by ${Math.round(n)})`; } },
+        { id: "dilution", label: "Solution dilution (C1V1=C2V2)", icon: "fa-water", fields: [ { label: "C1 (M)", key: "c1", type: "number", placeholder: "1.0" }, { label: "V1 (L)", key: "v1", type: "number", placeholder: "0.5" }, { label: "C2 (M)", key: "c2", type: "number", placeholder: "0.2" } ], compute: (v) => { const c1=parseFloat(v.c1||0), v1=parseFloat(v.v1||0), c2=parseFloat(v.c2||0); if(c2===0) return "C2 cannot be 0"; return `V₂ = ${(c1*v1/c2).toFixed(4)} L`; } },
+        { id: "conc_mass_vol", label: "Concentration (mg/L, g/L, mol/L)", icon: "fa-vial", fields: [ { label: "Mass (mg)", key: "mass", type: "number", placeholder: "500" }, { label: "Volume (L)", key: "vol", type: "number", placeholder: "2" } ], compute: (v) => { const m=parseFloat(v.mass||0), vol=parseFloat(v.vol||0); if(vol===0) return "Volume >0"; return `${(m/vol).toFixed(2)} mg/L, ${(m/1000/vol).toFixed(4)} g/L, ${(m/1000/vol/ (atomicMasses.Na?58.44:58.44)).toFixed(4)} mol/L (NaCl ref)`; } },
+        { id: "ph", label: "pH (strong acid/base)", icon: "fa-vial", fields: [ { label: "[H+] or [OH-] (M)", key: "h", type: "number", placeholder: "1e-3" }, { label: "acid/base (a/b)", key: "type", type: "text", placeholder: "a" } ], compute: (v) => { const h=parseFloat(v.h||0); if(h<=0) return "Enter positive concentration"; const type=(v.type||'a').toLowerCase(); if(type==='b') return `pOH = ${(-Math.log10(h)).toFixed(3)}, pH = ${(14+Math.log10(h)).toFixed(3)}`; return `pH = ${(-Math.log10(h)).toFixed(3)}`; } },
+        { id: "buffer_ph", label: "Buffer pH (H-H)", icon: "fa-flask", fields: [ { label: "pKa", key: "pka", type: "number", placeholder: "4.76" }, { label: "[A-] (M)", key: "a", type: "number", placeholder: "0.1" }, { label: "[HA] (M)", key: "ha", type: "number", placeholder: "0.1" } ], compute: (v) => { const pka=parseFloat(v.pka||0), a=parseFloat(v.a||0), ha=parseFloat(v.ha||0); if(ha===0) return "[HA] >0"; return `pH = ${(pka + Math.log10(a/ha)).toFixed(3)}`; } },
+        { id: "gas_stoich", label: "Gas stoichiometry (PV=nRT)", icon: "fa-wind", fields: [ { label: "P (atm)", key: "p", type: "number", placeholder: "1" }, { label: "V (L)", key: "v", type: "number", placeholder: "22.4" }, { label: "n (mol)", key: "n", type: "number", placeholder: "1" }, { label: "T (K)", key: "t", type: "number", placeholder: "273" } ], compute: (v) => { const p=parseFloat(v.p||0), v=parseFloat(v.v||0), n=parseFloat(v.n||0), t=parseFloat(v.t||0); if(n===0||t===0) return "n and T >0"; const R=0.0821; if(p===0) return `V = ${(n*R*t/v).toFixed(3)} atm`; if(v===0) return `V = ${(n*R*t/p).toFixed(3)} L`; if(n===0) return `n = ${(p*v/(R*t)).toFixed(4)} mol`; if(t===0) return `T = ${(p*v/(n*R)).toFixed(2)} K`; return `PV = ${(p*v).toFixed(3)} , nRT = ${(n*R*t).toFixed(3)}`; } },
+        { id: "mass_percent", label: "Mass % composition", icon: "fa-percent", fields: [ { label: "Element mass (g)", key: "em", type: "number", placeholder: "12" }, { label: "Total mass (g)", key: "total", type: "number", placeholder: "44" } ], compute: (v) => { const em=parseFloat(v.em||0), total=parseFloat(v.total||0); if(total===0) return "Total >0"; return `Mass % = ${(em/total*100).toFixed(2)}%`; } }
+      ]},
+      // Additional categories (finance, math, etc.) kept but we focus chemistry
+      { name: "Finance & Trading", icon: "fa-chart-line", calculators: [
+        { id: "avg", label: "Trade Average", icon: "fa-calculator", fields: [ { label: "Buy price", key: "p1", type: "number", placeholder: "100" }, { label: "Buy qty", key: "q1", type: "number", placeholder: "10" }, { label: "Sell price", key: "p2", type: "number", placeholder: "120" }, { label: "Sell qty", key: "q2", type: "number", placeholder: "5" } ], compute: (v) => { const avg=(parseFloat(v.p1||0)*parseFloat(v.q1||0)+parseFloat(v.p2||0)*parseFloat(v.q2||0))/(parseFloat(v.q1||0)+parseFloat(v.q2||0)||1); return `Average: $${avg.toFixed(2)}`; } },
+        { id: "roi", label: "ROI", icon: "fa-percent", fields: [ { label: "Investment", key: "inv", type: "number", placeholder: "1000" }, { label: "Return", key: "ret", type: "number", placeholder: "1500" } ], compute: (v) => { const roi=((parseFloat(v.ret||0)-parseFloat(v.inv||0))/parseFloat(v.inv||1))*100; return `ROI: ${roi.toFixed(2)}%`; } },
+        { id: "profit", label: "Profit Margin", icon: "fa-dollar-sign", fields: [ { label: "Revenue", key: "rev", type: "number", placeholder: "5000" }, { label: "Cost", key: "cost", type: "number", placeholder: "3000" } ], compute: (v) => { const p=(parseFloat(v.rev||0)-parseFloat(v.cost||0))/parseFloat(v.rev||1)*100; return `Margin: ${p.toFixed(2)}%`; } }
+      ]},
+      { name: "Math & Physics", icon: "fa-superscript", calculators: [
+        { id: "quad", label: "Quadratic Root", icon: "fa-square-root-variable", fields: [ { label: "a", key: "a", type: "number", placeholder: "1" }, { label: "b", key: "b", type: "number", placeholder: "-3" }, { label: "c", key: "c", type: "number", placeholder: "2" } ], compute: (v) => { const a=parseFloat(v.a||0), b=parseFloat(v.b||0), c=parseFloat(v.c||0); const d=b*b-4*a*c; if(d<0) return "No real roots"; const r1=(-b+Math.sqrt(d))/(2*a), r2=(-b-Math.sqrt(d))/(2*a); return `x₁=${r1.toFixed(3)}, x₂=${r2.toFixed(3)}`; } },
+        { id: "ohms", label: "Ohm's Law", icon: "fa-bolt", fields: [ { label: "Voltage (V)", key: "v", type: "number", placeholder: "12" }, { label: "Current (A)", key: "i", type: "number", placeholder: "2" } ], compute: (v) => { const V=parseFloat(v.v||0), I=parseFloat(v.i||0); if(I===0) return "Current >0"; return `Resistance: ${(V/I).toFixed(3)} Ω`; } },
+        { id: "bmi", label: "BMI", icon: "fa-weight", fields: [ { label: "Weight (kg)", key: "w", type: "number", placeholder: "70" }, { label: "Height (cm)", key: "h", type: "number", placeholder: "175" } ], compute: (v) => { const w=parseFloat(v.w||0), h=parseFloat(v.h||0)/100; if(h<=0) return "Height >0"; const bmi=w/(h*h); let cat="Normal"; if(bmi<18.5) cat="Underweight"; else if(bmi<25) cat="Normal"; else if(bmi<30) cat="Overweight"; else cat="Obese"; return `BMI: ${bmi.toFixed(2)} (${cat})`; } }
+      ]}
+    ];
+
+    // flatten
+    const calcMap = {};
+    CATEGORIES.forEach(cat => cat.calculators.forEach(c => calcMap[c.id] = c));
+
+    const grid = document.getElementById('categoryGrid');
+    function renderCategories() {
+      grid.innerHTML = '';
+      CATEGORIES.forEach(cat => {
+        const div = document.createElement('div');
+        div.className = 'category';
+        div.innerHTML = `<div class="category-header"><i class="fas ${cat.icon}"></i> ${cat.name}</div><div class="calc-list"></div>`;
+        grid.appendChild(div);
+        const list = div.querySelector('.calc-list');
+        cat.calculators.forEach(calc => {
+          const btn = document.createElement('button');
+          btn.className = 'calc-btn';
+          btn.innerHTML = `<i class="fas ${calc.icon}"></i> ${calc.label}`;
+          btn.dataset.id = calc.id;
+          btn.addEventListener('click', () => openCalculator(calc.id));
+          list.appendChild(btn);
+        });
+      });
+    }
+
+    // ---------- MODAL ----------
+    const overlay = document.getElementById('modalOverlay');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSub = document.getElementById('modalSub');
+    const modalBody = document.getElementById('modalBody');
+    const closeBtn = document.getElementById('modalClose');
+
+    function openCalculator(id) {
+      const calc = calcMap[id];
+      if (!calc) return;
+      modalTitle.innerHTML = `<i class="fas ${calc.icon}"></i> ${calc.label}`;
+      modalSub.textContent = 'enter values';
+      let html = `<div class="calc-input-group">`;
+      calc.fields.forEach(f => {
+        html += `<div class="calc-input-row"><label>${f.label}</label><input type="${f.type||'text'}" id="field_${f.key}" placeholder="${f.placeholder||''}" value="" /></div>`;
+      });
+      html += `</div><div class="calc-actions"><button id="computeBtn"><i class="fas fa-play"></i> Compute</button><button class="secondary" id="clearBtn"><i class="fas fa-undo"></i> Clear</button></div><div class="result-box" id="resultBox">Result <span class="copy-badge" id="copyResult"><i class="fas fa-copy"></i> copy</span></div>`;
+      modalBody.innerHTML = html;
+      overlay.classList.add('open');
+
+      document.getElementById('computeBtn').addEventListener('click', () => {
+        const vals = {};
+        calc.fields.forEach(f => { const el = document.getElementById(`field_${f.key}`); vals[f.key] = el ? el.value : ''; });
+        const result = calc.compute(vals);
+        const resBox = document.getElementById('resultBox');
+        resBox.innerHTML = result + ` <span class="copy-badge" id="copyResult"><i class="fas fa-copy"></i> copy</span>`;
+        document.getElementById('copyResult')?.addEventListener('click', function() {
+          const text = this.parentElement.textContent.replace('copy', '').trim();
+          navigator.clipboard?.writeText(text).then(() => { this.innerHTML = '<i class="fas fa-check"></i> copied'; setTimeout(() => this.innerHTML = '<i class="fas fa-copy"></i> copy', 1500); }).catch(() => {});
+        });
+      });
+      document.getElementById('clearBtn').addEventListener('click', () => {
+        calc.fields.forEach(f => { const el = document.getElementById(`field_${f.key}`); if (el) el.value = ''; });
+        document.getElementById('resultBox').innerHTML = 'Result <span class="copy-badge" id="copyResult"><i class="fas fa-copy"></i> copy</span>';
+      });
+      setTimeout(() => {
+        document.getElementById('copyResult')?.addEventListener('click', function() {
+          const text = this.parentElement.textContent.replace('copy', '').trim();
+          navigator.clipboard?.writeText(text).then(() => { this.innerHTML = '<i class="fas fa-check"></i> copied'; setTimeout(() => this.innerHTML = '<i class="fas fa-copy"></i> copy', 1500); }).catch(() => {});
+        });
+      }, 50);
+    }
+    closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') overlay.classList.remove('open'); });
+
+    // ---------- THEME ----------
+    const themeBtns = document.querySelectorAll('.theme-btn');
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      themeBtns.forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
+      localStorage.setItem('calcHubTheme', theme);
+    }
+    themeBtns.forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.theme)));
+    const saved = localStorage.getItem('calcHubTheme') || 'light';
+    setTheme(saved);
+
+    renderCategories();
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalcHub Pro · 50+ Calculators</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+        body {
+            background: var(--bg-body);
+            color: var(--text-primary);
+            transition: background 0.3s, color 0.3s;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+        }
+        :root {
+            --bg-body: #f0f4f8;
+            --bg-card: #ffffff;
+            --bg-calc: #f8fafc;
+            --text-primary: #0b1a2e;
+            --text-secondary: #1f3a57;
+            --text-muted: #64748b;
+            --border-light: #e2e8f0;
+            --shadow: 0 8px 24px rgba(0,0,0,0.06);
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #dbeafe;
+        }
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-calc: #1a2539;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-light: #334155;
+            --shadow: 0 8px 24px rgba(0,0,0,0.5);
+            --accent: #60a5fa;
+            --accent-hover: #3b82f6;
+            --accent-light: #1e293b;
+        }
+        [data-theme="gradient-1"] {
+            --bg-body: linear-gradient(145deg, #fdfcfb 0%, #e2d1c3 100%);
+            --bg-card: rgba(255,255,255,0.75);
+            --bg-calc: rgba(255,255,255,0.5);
+            --text-primary: #1e1a1a;
+            --text-secondary: #3d2e2a;
+            --text-muted: #6b5a52;
+            --border-light: #d6c9c0;
+            --shadow: 0 8px 24px rgba(0,0,0,0.08);
+            --accent: #a05f4b;
+            --accent-hover: #834c3b;
+            --accent-light: #efe4db;
+        }
+        [data-theme="gradient-2"] {
+            --bg-body: linear-gradient(135deg, #e0f2fe 0%, #fae8ff 100%);
+            --bg-card: rgba(255,255,255,0.6);
+            --bg-calc: rgba(255,255,255,0.3);
+            --text-primary: #1a1a3e;
+            --text-secondary: #2d2d5e;
+            --text-muted: #5b5b8a;
+            --border-light: #c7d6f0;
+            --shadow: 0 8px 24px rgba(0,0,0,0.05);
+            --accent: #6d5cbf;
+            --accent-hover: #5a4aa8;
+            --accent-light: #e1d9ff;
+        }
+        .app { max-width: 1400px; margin: 0 auto; }
+        .top-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+        .top-bar h1 {
+            font-weight: 700;
+            font-size: 2rem;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .top-bar h1 i { color: var(--accent); }
+        .theme-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            background: var(--bg-card);
+            padding: 0.3rem 0.8rem;
+            border-radius: 40px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-light);
+        }
+        .theme-btn {
+            background: transparent;
+            border: none;
+            padding: 0.3rem 0.9rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: 0.15s;
+            border: 1px solid transparent;
+        }
+        .theme-btn:hover { background: var(--accent-light); }
+        .theme-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+        }
+        [data-theme="gradient-1"] .theme-btn.active,
+        [data-theme="gradient-2"] .theme-btn.active {
+            background: var(--accent);
+            color: #fff;
+        }
+        .category-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+        .category {
+            background: var(--bg-card);
+            border-radius: 28px;
+            padding: 1.8rem 2rem 2.2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-light);
+            backdrop-filter: blur(4px);
+        }
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 0.7rem;
+        }
+        .category-header i { color: var(--accent); width: 2rem; font-size: 1.5rem; }
+        .calc-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.8rem;
+        }
+        .calc-btn {
+            background: var(--bg-calc);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            padding: 0.75rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .calc-btn i {
+            font-size: 0.95rem;
+            color: var(--accent);
+            width: 1.2rem;
+            text-align: center;
+        }
+        .calc-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37,99,235,0.2);
+        }
+        .calc-btn:hover i { color: white; }
+        .calc-btn:active { transform: scale(0.95); }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: var(--bg-card);
+            border-radius: 36px;
+            max-width: 560px;
+            width: 100%;
+            padding: 2rem 2rem 1.8rem;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.35);
+            border: 1px solid var(--border-light);
+            animation: modalIn 0.25s ease;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        @keyframes modalIn {
+            0% { opacity: 0; transform: scale(0.92) translateY(30px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-close {
+            position: sticky;
+            top: 0;
+            float: right;
+            font-size: 1.6rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50%;
+        }
+        .modal-close:hover {
+            color: var(--text-primary);
+            background: var(--accent-light);
+            transform: rotate(90deg);
+        }
+        .modal-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .modal-title i { color: var(--accent); }
+        .modal-sub {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 0.6rem;
+        }
+        .calc-input-group { display: flex; flex-direction: column; gap: 0.9rem; margin: 1.2rem 0; }
+        .calc-input-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem 1rem;
+        }
+        .calc-input-row label {
+            font-weight: 500;
+            min-width: 80px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .calc-input-row input,
+        .calc-input-row select {
+            flex: 1;
+            min-width: 120px;
+            background: var(--bg-body);
+            border: 1px solid var(--border-light);
+            border-radius: 30px;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            outline: none;
+            transition: 0.15s;
+        }
+        .calc-input-row input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+        }
+        .calc-input-row input[type="number"] { -moz-appearance: textfield; }
+        .calc-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1.5rem 0 1rem;
+        }
+        .calc-actions button {
+            background: var(--accent);
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 14px rgba(37,99,235,0.25);
+        }
+        .calc-actions button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(37,99,235,0.35);
+        }
+        .calc-actions button.secondary {
+            background: var(--bg-calc);
+            color: var(--text-secondary);
+            box-shadow: none;
+            border: 1px solid var(--border-light);
+        }
+        .calc-actions button.secondary:hover {
+            background: var(--border-light);
+            transform: none;
+            box-shadow: none;
+        }
+        .result-box {
+            background: var(--bg-body);
+            border-radius: 20px;
+            padding: 1rem 1.5rem;
+            margin-top: 0.8rem;
+            border-left: 4px solid var(--accent);
+            font-weight: 500;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            word-break: break-word;
+            position: relative;
+        }
+        .copy-badge {
+            cursor: pointer;
+            float: right;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            padding: 0.15rem 0.7rem;
+            border-radius: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            transition: 0.15s;
+        }
+        .copy-badge:hover { background: var(--accent); color: white; }
+        .footer-note {
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border-light);
+            padding-top: 2rem;
+            opacity: 0.7;
+        }
+        @media (max-width: 640px) {
+            body { padding: 1rem; }
+            .top-bar { flex-direction: column; align-items: stretch; }
+            .theme-picker { justify-content: center; flex-wrap: wrap; }
+            .category { padding: 1.2rem; }
+            .calc-list { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+            .modal-box { padding: 1.5rem; margin: 0.5rem; }
+            .calc-input-row label { min-width: 60px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app" id="app">
+    <div class="top-bar">
+        <h1><i class="fas fa-calculator"></i> CalcHub Pro</h1>
+        <div class="theme-picker" id="themePicker">
+            <button class="theme-btn active" data-theme="light"><i class="fas fa-sun"></i> Light</button>
+            <button class="theme-btn" data-theme="dark"><i class="fas fa-moon"></i> Dark</button>
+            <button class="theme-btn" data-theme="gradient-1"><i class="fas fa-palette"></i> G1</button>
+            <button class="theme-btn" data-theme="gradient-2"><i class="fas fa-paint-brush"></i> G2</button>
+        </div>
+    </div>
+    <div class="category-grid" id="categoryGrid"></div>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box" id="modalBox">
+            <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+            <div class="modal-title" id="modalTitle"><i class="fas fa-cog"></i> Calculator</div>
+            <div class="modal-sub" id="modalSub">Enter values and compute</div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    <div class="footer-note">⚡ 50+ calculators · click any tile to use</div>
+</div>
+
+<script>
+    (function() {
+        // ---------- ATOMIC MASSES ----------
+        const atomicMasses = {
+            H:1.008, He:4.0026, Li:6.941, Be:9.012, B:10.81, C:12.011, N:14.007, O:15.999, F:18.998,
+            Ne:20.18, Na:22.99, Mg:24.305, Al:26.982, Si:28.085, P:30.974, S:32.065, Cl:35.45,
+            Ar:39.948, K:39.098, Ca:40.078, Sc:44.956, Ti:47.867, V:50.942, Cr:51.996, Mn:54.938,
+            Fe:55.845, Co:58.933, Ni:58.693, Cu:63.546, Zn:65.38, Ga:69.723, Ge:72.63, As:74.922,
+            Se:78.96, Br:79.904, Kr:83.798, Rb:85.468, Sr:87.62, Y:88.906, Zr:91.224, Nb:92.906,
+            Mo:95.95, Tc:98, Ru:101.07, Rh:102.906, Pd:106.42, Ag:107.868, Cd:112.414, In:114.818,
+            Sn:118.71, Sb:121.76, Te:127.6, I:126.904, Xe:131.293, Cs:132.905, Ba:137.327, La:138.905,
+            Ce:140.116, Pr:140.908, Nd:144.243, Pm:145, Sm:150.36, Eu:151.964, Gd:157.25, Tb:158.925,
+            Dy:162.5, Ho:164.93, Er:167.259, Tm:168.934, Yb:173.054, Lu:174.967, Hf:178.49, Ta:180.948,
+            W:183.84, Re:186.207, Os:190.23, Ir:192.217, Pt:195.084, Au:196.967, Hg:200.59, Tl:204.38,
+            Pb:207.2, Bi:208.98, Po:209, At:210, Rn:222, Fr:223, Ra:226, Ac:227, Th:232.038, Pa:231.036,
+            U:238.029, Np:237, Pu:244, Am:243, Cm:247, Bk:247, Cf:251, Es:252, Fm:257, Md:258, No:259,
+            Lr:266, Rf:267, Db:268, Sg:269, Bh:270, Hs:277, Mt:278, Ds:281, Rg:282, Cn:285, Nh:286,
+            Fl:289, Mc:289, Lv:293, Ts:294, Og:294
+        };
+
+        function parseMolarMass(formula) {
+            const f = formula.replace(/\s/g, '');
+            if (!f) return null;
+            let mass = 0, i = 0;
+            while (i < f.length) {
+                let el = '';
+                if (i + 1 < f.length && f[i + 1] >= 'a' && f[i + 1] <= 'z') {
+                    el = f[i] + f[i + 1];
+                    i += 2;
+                } else {
+                    el = f[i];
+                    i++;
+                }
+                let num = '';
+                while (i < f.length && f[i] >= '0' && f[i] <= '9') {
+                    num += f[i];
+                    i++;
+                }
+                const count = parseInt(num) || 1;
+                if (!atomicMasses[el]) return null;
+                mass += atomicMasses[el] * count;
+            }
+            return mass;
+        }
+
+        // ---------- CATEGORIES ----------
+        const CATEGORIES = [{
+            name: "🧪 Chemistry",
+            icon: "fa-flask",
+            calculators: [{
+                id: "molarmass",
+                label: "Molar Mass",
+                icon: "fa-weight-scale",
+                fields: [{ label: "Formula (e.g. H2O)", key: "formula", type: "text", placeholder: "H2O" }],
+                compute: (v) => { const m = parseMolarMass(v.formula || ''); return m ? `Molar mass: ${m.toFixed(3)} g/mol` : "Invalid formula"; }
+            }, {
+                id: "mole_mass",
+                label: "Mole ↔ mass",
+                icon: "fa-arrows-left-right",
+                fields: [{ label: "Moles", key: "mol", type: "number", placeholder: "2" }, { label: "Molar mass (g/mol)", key: "mm", type: "number", placeholder: "18" }],
+                compute: (v) => { const mol = parseFloat(v.mol || 0),
+                        mm = parseFloat(v.mm || 0); return `Mass = ${(mol * mm).toFixed(3)} g`; }
+            }, {
+                id: "mole_particles",
+                label: "Mole ↔ particles",
+                icon: "fa-atom",
+                fields: [{ label: "Moles", key: "mol", type: "number", placeholder: "1" }],
+                compute: (v) => { const mol = parseFloat(v.mol || 0); return `Particles = ${(mol * 6.022e23).toExponential(4)}`; }
+            }, {
+                id: "limiting",
+                label: "Limiting reactant",
+                icon: "fa-flask",
+                fields: [{ label: "Mole A", key: "a", type: "number", placeholder: "2" }, { label: "Mole B", key: "b", type: "number", placeholder: "3" }, { label: "Stoich A", key: "sa", type: "number", placeholder: "1" }, { label: "Stoich B", key: "sb", type: "number", placeholder: "1" }],
+                compute: (v) => { const a = parseFloat(v.a || 0),
+                        b = parseFloat(v.b || 0),
+                        sa = parseFloat(v.sa || 1),
+                        sb = parseFloat(v.sb || 1); if (sa === 0 || sb === 0) return "Stoich >0"; const ratioA = a / sa,
+                        ratioB = b / sb; return ratioA < ratioB ? `A is limiting (ratio ${ratioA.toFixed(3)})` : (ratioB < ratioA ? `B is limiting` : "Both are equal"); }
+            }, {
+                id: "yield",
+                label: "Percent yield",
+                icon: "fa-percent",
+                fields: [{ label: "Actual yield (g)", key: "actual", type: "number", placeholder: "15" }, { label: "Theoretical yield (g)", key: "theo", type: "number", placeholder: "20" }],
+                compute: (v) => { const a = parseFloat(v.actual || 0),
+                        t = parseFloat(v.theo || 0); if (t === 0) return "Theoretical >0"; return `Yield = ${(a / t * 100).toFixed(2)}%`; }
+            }, {
+                id: "empirical",
+                label: "Empirical formula",
+                icon: "fa-chart-simple",
+                fields: [{ label: "Mass % C", key: "c", type: "number", placeholder: "40" }, { label: "Mass % H", key: "h", type: "number", placeholder: "6.7" }, { label: "Mass % O", key: "o", type: "number", placeholder: "53.3" }],
+                compute: (v) => { const c = parseFloat(v.c || 0),
+                        h = parseFloat(v.h || 0),
+                        o = parseFloat(v.o || 0); const molC = c / 12.011,
+                        molH = h / 1.008,
+                        molO = o / 15.999; const min = Math.min(molC, molH, molO); if (min === 0) return "Mass % >0"; const rC = molC / min,
+                        rH = molH / min,
+                        rO = molO / min; return `Empirical: C${Math.round(rC)}H${Math.round(rH)}O${Math.round(rO)}`; }
+            }, {
+                id: "molecular",
+                label: "Molecular formula",
+                icon: "fa-cube",
+                fields: [{ label: "Empirical mass (g/mol)", key: "em", type: "number", placeholder: "30" }, { label: "Molar mass (g/mol)", key: "mm", type: "number", placeholder: "90" }],
+                compute: (v) => { const em = parseFloat(v.em || 0),
+                        mm = parseFloat(v.mm || 0); if (em === 0) return "Empirical mass >0"; const n = mm / em; return `n = ${n.toFixed(3)} (multiply by ${Math.round(n)})`; }
+            }, {
+                id: "dilution",
+                label: "Dilution (C1V1=C2V2)",
+                icon: "fa-water",
+                fields: [{ label: "C1 (M)", key: "c1", type: "number", placeholder: "1.0" }, { label: "V1 (L)", key: "v1", type: "number", placeholder: "0.5" }, { label: "C2 (M)", key: "c2", type: "number", placeholder: "0.2" }],
+                compute: (v) => { const c1 = parseFloat(v.c1 || 0),
+                        v1 = parseFloat(v.v1 || 0),
+                        c2 = parseFloat(v.c2 || 0); if (c2 === 0) return "C2 cannot be 0"; return `V₂ = ${(c1 * v1 / c2).toFixed(4)} L`; }
+            }, {
+                id: "conc",
+                label: "Concentration (mg/L, g/L, mol/L)",
+                icon: "fa-vial",
+                fields: [{ label: "Mass (mg)", key: "mass", type: "number", placeholder: "500" }, { label: "Volume (L)", key: "vol", type: "number", placeholder: "2" }],
+                compute: (v) => { const m = parseFloat(v.mass || 0),
+                        vol = parseFloat(v.vol || 0); if (vol === 0) return "Volume >0"; return `${(m / vol).toFixed(2)} mg/L, ${(m / 1000 / vol).toFixed(4)} g/L, ${(m / 1000 / vol / 58.44).toFixed(4)} mol/L (NaCl)`; }
+            }, {
+                id: "ph",
+                label: "pH (strong acid/base)",
+                icon: "fa-vial",
+                fields: [{ label: "[H+] or [OH-] (M)", key: "h", type: "number", placeholder: "1e-3" }, { label: "acid/base (a/b)", key: "type", type: "text", placeholder: "a" }],
+                compute: (v) => { const h = parseFloat(v.h || 0); if (h <= 0) return "Enter positive concentration"; const type = (v.type || 'a').toLowerCase(); if (type === 'b') return `pOH = ${(-Math.log10(h)).toFixed(3)}, pH = ${(14 + Math.log10(h)).toFixed(3)}`; return `pH = ${(-Math.log10(h)).toFixed(3)}`; }
+            }, {
+                id: "buffer",
+                label: "Buffer pH (H-H)",
+                icon: "fa-flask",
+                fields: [{ label: "pKa", key: "pka", type: "number", placeholder: "4.76" }, { label: "[A-] (M)", key: "a", type: "number", placeholder: "0.1" }, { label: "[HA] (M)", key: "ha", type: "number", placeholder: "0.1" }],
+                compute: (v) => { const pka = parseFloat(v.pka || 0),
+                        a = parseFloat(v.a || 0),
+                        ha = parseFloat(v.ha || 0); if (ha === 0) return "[HA] >0"; return `pH = ${(pka + Math.log10(a / ha)).toFixed(3)}`; }
+            }, {
+                id: "gas",
+                label: "Gas stoichiometry (PV=nRT)",
+                icon: "fa-wind",
+                fields: [{ label: "P (atm)", key: "p", type: "number", placeholder: "1" }, { label: "V (L)", key: "v", type: "number", placeholder: "22.4" }, { label: "n (mol)", key: "n", type: "number", placeholder: "1" }, { label: "T (K)", key: "t", type: "number", placeholder: "273" }],
+                compute: (v) => { const p = parseFloat(v.p || 0),
+                        v = parseFloat(v.v || 0),
+                        n = parseFloat(v.n || 0),
+                        t = parseFloat(v.t || 0); const R = 0.0821; if (n === 0 || t === 0) return "n and T >0"; if (p === 0) return `P = ${(n * R * t / v).toFixed(3)} atm`; if (v === 0) return `V = ${(n * R * t / p).toFixed(3)} L`; if (n === 0) return `n = ${(p * v / (R * t)).toFixed(4)} mol`; if (t === 0) return `T = ${(p * v / (n * R)).toFixed(2)} K`; return `PV = ${(p * v).toFixed(3)}, nRT = ${(n * R * t).toFixed(3)}`; }
+            }, {
+                id: "mass_percent",
+                label: "Mass % composition",
+                icon: "fa-percent",
+                fields: [{ label: "Element mass (g)", key: "em", type: "number", placeholder: "12" }, { label: "Total mass (g)", key: "total", type: "number", placeholder: "44" }],
+                compute: (v) => { const em = parseFloat(v.em || 0),
+                        total = parseFloat(v.total || 0); if (total === 0) return "Total >0"; return `Mass % = ${(em / total * 100).toFixed(2)}%`; }
+            }]
+        }, {
+            name: "📊 Finance & Trading",
+            icon: "fa-chart-line",
+            calculators: [{
+                id: "avg",
+                label: "Trade Average",
+                icon: "fa-calculator",
+                fields: [{ label: "Buy price", key: "p1", type: "number", placeholder: "100" }, { label: "Buy qty", key: "q1", type: "number", placeholder: "10" }, { label: "Sell price", key: "p2", type: "number", placeholder: "120" }, { label: "Sell qty", key: "q2", type: "number", placeholder: "5" }],
+                compute: (v) => { const avg = (parseFloat(v.p1 || 0) * parseFloat(v.q1 || 0) + parseFloat(v.p2 || 0) * parseFloat(v.q2 || 0)) / (parseFloat(v.q1 || 0) + parseFloat(v.q2 || 0) || 1); return `Average: $${avg.toFixed(2)}`; }
+            }, {
+                id: "roi",
+                label: "ROI",
+                icon: "fa-percent",
+                fields: [{ label: "Investment", key: "inv", type: "number", placeholder: "1000" }, { label: "Return", key: "ret", type: "number", placeholder: "1500" }],
+                compute: (v) => { const roi = ((parseFloat(v.ret || 0) - parseFloat(v.inv || 0)) / parseFloat(v.inv || 1)) * 100; return `ROI: ${roi.toFixed(2)}%`; }
+            }, {
+                id: "profit",
+                label: "Profit Margin",
+                icon: "fa-dollar-sign",
+                fields: [{ label: "Revenue", key: "rev", type: "number", placeholder: "5000" }, { label: "Cost", key: "cost", type: "number", placeholder: "3000" }],
+                compute: (v) => { const p = (parseFloat(v.rev || 0) - parseFloat(v.cost || 0)) / parseFloat(v.rev || 1) * 100; return `Margin: ${p.toFixed(2)}%`; }
+            }, {
+                id: "cagr",
+                label: "CAGR",
+                icon: "fa-chart-simple",
+                fields: [{ label: "Start value", key: "sv", type: "number", placeholder: "1000" }, { label: "End value", key: "ev", type: "number", placeholder: "2000" }, { label: "Years", key: "yr", type: "number", placeholder: "5" }],
+                compute: (v) => { const cagr = (Math.pow(parseFloat(v.ev || 0) / parseFloat(v.sv || 1), 1 / parseFloat(v.yr || 1)) - 1) * 100; return `CAGR: ${cagr.toFixed(2)}%`; }
+            }, {
+                id: "sharpe",
+                label: "Sharpe Ratio",
+                icon: "fa-arrow-trend-up",
+                fields: [{ label: "Return %", key: "retp", type: "number", placeholder: "12" }, { label: "Risk-free %", key: "rf", type: "number", placeholder: "2" }, { label: "Std Dev %", key: "sd", type: "number", placeholder: "8" }],
+                compute: (v) => { const s = (parseFloat(v.retp || 0) - parseFloat(v.rf || 0)) / parseFloat(v.sd || 1); return `Sharpe: ${s.toFixed(3)}`; }
+            }]
+        }, {
+            name: "📐 Mathematics",
+            icon: "fa-superscript",
+            calculators: [{
+                id: "quad",
+                label: "Quadratic Root",
+                icon: "fa-square-root-variable",
+                fields: [{ label: "a", key: "a", type: "number", placeholder: "1" }, { label: "b", key: "b", type: "number", placeholder: "-3" }, { label: "c", key: "c", type: "number", placeholder: "2" }],
+                compute: (v) => { const a = parseFloat(v.a || 0),
+                        b = parseFloat(v.b || 0),
+                        c = parseFloat(v.c || 0); const d = b * b - 4 * a * c; if (d < 0) return "No real roots"; const r1 = (-b + Math.sqrt(d)) / (2 * a),
+                        r2 = (-b - Math.sqrt(d)) / (2 * a); return `x₁ = ${r1.toFixed(3)}, x₂ = ${r2.toFixed(3)}`; }
+            }, {
+                id: "stats",
+                label: "Mean / Avg",
+                icon: "fa-chart-bar",
+                fields: [{ label: "Numbers (comma)", key: "nums", type: "text", placeholder: "1,2,3,4,5" }],
+                compute: (v) => { const arr = (v.nums || '').split(',').map(Number).filter(n => !isNaN(n)); if (!arr.length) return "Enter numbers"; const sum = arr.reduce((a, b) => a + b, 0); return `Mean: ${(sum / arr.length).toFixed(3)}`; }
+            }, {
+                id: "fib",
+                label: "Fibonacci N",
+                icon: "fa-spinner",
+                fields: [{ label: "n", key: "n", type: "number", placeholder: "10" }],
+                compute: (v) => { const n = parseInt(v.n || 0); if (n < 0) return "n>=0"; let a = 0,
+                        b = 1; for (let i = 2; i <= n; i++) { [a, b] = [b, a + b]; } return `F(${n}) = ${n === 0 ? 0 : n === 1 ? 1 : b}`; }
+            }, {
+                id: "perm",
+                label: "Permutation",
+                icon: "fa-arrow-right-arrow-left",
+                fields: [{ label: "n", key: "n", type: "number", placeholder: "5" }, { label: "r", key: "r", type: "number", placeholder: "3" }],
+                compute: (v) => { const n = parseInt(v.n || 0),
+                        r = parseInt(v.r || 0); if (r > n) return "r ≤ n"; let p = 1; for (let i = n - r + 1; i <= n; i++) p *= i; return `P(${n},${r}) = ${p}`; }
+            }, {
+                id: "comb",
+                label: "Combination",
+                icon: "fa-circle",
+                fields: [{ label: "n", key: "n", type: "number", placeholder: "5" }, { label: "r", key: "r", type: "number", placeholder: "2" }],
+                compute: (v) => { const n = parseInt(v.n || 0),
+                        r = parseInt(v.r || 0); if (r > n) return "r ≤ n"; let p = 1; for (let i = n - r + 1; i <= n; i++) p *= i; let f = 1; for (let i = 2; i <= r; i++) f *= i; return `C(${n},${r}) = ${p / f}`; }
+            }]
+        }, {
+            name: "🏥 Medical & Health",
+            icon: "fa-heartbeat",
+            calculators: [{
+                id: "bmi",
+                label: "BMI",
+                icon: "fa-weight",
+                fields: [{ label: "Weight (kg)", key: "w", type: "number", placeholder: "70" }, { label: "Height (cm)", key: "h", type: "number", placeholder: "175" }],
+                compute: (v) => { const w = parseFloat(v.w || 0),
+                        h = parseFloat(v.h || 0) / 100; if (h <= 0) return "Height > 0"; const bmi = w / (h * h); let cat = "Normal"; if (bmi < 18.5) cat = "Underweight";
+                    else if (bmi < 25) cat = "Normal";
+                    else if (bmi < 30) cat = "Overweight";
+                    else cat = "Obese"; return `BMI: ${bmi.toFixed(2)} (${cat})`; }
+            }, {
+                id: "calorie",
+                label: "Daily Calorie",
+                icon: "fa-fire",
+                fields: [{ label: "Weight (kg)", key: "w", type: "number", placeholder: "70" }, { label: "Height (cm)", key: "h", type: "number", placeholder: "175" }, { label: "Age", key: "age", type: "number", placeholder: "30" }, { label: "Gender (m/f)", key: "gender", type: "text", placeholder: "m" }],
+                compute: (v) => { const w = parseFloat(v.w || 0),
+                        h = parseFloat(v.h || 0),
+                        age = parseFloat(v.age || 0); const gender = (v.gender || '').toLowerCase(); if (gender === 'f') return `BMR: ${(655 + 9.6 * w + 1.8 * h - 4.7 * age).toFixed(0)} kcal`; return `BMR: ${(66 + 13.7 * w + 5 * h - 6.8 * age).toFixed(0)} kcal`; }
+            }, {
+                id: "hr",
+                label: "Max Heart Rate",
+                icon: "fa-heart-pulse",
+                fields: [{ label: "Age", key: "age", type: "number", placeholder: "40" }],
+                compute: (v) => { const age = parseFloat(v.age || 0); return `Max HR: ${220 - age} bpm`; }
+            }, {
+                id: "bp",
+                label: "Mean Arterial Pressure",
+                icon: "fa-stethoscope",
+                fields: [{ label: "Systolic", key: "sys", type: "number", placeholder: "120" }, { label: "Diastolic", key: "dia", type: "number", placeholder: "80" }],
+                compute: (v) => { const s = parseFloat(v.sys || 0),
+                        d = parseFloat(v.dia || 0); return `MAP: ${((2 * d + s) / 3).toFixed(1)} mmHg`; }
+            }]
+        }, {
+            name: "⚙️ Engineering & Physics",
+            icon: "fa-microchip",
+            calculators: [{
+                id: "ohms",
+                label: "Ohm's Law",
+                icon: "fa-bolt",
+                fields: [{ label: "Voltage (V)", key: "v", type: "number", placeholder: "12" }, { label: "Current (A)", key: "i", type: "number", placeholder: "2" }],
+                compute: (v) => { const V = parseFloat(v.v || 0),
+                        I = parseFloat(v.i || 0); if (I === 0) return "Current cannot be 0"; return `Resistance: ${(V / I).toFixed(3)} Ω`; }
+            }, {
+                id: "power",
+                label: "Power (P=VI)",
+                icon: "fa-lightbulb",
+                fields: [{ label: "Voltage (V)", key: "v", type: "number", placeholder: "230" }, { label: "Current (A)", key: "i", type: "number", placeholder: "0.5" }],
+                compute: (v) => { const V = parseFloat(v.v || 0),
+                        I = parseFloat(v.i || 0); return `Power: ${(V * I).toFixed(2)} W`; }
+            }, {
+                id: "force",
+                label: "Force (F=ma)",
+                icon: "fa-arrow-right",
+                fields: [{ label: "Mass (kg)", key: "m", type: "number", placeholder: "10" }, { label: "Accel (m/s²)", key: "a", type: "number", placeholder: "9.8" }],
+                compute: (v) => { const m = parseFloat(v.m || 0),
+                        a = parseFloat(v.a || 0); return `Force: ${(m * a).toFixed(3)} N`; }
+            }, {
+                id: "velocity",
+                label: "Velocity (v=d/t)",
+                icon: "fa-gauge-high",
+                fields: [{ label: "Distance (m)", key: "d", type: "number", placeholder: "100" }, { label: "Time (s)", key: "t", type: "number", placeholder: "10" }],
+                compute: (v) => { const d = parseFloat(v.d || 0),
+                        t = parseFloat(v.t || 0); if (t === 0) return "Time > 0"; return `Velocity: ${(d / t).toFixed(3)} m/s`; }
+            }, {
+                id: "efficiency",
+                label: "Efficiency %",
+                icon: "fa-circle-check",
+                fields: [{ label: "Output (W)", key: "out", type: "number", placeholder: "80" }, { label: "Input (W)", key: "inp", type: "number", placeholder: "100" }],
+                compute: (v) => { const o = parseFloat(v.out || 0),
+                        i = parseFloat(v.inp || 0); if (i === 0) return "Input > 0"; return `Efficiency: ${(o / i * 100).toFixed(2)}%`; }
+            }]
+        }, {
+            name: "🔧 General Purpose",
+            icon: "fa-toolbox",
+            calculators: [{
+                id: "tip",
+                label: "Tip Calculator",
+                icon: "fa-coins",
+                fields: [{ label: "Bill ($)", key: "bill", type: "number", placeholder: "50" }, { label: "Tip %", key: "tip", type: "number", placeholder: "15" }],
+                compute: (v) => { const b = parseFloat(v.bill || 0),
+                        t = parseFloat(v.tip || 0); return `Tip: $${(b * t / 100).toFixed(2)}, Total: $${(b + b * t / 100).toFixed(2)}`; }
+            }, {
+                id: "discount",
+                label: "Discount Price",
+                icon: "fa-tags",
+                fields: [{ label: "Original ($)", key: "orig", type: "number", placeholder: "100" }, { label: "Discount %", key: "disc", type: "number", placeholder: "20" }],
+                compute: (v) => { const o = parseFloat(v.orig || 0),
+                        d = parseFloat(v.disc || 0); return `Sale: $${(o - o * d / 100).toFixed(2)}`; }
+            }, {
+                id: "percent",
+                label: "Percentage (of)",
+                icon: "fa-percent",
+                fields: [{ label: "Number", key: "num", type: "number", placeholder: "200" }, { label: "Percent %", key: "pct", type: "number", placeholder: "25" }],
+                compute: (v) => { const n = parseFloat(v.num || 0),
+                        p = parseFloat(v.pct || 0); return `${p}% of ${n} = ${(n * p / 100).toFixed(3)}`; }
+            }, {
+                id: "age",
+                label: "Age from DOB",
+                icon: "fa-cake-candles",
+                fields: [{ label: "YYYY-MM-DD", key: "dob", type: "text", placeholder: "1990-01-01" }],
+                compute: (v) => { const d = new Date(v.dob); if (isNaN(d)) return "Invalid date"; const age = Math.floor((Date.now() - d.getTime()) / 31557600000); return `Age: ${age} years`; }
+            }, {
+                id: "pythag",
+                label: "Pythagorean",
+                icon: "fa-sort",
+                fields: [{ label: "a", key: "a", type: "number", placeholder: "3" }, { label: "b", key: "b", type: "number", placeholder: "4" }],
+                compute: (v) => { const a = parseFloat(v.a || 0),
+                        b = parseFloat(v.b || 0); return `c = ${Math.sqrt(a * a + b * b).toFixed(4)}`; }
+            }, {
+                id: "area",
+                label: "Area (circle)",
+                icon: "fa-circle",
+                fields: [{ label: "Radius", key: "r", type: "number", placeholder: "5" }],
+                compute: (v) => { const r = parseFloat(v.r || 0); return `Area = ${(Math.PI * r * r).toFixed(3)}`; }
+            }, {
+                id: "vol",
+                label: "Volume (cube)",
+                icon: "fa-cube",
+                fields: [{ label: "Side", key: "s", type: "number", placeholder: "4" }],
+                compute: (v) => { const s = parseFloat(v.s || 0); return `Volume = ${s * s * s}`; }
+            }, {
+                id: "speed",
+                label: "Speed (km/h)",
+                icon: "fa-tachometer-alt",
+                fields: [{ label: "Distance (km)", key: "d", type: "number", placeholder: "100" }, { label: "Time (h)", key: "t", type: "number", placeholder: "2" }],
+                compute: (v) => { const d = parseFloat(v.d || 0),
+                        t = parseFloat(v.t || 0); if (t === 0) return "Time >0"; return `Speed = ${(d / t).toFixed(2)} km/h`; }
+            }, {
+                id: "density",
+                label: "Density (ρ=m/V)",
+                icon: "fa-weight-hanging",
+                fields: [{ label: "Mass (g)", key: "m", type: "number", placeholder: "50" }, { label: "Volume (cm³)", key: "v", type: "number", placeholder: "10" }],
+                compute: (v) => { const m = parseFloat(v.m || 0),
+                        vol = parseFloat(v.v || 0); if (vol === 0) return "Volume >0"; return `Density = ${(m / vol).toFixed(3)} g/cm³`; }
+            }]
+        }];
+
+        // Flatten for lookup
+        const calcMap = {};
+        CATEGORIES.forEach(cat => cat.calculators.forEach(calc => calcMap[calc.id] = calc));
+
+        // ---------- RENDER ----------
+        const grid = document.getElementById('categoryGrid');
+
+        function renderCategories() {
+            grid.innerHTML = '';
+            CATEGORIES.forEach(cat => {
+                const div = document.createElement('div');
+                div.className = 'category';
+                div.innerHTML = `
+                    <div class="category-header"><i class="fas ${cat.icon}"></i> ${cat.name}</div>
+                    <div class="calc-list"></div>
+                `;
+                grid.appendChild(div);
+                const list = div.querySelector('.calc-list');
+                cat.calculators.forEach(calc => {
+                    const btn = document.createElement('button');
+                    btn.className = 'calc-btn';
+                    btn.innerHTML = `<i class="fas ${calc.icon}"></i> ${calc.label}`;
+                    btn.dataset.id = calc.id;
+                    btn.addEventListener('click', () => openCalculator(calc.id));
+                    list.appendChild(btn);
+                });
+            });
+        }
+
+        // ---------- MODAL ----------
+        const overlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSub = document.getElementById('modalSub');
+        const modalBody = document.getElementById('modalBody');
+        const closeBtn = document.getElementById('modalClose');
+
+        function openCalculator(id) {
+            const calc = calcMap[id];
+            if (!calc) return;
+            modalTitle.innerHTML = `<i class="fas ${calc.icon}"></i> ${calc.label}`;
+            modalSub.textContent = 'Enter values and compute';
+
+            let html = `<div class="calc-input-group">`;
+            calc.fields.forEach(f => {
+                html += `
+                    <div class="calc-input-row">
+                        <label>${f.label}</label>
+                        <input type="${f.type || 'text'}" id="field_${f.key}" placeholder="${f.placeholder || ''}" value="" />
+                    </div>
+                `;
+            });
+            html += `</div>
+                <div class="calc-actions">
+                    <button id="computeBtn"><i class="fas fa-play"></i> Compute</button>
+                    <button class="secondary" id="clearBtn"><i class="fas fa-undo"></i> Clear</button>
+                </div>
+                <div class="result-box" id="resultBox">Result will appear here <span class="copy-badge" id="copyResult"><i class="fas fa-copy"></i> copy</span></div>
+            `;
+            modalBody.innerHTML = html;
+            overlay.classList.add('open');
+
+            document.getElementById('computeBtn').addEventListener('click', function() {
+                const vals = {};
+                calc.fields.forEach(f => {
+                    const el = document.getElementById(`field_${f.key}`);
+                    vals[f.key] = el ? el.value : '';
+                });
+                const result = calc.compute(vals);
+                const resBox = document.getElementById('resultBox');
+                resBox.innerHTML = result + ` <span class="copy-badge" id="copyResult"><i class="fas fa-copy"></i> copy</span>`;
+                document.getElementById('copyResult')?.addEventListener('click', function() {
+                    const text = this.parentElement.textContent.replace('copy', '').trim();
+                    navigator.clipboard?.writeText(text).then(() => {
+                        this.innerHTML = '<i class="fas fa-check"></i> copied';
+                        setTimeout(() => this.innerHTML = '<i class="fas fa-copy"></i> copy', 1500);
+                    }).catch(() => {});
+                });
+            });
+
+            document.getElementById('clearBtn').addEventListener('click', function() {
+                calc.fields.forEach(f => {
+                    const el = document.getElementById(`field_${f.key}`);
+                    if (el) el.value = '';
+                });
+                document.getElementById('resultBox').innerHTML = 'Result will appear here <span class="copy-badge" id="copyResult"><i class="fas fa-copy"></i> copy</span>';
+            });
+
+            setTimeout(() => {
+                document.getElementById('copyResult')?.addEventListener('click', function() {
+                    const text = this.parentElement.textContent.replace('copy', '').trim();
+                    navigator.clipboard?.writeText(text).then(() => {
+                        this.innerHTML = '<i class="fas fa-check"></i> copied';
+                        setTimeout(() => this.innerHTML = '<i class="fas fa-copy"></i> copy', 1500);
+                    }).catch(() => {});
+                });
+            }, 50);
+        }
+
+        closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') overlay.classList.remove('open'); });
+
+        // ---------- THEME ----------
+        const themeBtns = document.querySelectorAll('.theme-btn');
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            themeBtns.forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
+            localStorage.setItem('calcHubTheme', theme);
+        }
+        themeBtns.forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.theme)));
+        const saved = localStorage.getItem('calcHubTheme') || 'light';
+        setTheme(saved);
+
+        renderCategories();
+
+        let total = 0;
+        CATEGORIES.forEach(c => total += c.calculators.length);
+        console.log(`🧮 Total calculators: ${total}`);
+    })();
+</script>
+</body>
+</html>

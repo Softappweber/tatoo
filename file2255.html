@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>loverssread</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#06070c;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(0,0,0,.35);
+      --text:#eaf4ff;
+      --muted: rgba(234,244,255,.72);
+      --muted2: rgba(234,244,255,.52);
+      --border: rgba(255,255,255,.14);
+      --border2: rgba(255,255,255,.08);
+
+      --sky:#19b6ff;
+      --red:#ff2f54;
+      --white:#ffffff;
+
+      --shadow: 0 24px 80px rgba(0,0,0,.65);
+      --shadow2: 0 16px 40px rgba(0,0,0,.55);
+
+      --radius: 22px;
+      --radius2: 16px;
+
+      --grid-gap: 16px;
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(25,182,255,.25), transparent 60%),
+        radial-gradient(1000px 600px at 85% 15%, rgba(255,47,84,.22), transparent 58%),
+        radial-gradient(900px 600px at 50% 90%, rgba(255,255,255,.06), transparent 60%),
+        linear-gradient(135deg, #000 0%, #05060c 35%, #040510 65%, #000 100%);
+      overflow-x:hidden;
+    }
+
+    /* animated backdrop */
+    .bg-orbs{
+      position: fixed;
+      inset: -40vmax;
+      pointer-events:none;
+      z-index:0;
+      filter: blur(0px);
+    }
+    .orb{
+      position:absolute;
+      width: 24vmax;
+      height: 24vmax;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, rgba(25,182,255,.55), rgba(25,182,255,.05) 60%, transparent 70%);
+      opacity:.55;
+      animation: floaty 14s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+    .orb:nth-child(1){ left:8%; top:10%; animation-duration: 16s; }
+    .orb:nth-child(2){
+      left:68%;
+      top:6%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,47,84,.55), rgba(255,47,84,.06) 60%, transparent 70%);
+      animation-duration: 18s;
+    }
+    .orb:nth-child(3){
+      left:42%;
+      top:62%;
+      width: 30vmax;
+      height: 30vmax;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.22), rgba(25,182,255,.06) 55%, transparent 70%);
+      animation-duration: 20s;
+    }
+    @keyframes floaty{
+      0%,100%{ transform: translate3d(0,0,0) scale(1); }
+      50%{ transform: translate3d(0,-4vmax,0) scale(1.04); }
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 26px 18px 56px;
+    }
+
+    /* Hero */
+    .hero{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 10px;
+    }
+
+    .glass{
+      border: 1px solid var(--border2);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      box-shadow: var(--shadow2);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .glass::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        linear-gradient(120deg,
+          rgba(25,182,255,.35) 0%,
+          rgba(25,182,255,.08) 25%,
+          rgba(255,47,84,.18) 55%,
+          rgba(255,255,255,.06) 78%,
+          transparent 100%);
+      opacity:.8;
+      pointer-events:none;
+      mask: linear-gradient(black, transparent 70%);
+    }
+
+    .hero-left{
+      padding: 24px 22px;
+      min-height: 320px;
+    }
+
+    .brand-row{
+      display:flex;
+      align-items:center;
+      gap: 14px;
+    }
+
+    .logo{
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.18);
+      background:
+        linear-gradient(135deg,
+          rgba(0,0,0,.8),
+          rgba(25,182,255,.95) 45%,
+          rgba(255,47,84,.92) 100%);
+      box-shadow:
+        0 14px 30px rgba(25,182,255,.18),
+        0 14px 30px rgba(255,47,84,.10);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo::after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: conic-gradient(from 180deg, rgba(255,255,255,.0), rgba(255,255,255,.45), rgba(255,255,255,0));
+      animation: spin 4.8s linear infinite;
+      opacity:.35;
+    }
+    @keyframes spin{ to { transform: rotate(360deg); } }
+
+    .brand-title{
+      display:flex;
+      flex-direction:column;
+      line-height:1.05;
+    }
+    .brand-title h1{
+      margin:0;
+      font-size: 30px;
+      letter-spacing:.4px;
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--sky) 0%, #bfeaff 30%, #fff 55%, #ffd6de 70%, var(--red) 100%);
+      -webkit-background-clip: text;
+      background-clip:text;
+      color: transparent;
+    }
+    .brand-title p{
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .hero-copy{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .headline{
+      font-size: 44px;
+      font-weight: 900;
+      line-height: 1.05;
+      margin:0;
+      letter-spacing: -0.8px;
+    }
+    .headline .grad{
+      background: linear-gradient(90deg, var(--sky), #76d6ff 30%, #ffffff 52%, #ffc4cc 74%, var(--red));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
+
+    .subtext{
+      margin:0;
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 14px;
+      max-width: 62ch;
+      line-height: 1.7;
+    }
+
+    /* Cards row */
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .mini{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.25);
+      padding: 14px 14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .mini::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: linear-gradient(135deg, rgba(25,182,255,.22), rgba(255,47,84,.18), transparent 70%);
+      opacity:.6;
+      pointer-events:none;
+    }
+    .mini h3{
+      margin:0;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing:.2px;
+      color: #fff;
+      position:relative;
+    }
+    .mini p{
+      margin: 8px 0 0;
+      color: var(--muted2);
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 1.5;
+      position:relative;
+    }
+
+    /* Right panel */
+    .hero-right{
+      padding: 18px;
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      min-height: 320px;
+    }
+
+    .panel-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 6px 4px;
+    }
+    .panel-title h2{
+      margin:0;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing:.2px;
+      color:#fff;
+    }
+    .badge{
+      font-size: 12px;
+      font-weight: 900;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        linear-gradient(135deg, rgba(25,182,255,.22), rgba(255,47,84,.15));
+      color: #fff;
+      white-space:nowrap;
+    }
+
+    .search{
+      display:flex;
+      gap: 10px;
+      align-items:stretch;
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.28);
+      position:relative;
+      overflow:hidden;
+    }
+    .search::after{
+      content:"";
+      position:absolute;
+      inset:-60%;
+      background: conic-gradient(from 90deg, rgba(25,182,255,.0), rgba(25,182,255,.28), rgba(255,47,84,.24), rgba(255,255,255,.08), rgba(25,182,255,0));
+      opacity:.35;
+      animation: spin 7s linear infinite;
+      pointer-events:none;
+    }
+    .search input{
+      width:100%;
+      border:0;
+      outline:0;
+      background: transparent;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 13px;
+      position:relative;
+      z-index:1;
+    }
+    .search input::placeholder{ color: rgba(234,244,255,.42); font-weight:700; }
+
+    .btn{
+      border: 0;
+      cursor:pointer;
+      padding: 12px 14px;
+      border-radius: 16px;
+      color: #fff;
+      font-weight: 900;
+      letter-spacing:.2px;
+      background: linear-gradient(135deg, rgba(25,182,255,.98), rgba(255,47,84,.88));
+      box-shadow: 0 18px 35px rgba(25,182,255,.16), 0 18px 35px rgba(255,47,84,.12);
+      border: 1px solid rgba(255,255,255,.16);
+      position:relative;
+      z-index:1;
+      transition: transform .12s ease, filter .12s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.06); }
+    .btn:active{ transform: translateY(0px); }
+
+    .tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .tab{
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: rgba(234,244,255,.75);
+      font-weight: 900;
+      font-size: 12px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      transition: background .12s ease, border-color .12s ease, transform .12s ease, color .12s ease;
+      user-select:none;
+    }
+    .tab:hover{ transform: translateY(-1px); filter: brightness(1.04); }
+    .tab.active{
+      color:#fff;
+      border-color: rgba(255,255,255,.22);
+      background: linear-gradient(135deg, rgba(25,182,255,.22), rgba(255,47,84,.18));
+    }
+
+    /* Sections */
+    .section{
+      margin-top: 18px;
+    }
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 10px;
+      margin: 10px 4px 12px;
+    }
+    .section-head h2{
+      margin:0;
+      font-size: 16px;
+      font-weight: 1000;
+      letter-spacing:.2px;
+    }
+    .section-head p{
+      margin:0;
+      color: var(--muted2);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    /* Grid */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--grid-gap);
+    }
+
+    .tile{
+      grid-column: span 6;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.28));
+      box-shadow: 0 18px 55px rgba(0,0,0,.35);
+      overflow:hidden;
+      position:relative;
+      min-height: 180px;
+      transform: translateZ(0);
+    }
+
+    .tile::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(600px 180px at 10% 0%, rgba(25,182,255,.18), transparent 65%),
+        radial-gradient(520px 220px at 90% 20%, rgba(255,47,84,.16), transparent 70%),
+        linear-gradient(135deg, rgba(255,255,255,.06), transparent 55%);
+      opacity:.95;
+      pointer-events:none;
+    }
+
+    .tile-inner{
+      position:relative;
+      padding: 16px 16px 14px;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+
+    .tile-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(234,244,255,.85);
+      font-weight: 900;
+      font-size: 12px;
+      white-space:nowrap;
+    }
+
+    .tag .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--sky), var(--red));
+      box-shadow: 0 0 0 3px rgba(25,182,255,.12);
+    }
+
+    .time{
+      color: rgba(234,244,255,.62);
+      font-weight: 800;
+      font-size: 12px;
+      white-space:nowrap;
+      margin-top: 2px;
+    }
+
+    .tile h3{
+      margin:0;
+      font-size: 16px;
+      font-weight: 1000;
+      line-height: 1.25;
+      letter-spacing: -0.2px;
+    }
+    .tile p{
+      margin:0;
+      color: rgba(234,244,255,.72);
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 1.6;
+      display:-webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+    }
+
+    .tile-actions{
+      margin-top:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+
+    .openBtn{
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      padding: 11px 12px;
+      border-radius: 16px;
+      font-weight: 1000;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.16);
+      background:
+        linear-gradient(135deg, rgba(25,182,255,.35), rgba(255,47,84,.22));
+      box-shadow: 0 18px 40px rgba(25,182,255,.10);
+      transition: transform .12s ease, filter .12s ease;
+      white-space:nowrap;
+    }
+    .openBtn:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+
+    .ghost{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      color: rgba(234,244,255,.72);
+      font-weight: 900;
+      font-size: 12px;
+      padding: 9px 10px;
+      border-radius: 14px;
+      white-space:nowrap;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero{ grid-template-columns: 1fr; }
+      .cards{ grid-template-columns: 1fr; }
+      .tile{ grid-column: span 12; }
+      .headline{ font-size: 38px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .orb, .logo::after, .search::after { animation: none !important; }
+      .btn:hover, .tab:hover, .openBtn:hover { transform:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+
+  <div class="wrap">
+    <section class="hero">
+      <div class="glass hero-left">
+        <div class="brand-row">
+          <div class="logo" aria-hidden="true"></div>
+          <div class="brand-title">
+            <h1>loverssread</h1>
+            <p>Finance • Tech • Books • Self‑help • Marathi • English • Blogs</p>
+          </div>
+        </div>
+
+        <div class="hero-copy">
+          <h2 class="headline"><span class="grad">Glow</span> RSS, heavy CSS, clean cards</h2>
+          <p class="subtext">
+            This is an attractive template with strong gradients (black + sky blue + red + white),
+            glass panels, animated neon accents, and a modern card grid. Add your RSS logic anytime.
+          </p>
+
+          <div class="cards" role="list">
+            <div class="mini" role="listitem">
+              <h3>Neon Glass UI</h3>
+              <p>High-contrast cards with blur, borders, and layered gradients.</p>
+            </div>
+            <div class="mini" role="listitem">
+              <h3>Fast Layout</h3>
+              <p>Responsive grid with clean spacing and readable typography.</p>
+            </div>
+            <div class="mini" role="listitem">
+              <h3>Clickable Cards</h3>
+              <p>Buttons are styled for a premium look and feel.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="glass hero-right">
+        <div class="panel-title">
+          <h2>Category</h2>
+          <div class="badge">loverssread</div>
+        </div>
+
+        <div class="search" title="Paste RSS feed URL later if you want to add RSS logic">
+          <input id="dummy" placeholder="(Optional) Your RSS feed URL…" />
+          <button class="btn" type="button" id="btnDemo">Preview</button>
+        </div>
+
+        <div class="tabs" id="tabs">
+          <div class="tab active" data-cat="finance">📈 Finance</div>
+          <div class="tab" data-cat="tech">⚡ Tech</div>
+          <div class="tab" data-cat="books">📚 Books</div>
+          <div class="tab" data-cat="self">🧠 Self‑help</div>
+          <div class="tab" data-cat="marathi">🌐 Marathi</div>
+          <div class="tab" data-cat="english">🇬🇧 English</div>
+          <div class="tab" data-cat="blogs">📰 Blogs</div>
+        </div>
+
+        <div class="section" style="margin-top:0;">
+          <div class="section-head">
+            <h2>Latest</h2>
+            <p>Demo cards (replace with your RSS items)</p>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; padding:0 2px 2px;">
+            <span class="ghost">Black</span>
+            <span class="ghost">Sky Blue</span>
+            <span class="ghost">Red</span>
+            <span class="ghost">White</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Featured posts</h2>
+        <p>Replace placeholders with real RSS titles + URLs</p>
+      </div>
+
+      <div class="grid" id="grid">
+        <!-- tiles injected by JS -->
+      </div>
+    </section>
+
+    <footer style="margin-top:22px; text-align:center; color:rgba(234,244,255,.58); font-weight:900; font-size:12px;">
+      Built with heavy CSS/HTML • gradient neon theme • loverssread
+    </footer>
+  </div>
+
+  <script>
+    const grid = document.getElementById('grid');
+    const tabs = document.getElementById('tabs');
+
+    const demo = {
+      finance: [
+        { title:"Market Pulse: Stocks, ETFs & Rate Watch", desc:"Daily highlights on markets with clean summaries.", time:"Today • 10 min ago", tag:"Finance" },
+        { title:"Crypto Movers: Volatility & Liquidations", desc:"A quick glance at what moved and why.", time:"Today • 40 min ago", tag:"Crypto" },
+        { title:"Earnings Watch: What to track next", desc:"Key metrics and investor takeaways you can skim fast.", time:"Yesterday • 2 hours ago", tag:"Markets" },
+        { title:"Personal Finance: Smart budgeting systems", desc:"A modern approach to saving without feeling restricted.", time:"Yesterday • 7 hours ago", tag:"Finance" }
+      ],
+      tech: [
+        { title:"AI Engineering: Prompts, pipelines & evals", desc:"A practical, developer-first guide to building reliable AI features.", time:"Today • 12 min ago", tag:"Tech" },
+        { title:"Cloud Cost Tricks That Actually Work", desc:"Cut spend with visibility, caching, and right-sizing.", time:"Today • 1 hour ago", tag:"Cloud" },
+        { title:"Frontend Performance: The 80/20 checklist", desc:"Small changes that make your UI feel instant.", time:"Yesterday • 3 hours ago", tag:"Web" },
+        { title:"Security Basics for Real Apps", desc:"Threat modeling at a beginner-friendly level.", time:"Yesterday • 6 hours ago", tag:"Security" }
+      ],
+      books: [
+        { title:"Reading Systems: How to finish more books", desc:"Design a schedule you can keep and track progress.", time:"Today • 18 min ago", tag:"Books" },
+        { title:"Best Notes: Turning reading into knowledge", desc:"A simple method for summarizing chapters fast.", time:"Today • 2 hours ago", tag:"Learning" },
+        { title:"Book Lists: Curate your next 10 reads", desc:"Discover stacks for work, life, and curiosity.", time:"Yesterday • 4 hours ago", tag:"Reading" },
+        { title:"Story Craft: Lessons from great authors", desc:"Plot, pacing, and voice—explained without fluff.", time:"Yesterday • 9 hours ago", tag:"Writing" }
+      ],
+      self: [
+        { title:"Mindset Reset: Tiny habits, big shifts", desc:"A weekly routine to reduce stress and build momentum.", time:"Today • 8 min ago", tag:"Self‑help" },
+        { title:"Confidence: Speak like you belong", desc:"Techniques to reduce overthinking and act faster.", time:"Today • 3 hours ago", tag:"Mindset" },
+        { title:"Focus Sprint: Deep work without burnout", desc:"A plan for getting real work done in short windows.", time:"Yesterday • 5 hours ago", tag:"Productivity" },
+        { title:"Emotional Clarity: Name it to tame it", desc:"How labeling feelings improves decision-making.", time:"Yesterday • 8 hours ago", tag:"Wellbeing" }
+      ],
+      marathi: [
+        { title:"मराठी प्रेरणा: नव्या सवयींची सुरुवात", desc:"लहान पावले, मोठे परिणाम — रोजचा मार्गदर्शक.", time:"आज • 20 मिनिटांपूर्वी", tag:"मराठी" },
+        { title:"आरोग्य टिप्स: संतुलित दिनचर्या", desc:"ताण कमी करा आणि सवयी टिकवा.", time:"आज • 1 तासापूर्वी", tag:"Health" },
+        { title:"यशाचे सूत्र: शिकत राहा", desc:"अनुभवातून ज्ञान घेण्याची साधी पद्धत.", time:"काल • 3 तासांपूर्वी", tag:"Motivation" },
+        { title:"गोष्टी मनापासून: वाचनाचा आनंद", desc:"काय वाचायचं आणि का—छान आणि सोपं.", time:"काल • 7 तासांपूर्वी", tag:"Books" }
+      ],
+      english: [
+        { title:"World Brief: What’s shaping the week", desc:"Quick, readable updates across tech, society, and markets.", time:"Today • 15 min ago", tag:"English" },
+        { title:"Design Thinking: Make ideas tangible", desc:"From sketch to prototype in a few disciplined steps.", time:"Today • 2 hours ago", tag:"Design" },
+        { title:"Career Growth: Build leverage, not busyness", desc:"A practical approach to skills, visibility, and outcomes.", time:"Yesterday • 4 hours ago", tag:"Career" },
+        { title:"The Habit Loop: Why consistency wins", desc:"Understand the loop and make it easier to repeat.", time:"Yesterday • 9 hours ago", tag:"Habits" }
+      ],
+      blogs: [
+        { title:"Blogging that Converts: Titles & structure", desc:"How to write posts people actually finish reading.", time:"Today • 9 min ago", tag:"Blogs" },
+        { title:"SEO for Humans: Write first, optimize second", desc:"Simple rules for better rankings without keyword stuffing.", time:"Today • 1 hour ago", tag:"SEO" },
+        { title:"Content Flow: Keep readers moving", desc:"Headers, hooks, and transitions that work.", time:"Yesterday • 3 hours ago", tag:"Writing" },
+        { title:"Community Posts: Turn visitors into followers", desc:"A plan to invite comments and keep conversations alive.", time:"Yesterday • 8 hours ago", tag:"Community" }
+      ]
+    };
+
+    function tile({title, desc, time, tag, href="#"}){
+      const el = document.createElement('article');
+      el.className = 'tile';
+      el.innerHTML = `
+        <div class="tile-inner">
+          <div class="tile-top">
+            <div class="tag"><span class="dot"></span>${tag}</div>
+            <div class="time">${time}</div>
+          </div>
+          <h3>${title}</h3>
+          <p>${desc}</p>
+          <div class="tile-actions">
+            <a class="openBtn" href="${href}" target="_self" rel="noopener">Open <span aria-hidden="true">↗</span></a>
+            <div class="ghost">Featured</div>
+          </div>
+        </div>
+      `;
+      return el;
+    }
+
+    function render(cat){
+      grid.innerHTML = "";
+      const items = demo[cat] || demo.finance;
+      for(const it of items){
+        grid.appendChild(tile(it));
+      }
+    }
+
+    // tab switching
+    tabs.addEventListener('click', (e) => {
+      const tab = e.target.closest('.tab');
+      if(!tab) return;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      render(tab.dataset.cat);
+    });
+
+    // demo preview button: just rerender current tab
+    document.getElementById('btnDemo').addEventListener('click', () => {
+      const active = document.querySelector('.tab.active');
+      render(active?.dataset.cat || 'finance');
+    });
+
+    // initial
+    render('finance');
+  </script>
+</body>
+</html>

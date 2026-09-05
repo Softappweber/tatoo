@@ -1,0 +1,515 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMINA · Blue/White/Black</title>
+  <style>
+    /* ---------- RESET / BASE ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #f0f4fc;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: #111827;
+      line-height: 1.5;
+    }
+
+    /* ---------- 3‑COLOR GRADIENT: BLUE · WHITE · BLACK (light note) ---------- */
+    :root {
+      --grad-start: #1a56db;
+      --grad-mid: #e8edf5;
+      --grad-end: #0b1120;
+      --glass-bg: rgba(255, 255, 255, 0.5);
+      --glass-border: rgba(255, 255, 255, 0.5);
+      --shadow-glow: 0 20px 40px -12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ---------- HEADER / NAV ---------- */
+    .page-header {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+      padding: 0.6rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.5rem;
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(145deg, var(--grad-start), #3b82f6, var(--grad-end));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 30px rgba(26, 86, 219, 0.15);
+      transition: transform 0.2s ease;
+      text-decoration: none;
+    }
+    .brand:hover {
+      transform: scale(1.02);
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.2rem 0.8rem;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: 0.3px;
+      color: #1e293b;
+      text-decoration: none;
+      border-radius: 60px;
+      background: transparent;
+      backdrop-filter: blur(4px);
+      transition: all 0.25s ease;
+      position: relative;
+      border: 1px solid transparent;
+    }
+
+    .nav-menu a::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 60px;
+      padding: 2px;
+      background: linear-gradient(145deg, var(--grad-start), var(--grad-mid), var(--grad-end));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .nav-menu a:hover {
+      background: rgba(255, 255, 255, 0.5);
+      border-color: rgba(26, 86, 219, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -8px rgba(26, 86, 219, 0.15);
+      color: #0b1120;
+    }
+
+    .nav-menu a:hover::before {
+      opacity: 1;
+    }
+
+    .nav-menu a:focus-visible {
+      outline: 2px solid var(--grad-start);
+      outline-offset: 4px;
+    }
+
+    /* ---------- HERO SECTION ---------- */
+    .hero {
+      flex: 1 0 auto;
+      max-width: 1280px;
+      margin: 3rem auto 2rem;
+      padding: 0 2rem;
+      width: 100%;
+    }
+
+    .hero-card {
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 3.5rem;
+      padding: 4rem 3rem;
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .hero-card:hover {
+      box-shadow: 0 40px 80px -20px rgba(26, 86, 219, 0.1), 0 0 0 1px rgba(26, 86, 219, 0.05);
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.6rem, 10vw, 4.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      background: linear-gradient(145deg, var(--grad-start), #3b82f6, var(--grad-end));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.8rem;
+      letter-spacing: -0.02em;
+      text-shadow: 0 4px 40px rgba(26, 86, 219, 0.1);
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      max-width: 620px;
+      margin: 0 auto 2rem;
+      color: #1e293b;
+      background: rgba(255, 255, 255, 0.5);
+      padding: 0.8rem 1.8rem;
+      border-radius: 100px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .gradient-badge {
+      display: inline-block;
+      padding: 0.6rem 2rem;
+      border-radius: 60px;
+      background: linear-gradient(145deg, var(--grad-start), #3b82f6, var(--grad-end));
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
+      box-shadow: 0 10px 30px -8px rgba(26, 86, 219, 0.25);
+      transition: all 0.25s ease;
+      border: none;
+      cursor: default;
+    }
+
+    .gradient-badge:hover {
+      transform: scale(1.03) translateY(-2px);
+      box-shadow: 0 16px 40px -6px rgba(26, 86, 219, 0.35);
+    }
+
+    /* ---------- GRID / FEATURES ---------- */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.8rem;
+      margin-top: 3.5rem;
+      width: 100%;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 2.5rem;
+      padding: 1.8rem 1.2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.02);
+    }
+
+    .feature-item:hover {
+      transform: translateY(-8px) scale(1.01);
+      border-color: rgba(26, 86, 219, 0.2);
+      background: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 20px 40px -14px rgba(26, 86, 219, 0.08), 0 0 0 1px rgba(26, 86, 219, 0.05);
+    }
+
+    .feature-item .icon {
+      font-size: 2.6rem;
+      margin-bottom: 0.4rem;
+      display: block;
+      background: linear-gradient(145deg, var(--grad-start), var(--grad-end));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .feature-item h3 {
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #0b1120;
+    }
+
+    /* ---------- FOOTER ---------- */
+    .page-footer {
+      margin-top: 3rem;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      border-top: 1px solid rgba(255, 255, 255, 0.7);
+      padding: 1.8rem 2rem;
+      width: 100%;
+    }
+
+    .footer-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.2rem 2rem;
+    }
+
+    .footer-menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.6rem;
+      list-style: none;
+    }
+
+    .footer-menu a {
+      color: #1e293b;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 0.3rem 0.2rem;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+      letter-spacing: 0.2px;
+    }
+
+    .footer-menu a:hover {
+      color: #0b1120;
+      border-bottom-color: var(--grad-start);
+      background: linear-gradient(145deg, var(--grad-start), #3b82f6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 20px rgba(26, 86, 219, 0.15);
+    }
+
+    .footer-copy {
+      font-size: 0.95rem;
+      color: #334155;
+      background: rgba(255, 255, 255, 0.4);
+      padding: 0.3rem 1.2rem;
+      border-radius: 60px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 720px) {
+      .nav-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .brand {
+        text-align: center;
+      }
+      .nav-menu {
+        justify-content: center;
+        gap: 0.2rem;
+      }
+      .nav-menu a {
+        padding: 0.4rem 0.9rem;
+        font-size: 0.95rem;
+      }
+      .hero-card {
+        padding: 2.5rem 1.2rem;
+        border-radius: 2.5rem;
+      }
+      .hero p {
+        font-size: 1rem;
+        padding: 0.6rem 1rem;
+      }
+      .footer-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      .footer-menu {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-menu a {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.7rem;
+      }
+      .features-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @keyframes softPulse {
+      0% { opacity: 0.85; }
+      50% { opacity: 1; }
+      100% { opacity: 0.85; }
+    }
+    .hero h1 {
+      animation: softPulse 6s ease-in-out infinite;
+    }
+
+    .nav-menu a[href]:not([href^="#"]):not([href=""])::after {
+      content: "↗";
+      font-size: 0.7rem;
+      margin-left: 0.2rem;
+      opacity: 0.3;
+      transition: opacity 0.2s;
+      display: inline-block;
+    }
+    .nav-menu a[href]:not([href^="#"]):not([href=""])::after {
+      opacity: 0.5;
+    }
+    .footer-menu a[href]:not([href^="#"]):not([href=""])::after {
+      content: "↗";
+      font-size: 0.6rem;
+      margin-left: 0.2rem;
+      opacity: 0.3;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== HEADER / NAVIGATION ========== -->
+<header class="page-header">
+  <div class="nav-container">
+    <a href="home.html" class="brand" style="text-decoration:none;">✦ LUMINA</a>
+    <ul class="nav-menu">
+      <li><a href="home.html" target="_self">Home</a></li>
+      <li><a href="explore.html" target="_self">Explore</a></li>
+      <li><a href="gallery.html" target="_self">Gallery</a></li>
+      <li><a href="insights.html" target="_self">Insights</a></li>
+      <li><a href="studio.html" target="_self">Studio</a></li>
+      <li><a href="contact.html" target="_self">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- ========== PAGE CONTENT (6 pages in one) ========== -->
+<main class="hero">
+  <!-- HOME PAGE -->
+  <div id="home" class="hero-card">
+    <div class="hero-content">
+      <h1>Home · Blue White Black</h1>
+      <p>#1a56db · #e8edf5 · #0b1120 — fresh &amp; airy</p>
+      <span class="gradient-badge">✦ calm · crisp ✦</span>
+      <div class="features-grid">
+        <div class="feature-item"><span class="icon">◈</span><h3>Clarity</h3></div>
+        <div class="feature-item"><span class="icon">✦</span><h3>Balance</h3></div>
+        <div class="feature-item"><span class="icon">◉</span><h3>Light</h3></div>
+        <div class="feature-item"><span class="icon">▣</span><h3>Focus</h3></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE PAGE -->
+  <div id="explore" class="hero-card" style="margin-top:3rem;">
+    <div class="hero-content">
+      <h1>Explore · discovery</h1>
+      <p>Uncover new perspectives with our blue-white gradient.</p>
+      <span class="gradient-badge">✦ expand · explore ✦</span>
+      <div class="features-grid">
+        <div class="feature-item"><span class="icon">⌘</span><h3>Navigate</h3></div>
+        <div class="feature-item"><span class="icon">⌕</span><h3>Search</h3></div>
+        <div class="feature-item"><span class="icon">⌖</span><h3>Locate</h3></div>
+        <div class="feature-item"><span class="icon">⌗</span><h3>Discover</h3></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY PAGE -->
+  <div id="gallery" class="hero-card" style="margin-top:3rem;">
+    <div class="hero-content">
+      <h1>Gallery · visual</h1>
+      <p>Showcase of light, shadow &amp; blue hues.</p>
+      <span class="gradient-badge">✦ frame · capture ✦</span>
+      <div class="features-grid">
+        <div class="feature-item"><span class="icon">⊞</span><h3>Grid</h3></div>
+        <div class="feature-item"><span class="icon">⊟</span><h3>Masonry</h3></div>
+        <div class="feature-item"><span class="icon">⊠</span><h3>Slider</h3></div>
+        <div class="feature-item"><span class="icon">⊡</span><h3>Lightbox</h3></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSIGHTS PAGE -->
+  <div id="insights" class="hero-card" style="margin-top:3rem;">
+    <div class="hero-content">
+      <h1>Insights · ideas</h1>
+      <p>Data, trends &amp; clarity through blue-white lens.</p>
+      <span class="gradient-badge">✦ analyze · think ✦</span>
+      <div class="features-grid">
+        <div class="feature-item"><span class="icon">◊</span><h3>Metrics</h3></div>
+        <div class="feature-item"><span class="icon">◇</span><h3>Trends</h3></div>
+        <div class="feature-item"><span class="icon">◆</span><h3>Reports</h3></div>
+        <div class="feature-item"><span class="icon">◈</span><h3>Forecast</h3></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDIO PAGE -->
+  <div id="studio" class="hero-card" style="margin-top:3rem;">
+    <div class="hero-content">
+      <h1>Studio · create</h1>
+      <p>Design &amp; build with our signature palette.</p>
+      <span class="gradient-badge">✦ craft · innovate ✦</span>
+      <div class="features-grid">
+        <div class="feature-item"><span class="icon">✧</span><h3>Design</h3></div>
+        <div class="feature-item"><span class="icon">✦</span><h3>Prototype</h3></div>
+        <div class="feature-item"><span class="icon">✶</span><h3>Test</h3></div>
+        <div class="feature-item"><span class="icon">✷</span><h3>Launch</h3></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT PAGE -->
+  <div id="contact" class="hero-card" style="margin-top:3rem; margin-bottom:2rem;">
+    <div class="hero-content">
+      <h1>Contact · connect</h1>
+      <p>Reach out — we’re here to help.</p>
+      <span class="gradient-badge">✦ message · respond ✦</span>
+      <div class="features-grid">
+        <div class="feature-item"><span class="icon">✉</span><h3>Email</h3></div>
+        <div class="feature-item"><span class="icon">✆</span><h3>Phone</h3></div>
+        <div class="feature-item"><span class="icon">⌨</span><h3>Chat</h3></div>
+        <div class="feature-item"><span class="icon">☎</span><h3>Support</h3></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="page-footer">
+  <div class="footer-container">
+    <ul class="footer-menu">
+      <li><a href="home.html" target="_self">Home</a></li>
+      <li><a href="explore.html" target="_self">Explore</a></li>
+      <li><a href="gallery.html" target="_self">Gallery</a></li>
+      <li><a href="insights.html" target="_self">Insights</a></li>
+      <li><a href="studio.html" target="_self">Studio</a></li>
+      <li><a href="contact.html" target="_self">Contact</a></li>
+    </ul>
+    <div class="footer-copy">
+      © 2026 · LUMINA · blue/white/black
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================ -->
+<!-- All 6 pages are designed within this single HTML.
+     Each section corresponds to a menu item.
+     Click any nav link → scrolls to that page section (same tab).
+     You can easily edit content inside each #id block. -->
+</body>
+</html>
+```

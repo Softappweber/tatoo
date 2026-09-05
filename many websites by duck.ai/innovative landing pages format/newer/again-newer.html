@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Premium Landing Page — Email Conversion</title>
+  <style>
+    /* ---------- Theme system ---------- */
+    :root{
+      --bg: #0b0f19;
+      --text: #e9eefc;
+      --muted: rgba(233,238,252,.72);
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.12);
+      --primary: #6d5efc;
+      --primary2:#35d3ff;
+      --shadow: 0 18px 60px rgba(0,0,0,.35);
+      --ring: rgba(109,94,252,.35);
+      --success:#3ef7b1;
+      --danger:#ff4d6d;
+      --radius: 18px;
+      --max: 1100px;
+    }
+    :root[data-theme="light"]{
+      --bg: #f7f8ff;
+      --text: #0b1020;
+      --muted: rgba(11,16,32,.68);
+      --card: rgba(11,16,32,.05);
+      --border: rgba(11,16,32,.14);
+      --primary: #4f3dff;
+      --primary2:#0077ff;
+      --shadow: 0 20px 70px rgba(21,30,60,.14);
+      --ring: rgba(79,61,255,.25);
+      --success:#0bbf6a;
+      --danger:#e11d48;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1000px 600px at 20% -10%, rgba(109,94,252,.35), transparent 60%),
+                  radial-gradient(900px 540px at 90% 10%, rgba(53,211,255,.25), transparent 58%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      overflow-x:hidden;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{max-width:var(--max); margin:0 auto; padding:0 22px}
+    .topbar{
+      position: sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(0,0,0,.12);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    :root[data-theme="light"] .topbar{
+      background: rgba(247,248,255,.7);
+      border-bottom: 1px solid rgba(11,16,32,.08);
+    }
+    .topbar-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      gap:14px;
+    }
+    .brand{
+      display:flex; gap:10px; align-items:center;
+      font-weight:800; letter-spacing:.2px;
+    }
+    .logo{
+      width:36px; height:36px; border-radius:12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: 0 10px 30px rgba(109,94,252,.3);
+      position:relative;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:9px;
+      border-radius:9px;
+      background: rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.25);
+      transform: rotate(6deg);
+    }
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 12px; border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 13px;
+      white-space:nowrap;
+    }
+    .dot{
+      width:8px; height:8px; border-radius:50%;
+      background: var(--success);
+      box-shadow: 0 0 0 6px rgba(62,247,177,.12);
+    }
+
+    /* ---------- Buttons ---------- */
+    .btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding:11px 14px;
+      border-radius: 14px;
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      font-weight:700;
+      letter-spacing:.1px;
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.25); background: rgba(255,255,255,.06); }
+    .btn:focus{ outline:none; box-shadow: 0 0 0 4px var(--ring); }
+    .btn-primary{
+      border-color: rgba(109,94,252,.45);
+      background: linear-gradient(135deg, rgba(109,94,252,.95), rgba(53,211,255,.75));
+      color: #07101d;
+      box-shadow: 0 18px 45px rgba(109,94,252,.25);
+    }
+    :root[data-theme="light"] .btn-primary{ color: #06101b; }
+    .btn-primary:hover{
+      border-color: rgba(109,94,252,.65);
+      background: linear-gradient(135deg, rgba(109,94,252,1), rgba(53,211,255,.88));
+    }
+    .btn-ghost{
+      background: transparent;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero{
+      padding: 52px 0 18px;
+      position:relative;
+    }
+    .hero-grid{
+      display:grid; grid-template-columns: 1.15fr .85fr;
+      gap: 22px;
+      align-items:start;
+    }
+    @media (max-width: 960px){
+      .hero-grid{ grid-template-columns: 1fr; }
+    }
+
+    .h-eyebrow{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .h-title{
+      font-size: clamp(34px, 4vw, 56px);
+      line-height:1.02;
+      margin:0 0 14px 0;
+      letter-spacing:-.8px;
+      font-weight: 900;
+    }
+    .grad{
+      background: linear-gradient(135deg, rgba(109,94,252,1), rgba(53,211,255,1));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
+    .h-sub{
+      margin:0 0 22px 0;
+      color: var(--muted);
+      font-size: 16.5px;
+      max-width: 62ch;
+    }
+    .cta-row{
+      display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+      margin-bottom: 16px;
+    }
+    .mini-trust{
+      display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+      color: var(--muted);
+      font-size: 13.5px;
+      margin-top: 8px;
+    }
+    .mini-trust .check{
+      width:22px; height:22px; border-radius:8px;
+      display:grid; place-items:center;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--success);
+      font-weight:900;
+    }
+
+    /* ---------- Card styles ---------- */
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero-card{
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(600px 200px at 30% 0%, rgba(109,94,252,.35), transparent 60%),
+                  radial-gradient(600px 240px at 90% 40%, rgba(53,211,255,.22), transparent 55%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .hero-card > *{ position:relative; }
+
+    .form{
+      display:flex; flex-direction:column; gap:12px;
+      padding:4px;
+    }
+    .field{
+      display:flex; flex-direction:column; gap:8px;
+    }
+    .label{
+      font-size: 13px; color: var(--muted); font-weight:700;
+      letter-spacing:.2px;
+    }
+    input, select{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      outline:none;
+      transition: box-shadow .15s ease, border-color .15s ease;
+      font-weight:700;
+    }
+    input::placeholder{ color: rgba(233,238,252,.45); }
+    :root[data-theme="light"] input::placeholder{ color: rgba(11,16,32,.35); }
+    input:focus{
+      box-shadow: 0 0 0 4px var(--ring);
+      border-color: rgba(109,94,252,.55);
+    }
+    .fineprint{
+      color: var(--muted);
+      font-size: 12.5px;
+      margin-top: 2px;
+    }
+    .badge-row{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 14px;
+    }
+    .badge{
+      font-size: 12.5px;
+      padding: 9px 10px;
+      border-radius: 999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-weight:800;
+    }
+    .badge strong{ color: var(--text); }
+
+    /* ---------- Sections ---------- */
+    section{ padding: 26px 0; }
+    .section-title{
+      font-size: 22px; margin: 0 0 10px;
+      letter-spacing:-.3px;
+      font-weight:900;
+    }
+    .section-sub{
+      margin: 0 0 18px;
+      color: var(--muted);
+      max-width: 70ch;
+    }
+
+    .grid2{
+      display:grid; grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 900px){ .grid2{grid-template-columns:1fr;} }
+
+    .feature-grid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 1050px){ .feature-grid{ grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 520px){ .feature-grid{ grid-template-columns: 1fr;} }
+
+    .feature{
+      padding: 14px;
+    }
+    .kicker{
+      color: rgba(233,238,252,.9);
+      font-weight:900;
+      margin:0 0 6px;
+      letter-spacing:.1px;
+      display:flex; align-items:center; gap:10px;
+    }
+    :root[data-theme="light"] .kicker{ color: rgba(11,16,32,.9); }
+    .icon{
+      width:34px; height:34px; border-radius: 13px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      display:grid; place-items:center;
+      font-weight: 900;
+      color: var(--primary2);
+    }
+    .p{
+      margin:0; color: var(--muted); font-weight:650; font-size: 14px;
+    }
+
+    .steps{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+    @media (max-width: 900px){ .steps{ grid-template-columns: 1fr; } }
+
+    .step{
+      padding: 16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .step .num{
+      position:absolute; top:10px; right:14px;
+      font-size: 44px;
+      font-weight: 1000;
+      opacity:.08;
+    }
+    .step h3{
+      margin: 0 0 8px;
+      font-size: 16.5px;
+      font-weight: 950;
+      letter-spacing: -.2px;
+      padding-right: 10px;
+    }
+    .step p{ margin:0; color: var(--muted); font-weight:650; font-size: 14px; }
+
+    .faq{
+      display:grid; gap: 10px;
+      max-width: 880px;
+      margin: 0 auto;
+    }
+    details{
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 14px;
+    }
+    details summary{
+      cursor:pointer;
+      font-weight: 900;
+      letter-spacing: -.2px;
+      list-style:none;
+      display:flex; justify-content:space-between; align-items:center;
+      gap: 10px;
+    }
+    details summary::-webkit-details-marker{ display:none; }
+    .chev{
+      width:28px; height:28px; border-radius: 12px;
+      border: 1px solid var(--border);
+      display:grid; place-items:center;
+      color: var(--muted);
+      font-weight: 1000;
+    }
+    details[open] .chev{ color: var(--primary2); }
+    .faq p{ margin: 10px 0 0; color: var(--muted); font-weight:650; }
+
+    /* ---------- Testimonials ---------- */
+    .test-grid{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+    @media (max-width: 980px){ .test-grid{ grid-template-columns: 1fr; } }
+    .quote{
+      padding: 16px;
+    }
+    .stars{
+      color: #ffd166;
+      font-weight: 1000;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .quote .text{
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-weight: 650;
+      font-size: 14px;
+    }
+    .who{
+      display:flex; align-items:center; gap: 10px;
+      color: rgba(233,238,252,.9);
+      font-weight: 900;
+      letter-spacing: -.2px;
+    }
+    :root[data-theme="light"] .who{ color: rgba(11,16,32,.9); }
+    .avatar{
+      width:36px; height:36px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(109,94,252,.9), rgba(53,211,255,.7));
+      border: 1px solid rgba(255,255,255,.25);
+    }
+
+    /* ---------- Footer ---------- */
+    footer{
+      padding: 26px 0 36px;
+      color: var(--muted);
+      font-weight: 650;
+      font-size: 13.5px;
+    }
+    .foot-row{
+      display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap:wrap;
+      border-top: 1px solid var(--border);
+      padding-top: 18px;
+    }
+
+    /* ---------- Floating glow ---------- */
+    .float-glow{
+      position:absolute;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: .18;
+      background: radial-gradient(circle at 30% 30%, var(--primary), transparent 55%),
+                  radial-gradient(circle at 70% 60%, var(--primary2), transparent 55%);
+      right: -170px; top: 40px;
+      pointer-events:none;
+    }
+    @media (max-width: 960px){ .float-glow{ right:-260px; top: 80px; } }
+
+    /* ---------- Small helpers ---------- */
+    .divider{
+      height:1px; background: var(--border); margin: 18px 0;
+    }
+    .muted{ color: var(--muted); }
+    .right{ text-align:right; }
+    .sr-only{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand" aria-label="Brand">
+        <div class="logo" aria-hidden="true"></div>
+        <span>Inbox-First Landing</span>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:center;">
+        <div class="pill" title="Performance focus">
+          <span class="dot" aria-hidden="true"></span>
+          Built for conversion, not decoration
+        </div>
+        <button id="themeToggle" class="btn btn-ghost" type="button" aria-label="Toggle theme">
+          <span id="themeText">Dark</span> <span aria-hidden="true">🌓</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="container hero">
+      <div class="float-glow" aria-hidden="true"></div>
+
+      <div class="hero-grid">
+        <div>
+          <div class="h-eyebrow">
+            <span class="pill"><span class="dot" aria-hidden="true"></span>Landing page for your first bulk email</span>
+            <span class="pill">Theme toggle included • Copy that sells • One-page flow</span>
+          </div>
+
+          <h1 class="h-title">
+            Stop chasing leads.
+            <span class="grad">Start converting inbox attention</span> into booked calls.
+          </h1>
+
+          <p class="h-sub">
+            A premium, conversion-first landing page designed for first-email campaigns—so clicks don’t just happen…
+            they turn into decisions. Clean hierarchy, persuasive copy, and frictionless CTA placement.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#pricing">
+              Get the landing page built
+              <span aria-hidden="true">→</span>
+            </a>
+            <a class="btn" href="#features">
+              See what you get
+              <span aria-hidden="true">↘</span>
+            </a>
+          </div>
+
+          <div class="mini-trust">
+            <div style="display:flex; gap:10px; align-items:center;">
+              <div class="check" aria-hidden="true">✓</div>
+              <span>Fast, mobile-first layout that keeps attention.</span>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <div class="check" aria-hidden="true">✓</div>
+              <span>Copy blocks engineered for scanning + buying intent.</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="card hero-card" aria-label="Lead capture">
+          <form class="form" onsubmit="event.preventDefault(); fakeSubmit();">
+            <div class="field">
+              <div class="label">Work email</div>
+              <input type="email" id="email" required placeholder="you@company.com" />
+            </div>
+            <div class="field">
+              <div class="label">What are you promoting?</div>
+              <select id="goal" required>
+                <option value="" disabled selected>Select one</option>
+                <option>Lead magnet</option>
+                <option>Free demo</option>
+                <option>Product launch</option>
+                <option>Appointment booking</option>
+                <option>Agency offer</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" type="submit">
+              Send my request
+              <span aria-hidden="true">⚡</span>
+            </button>
+            <div class="fineprint" id="submitNote">
+              By submitting, you’ll get a confirmation message. (Demo form—wire to your backend/CRM.)
+            </div>
+
+            <div class="badge-row">
+              <div class="badge"><strong>1</strong> page • premium copy</div>
+              <div class="badge"><strong>2</strong> CTAs • tight flow</div>
+              <div class="badge"><strong>3</strong> theme states</div>
+            </div>
+          </form>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Problem / Solution -->
+    <section class="container" aria-label="Problem and solution">
+      <div class="grid2">
+        <div class="card" style="padding:18px;">
+          <h2 class="section-title">Your current landing page is costing you conversions.</h2>
+          <p class="section-sub" style="margin-bottom:0;">
+            Most pages look nice but behave weakly: the message doesn’t match the email’s intent, the CTA is late,
+            the layout asks for attention instead of giving answers.
+          </p>
+          <div class="divider"></div>
+          <p class="p">
+            Result: you get clicks, but your inbox doesn’t turn into booked calls.
+          </p>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <h2 class="section-title">This page is built to win the inbox click.</h2>
+          <p class="section-sub" style="margin-bottom:0;">
+            It uses a premium narrative flow: clarity first, proof second, features third, and decision-ready CTAs
+            at the moments people are most likely to commit.
+          </p>
+          <div class="divider"></div>
+          <p class="p">
+            Outcome: your bulk email sends attention… and this page captures it.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="container" id="features">
+      <h2 class="section-title">Everything you need for a premium, conversion-first landing.</h2>
+      <p class="section-sub">
+        Designed for decision-making. Copywriting is not “extra”—it’s the product.
+      </p>
+
+      <div class="feature-grid">
+        <div class="card feature">
+          <div class="kicker"><span class="icon">✦</span>Hero copy that matches email intent</div>
+          <p class="p">No confusion. Your headline directly addresses what the email promised.</p>
+        </div>
+
+        <div class="card feature">
+          <div class="kicker"><span class="icon">◎</span>Fast scanning layout</div>
+          <p class="p">Short lines, clear hierarchy, and “readable on mobile” spacing discipline.</p>
+        </div>
+
+        <div class="card feature">
+          <div class="kicker"><span class="icon">↯</span>CTA placement where people decide</div>
+          <p class="p">Primary action repeated with purpose—not spammed.</p>
+        </div>
+
+        <div class="card feature">
+          <div class="kicker"><span class="icon">✓</span>Trust-building sections</div>
+          <p class="p">Testimonials + credibility language to reduce friction to signup.</p>
+        </div>
+
+        <div class="card feature">
+          <div class="kicker"><span class="icon">⚙</span>Working theme toggle</div>
+          <p class="p">Light/Dark feel changes without breaking readability or contrast.</p>
+        </div>
+
+        <div class="card feature">
+          <div class="kicker"><span class="icon">⌁</span>Copy blocks optimized for decisions</div>
+          <p class="p">Each section answers “why you, why now, what happens next.”</p>
+        </div>
+
+        <div class="card feature">
+          <div class="kicker"><span class="icon">⚡</span>One-page conversion flow</div>
+          <p class="p">No navigation maze. Scroll guides the user to the final CTA.</p>
+        </div>
+
+        <div class="card feature">
+          <div class="kicker"><span class="icon">⟡</span>FAQ that removes objections</div>
+          <p class="p">Short answers that keep momentum and stop “I’ll think about it” drift.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="container" aria-label="How it works">
+      <h2 class="section-title">How this premium landing converts</h2>
+      <p class="section-sub">
+        The page is structured like a sales conversation: attention → clarity → proof → decision.
+      </p>
+
+      <div class="steps">
+        <div class="card step">
+          <div class="num">01</div>
+          <h3>Match the promise your email already made</h3>
+          <p>Headline and subheadline immediately confirm “yes, this is what I clicked for.”</p>
+        </div>
+
+        <div class="card step">
+          <div class="num">02</div>
+          <h3>Give answers, not visuals</h3>
+          <p>Problem/solution + features are written to reduce doubt and increase intent.</p>
+        </div>
+
+        <div class="card step">
+          <div class="num">03</div>
+          <h3>Make the next step obvious</h3>
+          <p>CTAs appear when users are ready, with a fast lead capture flow.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="container" aria-label="Testimonials">
+      <h2 class="section-title">Credibility that feels earned</h2>
+      <p class="section-sub">
+        Use these as placeholders—swap in your real results to maximize trust.
+      </p>
+
+      <div class="test-grid">
+        <div class="card quote">
+          <div class="stars">★★★★★</div>
+          <p class="text">
+            “The copy is sharp. The page reads like it already knows what my leads need—so they actually take action.”
+          </p>
+          <div class="who"><div class="avatar" aria-hidden="true"></div>Alex R. • Growth</div>
+        </div>
+
+        <div class="card quote">
+          <div class="stars">★★★★★</div>
+          <p class="text">
+            “Theme toggle looks premium and the layout stays clean. Our inbox traffic started converting faster.”
+          </p>
+          <div class="who"><div class="avatar" aria-hidden="true"></div>Maya S. • Founder</div>
+        </div>
+
+        <div class="card quote">
+          <div class="stars">★★★★★</div>
+          <p class="text">
+            “It’s one page, but it feels complete. No wasted sections—just a decision-focused flow.”
+          </p>
+          <div class="who"><div class="avatar" aria-hidden="true"></div>Jon K. • Marketing</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="container" id="pricing" aria-label="Pricing">
+      <h2 class="section-title">Start premium. Stay focused. Scale without chaos.</h2>
+      <p class="section-sub">
+        Choose a plan that matches how aggressively you run your email campaigns.
+      </p>
+
+      <div class="grid2">
+        <div class="card" style="padding:18px;">
+          <div class="kicker" style="margin-bottom:8px;">
+            <span class="icon">✷</span>Launch Pack
+          </div>
+          <p class="p" style="font-size:15px;">
+            For first campaigns that need clarity, flow, and an inbox-ready decision path.
+          </p>
+          <div class="divider"></div>
+          <p class="p">
+            Includes: 1-page landing framework + premium copy sections + working theme toggle.
+          </p>
+          <div style="margin-top:14px; display:flex; gap:12px; flex-wrap:wrap;">
+            <button class="btn btn-primary" type="button" onclick="prefillPlan('Launch Pack')">
+              Choose Launch Pack →
+            </button>
+          </div>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <div class="kicker" style="margin-bottom:8px;">
+            <span class="icon">⬡</span>Conversion Pro
+          </div>
+          <p class="p" style="font-size:15px;">
+            For teams who run frequently and want every section to push the sale harder.
+          </p>
+          <div class="divider"></div>
+          <p class="p">
+            Includes: everything in Launch + optimized FAQ + stronger persuasion hierarchy + CTA refinement.
+          </p>
+          <div style="margin-top:14px; display:flex; gap:12px; flex-wrap:wrap;">
+            <button class="btn btn-primary" type="button" onclick="prefillPlan('Conversion Pro')">
+              Choose Conversion Pro →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <p class="fineprint" style="margin-top:12px;">
+        Note: Pricing numbers aren’t included in this template. I’ll replace them with your exact offer details.
+      </p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="container" aria-label="Frequently asked questions">
+      <h2 class="section-title">FAQ (fast answers, no guessing)</h2>
+      <p class="section-sub">
+        These are written to remove the exact objections people have before they fill the form.
+      </p>
+
+      <div class="faq">
+        <details>
+          <summary>
+            Will this landing page work for bulk email clicks?
+            <span class="chev" aria-hidden="true">+</span>
+          </summary>
+          <p>
+            Yes. The structure is built for the “I clicked from an email—now what?” moment. Clarity comes first,
+            and CTAs are placed when intent is highest.
+          </p>
+        </details>
+
+        <details>
+          <summary>
+            What does “theme toggle” mean here?
+            <span class="chev" aria-hidden="true">+</span>
+          </summary>
+          <p>
+            It’s a working Light/Dark UI switch that preserves contrast, spacing, and readability—so the page still
+            looks premium in both modes.
+          </p>
+        </details>
+
+        <details>
+          <summary>
+            Is this designed for first-time campaigns?
+            <span class="chev" aria-hidden="true">+</span>
+          </summary>
+          <p>
+            Exactly. The copy assumes your first email run needs stronger alignment between the message and the
+            landing experience—so leads don’t feel lost.
+          </p>
+        </details>
+
+        <details>
+          <summary>
+            Can I customize the copy later?
+            <span class="chev" aria-hidden="true">+</span>
+          </summary>
+          <p>
+            Yes. This template is modular: replace headlines, testimonials, and pricing text without changing the
+            conversion flow.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="container" aria-label="Final call to action">
+      <div class="card" style="padding:18px;">
+        <div class="grid2" style="align-items:center;">
+          <div>
+            <h2 class="section-title" style="margin-bottom:8px;">Ready to turn inbox attention into booked calls?</h2>
+            <p class="section-sub" style="margin-bottom:0;">
+              Build a landing page that feels expensive—and converts like it.
+            </p>
+          </div>
+          <div style="display:flex; gap:12px; justify-content:flex-end; flex-wrap:wrap;">
+            <a class="btn btn-primary" href="#"
+               onclick="scrollToTopCTA(); return false;">
+              Start now →
+            </a>
+            <a class="btn" href="#pricing">Compare plans</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="container">
+      <div class="foot-row">
+        <div>© <span id="year"></span> Inbox-First Landing. All rights reserved.</div>
+        <div style="display:flex; gap:14px; flex-wrap:wrap;">
+          <span>Light/Dark theme toggle</span>
+          <span>One-page conversion flow</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Theme toggle
+    (function(){
+      const root = document.documentElement;
+      const btn = document.getElementById('themeToggle');
+      const themeText = document.getElementById('themeText');
+
+      const saved = localStorage.getItem('theme');
+      const initial = saved === 'light' || saved === 'dark'
+        ? saved
+        : 'dark';
+
+      root.setAttribute('data-theme', initial);
+      themeText.textContent = initial === 'dark' ? 'Dark' : 'Light';
+
+      btn.addEventListener('click', () => {
+        const current = root.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        themeText.textContent = next === 'dark' ? 'Dark' : 'Light';
+      });
+    })();
+
+    // Form demo
+    function fakeSubmit(){
+      const email = document.getElementById('email').value.trim();
+      const goal = document.getElementById('goal').value;
+      const note = document.getElementById('submitNote');
+      note.innerHTML = "Nice—request received. (Demo) Email: <b>" + escapeHtml(email) + "</b>. Goal: <b>" + escapeHtml(goal) + "</b>.";
+    }
+
+    function prefillPlan(plan){
+      const goal = document.getElementById('goal');
+      // Map plan into a goal-like option
+      if (!goal) return;
+      const options = Array.from(goal.options).map(o => o.text);
+      if (options.includes('Appointment booking')) {
+        goal.value = 'Appointment booking';
+      } else if (options.includes('Free demo')) {
+        goal.value = 'Free demo';
+      } else {
+        goal.value = options[0] || '';
+      }
+      fakeScrollToForm(plan);
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#039;");
+    }
+
+    function fakeScrollToForm(plan){
+      // Scroll to top for CTA form; optional highlight
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const note = document.getElementById('submitNote');
+      note.innerHTML = "Selected: <b>" + escapeHtml(plan) + "</b>. Now drop your work email to request your build.";
+      setTimeout(() => {
+        const email = document.getElementById('email');
+        if (email) email.focus();
+      }, 350);
+    }
+
+    function scrollToTopCTA(){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const email = document.getElementById('email');
+      if (email) email.focus();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeStack Pro | Real Digital Trading Products</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0a0b14;
+            --surface: #11132b;
+            --surface2: #181b3a;
+            --bull: #00e676;
+            --bear: #ff3d5a;
+            --gold: #ffd740;
+            --accent: #448aff;
+            --text: #e8eaf6;
+            --muted: #7c7fa3;
+            --border: rgba(255,255,255,0.05);
+            --glow-green: rgba(0,230,118,0.2);
+            --glow-red: rgba(255,61,90,0.2);
+            --glow-gold: rgba(255,215,64,0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        .market-bg {
+            position: fixed; inset: 0; z-index: -2;
+            background: linear-gradient(180deg, #0a0b14 0%, #0d0f1f 30%, #0f1228 60%, #0a0b14 100%);
+        }
+
+        .candlestick-pattern {
+            position: fixed; inset: 0; z-index: -1; opacity: 0.03;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,230,118,0.5) 19px, rgba(0,230,118,0.5) 20px),
+                repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,0.3) 59px, rgba(255,255,255,0.3) 60px);
+            background-size: 60px 40px;
+            animation: patternShift 30s linear infinite;
+        }
+
+        @keyframes patternShift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 40px); }
+        }
+
+        .orb {
+            position: fixed; border-radius: 50%; filter: blur(100px); z-index: -1;
+            animation: orbDrift 15s ease-in-out infinite;
+        }
+        .orb-1 { width: 350px; height: 350px; background: rgba(0,230,118,0.06); top: 10%; left: -5%; }
+        .orb-2 { width: 280px; height: 280px; background: rgba(255,61,90,0.05); bottom: 15%; right: -3%; animation-delay: -5s; }
+        .orb-3 { width: 220px; height: 220px; background: rgba(255,215,64,0.04); top: 50%; left: 50%; animation-delay: -10s; }
+
+        @keyframes orbDrift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(60px, -40px) scale(1.1); }
+            50% { transform: translate(-30px, 50px) scale(0.9); }
+            75% { transform: translate(-50px, -20px) scale(1.05); }
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(10,11,20,0.9); backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            max-width: 1300px; margin: 0 auto; padding: 0.9rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .brand {
+            display: flex; align-items: center; gap: 0.7rem; text-decoration: none;
+        }
+
+        .brand-icon {
+            width: 42px; height: 42px;
+            background: linear-gradient(135deg, var(--bull), #00c853);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; box-shadow: 0 4px 20px var(--glow-green);
+        }
+
+        .brand-text {
+            font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800;
+            background: linear-gradient(135deg, #fff, var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex; gap: 0.3rem; list-style: none; align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none; color: var(--muted); font-weight: 500; font-size: 0.85rem;
+            padding: 0.5rem 1rem; border-radius: 10px; transition: all 0.25s;
+            font-family: 'Inter', sans-serif; letter-spacing: 0.3px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #fff; background: rgba(255,255,255,0.04);
+        }
+
+        .nav-links .cart-nav {
+            background: rgba(255,215,64,0.1); border: 1px solid rgba(255,215,64,0.2);
+            color: var(--gold); display: flex; align-items: center; gap: 0.4rem;
+        }
+
+        /* HERO STRIP */
+        .hero-strip {
+            margin-top: 75px; padding: 2rem 2rem 1.5rem; text-align: center;
+            background: linear-gradient(180deg, rgba(0,230,118,0.03) 0%, transparent 100%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-strip .live-ticker {
+            display: inline-flex; gap: 2rem; flex-wrap: wrap; justify-content: center;
+            margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            background: var(--surface); border: 1px solid var(--border);
+            padding: 0.5rem 1.5rem; border-radius: 50px;
+        }
+
+        .live-ticker .up { color: var(--bull); }
+        .live-ticker .down { color: var(--bear); }
+
+        .hero-strip h1 {
+            font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900;
+            line-height: 1.1; max-width: 700px; margin: 0 auto 0.5rem;
+            letter-spacing: -1.5px;
+        }
+
+        .hero-strip h1 .gradient-text {
+            background: linear-gradient(135deg, var(--bull) 20%, var(--gold) 50%, var(--accent) 80%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .hero-strip p {
+            color: var(--muted); font-size: 1rem; max-width: 550px; margin: 0 auto;
+        }
+
+        /* PRODUCT SECTION HEADER */
+        .section-header {
+            max-width: 1300px; margin: 0 auto; padding: 2rem 2rem 1.5rem;
+            display: flex; justify-content: space-between; align-items: flex-end;
+            flex-wrap: wrap; gap: 1rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .section-header h2 .accent { color: var(--bull); }
+
+        /* PRODUCTS GRID */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.3rem; max-width: 1300px; margin: 0 auto; padding: 0 2rem 3rem;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            position: relative;
+            display: flex; flex-direction: column;
+            text-decoration: none; color: inherit;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.12);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .product-card.featured {
+            border-color: rgba(255,215,64,0.25);
+        }
+
+        .product-card.featured::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--bull), var(--gold));
+            z-index: 1; animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .card-badge {
+            position: absolute; top: 16px; left: 16px; z-index: 2;
+            padding: 0.3rem 0.9rem; border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        .card-badge.bestseller {
+            background: linear-gradient(135deg, var(--gold), #ff9100);
+            color: #1a1a1a;
+        }
+
+        .card-badge.new {
+            background: rgba(68,138,255,0.2); color: var(--accent);
+            border: 1px solid rgba(68,138,255,0.3);
+        }
+
+        .card-badge.discount {
+            background: rgba(255,61,90,0.2); color: var(--bear);
+            border: 1px solid rgba(255,61,90,0.3);
+        }
+
+        .product-thumb {
+            height: 240px; position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,230,118,0.03));
+            font-size: 6rem; transition: all 0.4s;
+        }
+
+        .product-card:hover .product-thumb {
+            transform: scale(1.04);
+        }
+
+        .product-thumb img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        .product-body { padding: 1.3rem; flex: 1; display: flex; flex-direction: column; }
+
+        .product-type {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            color: var(--bull); text-transform: uppercase; letter-spacing: 1.5px;
+            margin-bottom: 0.4rem;
+        }
+
+        .product-title {
+            font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700;
+            color: #fff; margin-bottom: 0.3rem; letter-spacing: -0.3px;
+            line-height: 1.3;
+        }
+
+        .product-desc {
+            color: var(--muted); font-size: 0.82rem; margin-bottom: 1rem;
+            flex: 1; line-height: 1.5;
+        }
+
+        .product-meta {
+            display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem;
+            font-size: 0.75rem; color: var(--muted);
+        }
+
+        .product-meta .rating { color: var(--gold); font-weight: 600; }
+        .product-meta .sales { font-weight: 500; }
+        .product-meta .instant { color: var(--bull); font-weight: 600; }
+
+        .product-footer {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .price-block {
+            display: flex; align-items: baseline; gap: 0.4rem;
+        }
+
+        .price-current {
+            font-family: 'JetBrains Mono', monospace; font-size: 1.3rem;
+            font-weight: 700; color: #fff;
+        }
+
+        .price-original {
+            font-size: 0.75rem; color: rgba(255,255,255,0.3);
+            text-decoration: line-through;
+        }
+
+        .price-discount {
+            font-size: 0.65rem; color: var(--bull); font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* DEMO BUTTON & BUY BUTTON */
+        .btn-group { display: flex; gap: 0.5rem; }
+
+        .btn-demo {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.06); color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px; font-weight: 600; font-size: 0.78rem;
+            cursor: pointer; transition: all 0.3s; text-decoration: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-demo:hover {
+            background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.3);
+            transform: scale(1.03);
+        }
+
+        .buy-label {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            padding: 0.5rem 1.2rem;
+            background: linear-gradient(135deg, var(--bull), #00c853);
+            color: #0a0b14; border-radius: 10px; font-weight: 700;
+            font-size: 0.78rem; cursor: pointer; transition: all 0.3s;
+            font-family: 'Inter', sans-serif; letter-spacing: 0.3px;
+            text-decoration: none;
+        }
+
+        .buy-label:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px var(--glow-green);
+        }
+
+        /* ===== MODAL FOR LIVE DEMO ===== */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; z-index: 5000;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+            align-items: center; justify-content: center; padding: 1.5rem;
+        }
+
+        .modal-overlay:target { display: flex; }
+
+        .modal-box {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 24px; max-width: 900px; width: 100%; max-height: 85vh;
+            overflow-y: auto; padding: 2rem; position: relative;
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.9) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-close {
+            position: sticky; top: 0; float: right; text-decoration: none;
+            background: rgba(255,255,255,0.06); color: #fff;
+            width: 38px; height: 38px; border-radius: 12px; display: flex;
+            align-items: center; justify-content: center; font-size: 1.2rem;
+            z-index: 10; transition: all 0.3s;
+        }
+
+        .modal-close:hover { background: rgba(255,61,90,0.3); }
+
+        .modal-box h3 {
+            font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff;
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-box .demo-label {
+            display: inline-block; background: rgba(0,230,118,0.15); color: var(--bull);
+            padding: 0.2rem 0.8rem; border-radius: 12px; font-size: 0.7rem;
+            font-weight: 700; margin-bottom: 1.5rem;
+        }
+
+        /* Trade Journal Table inside Modal */
+        .trade-table-wrapper {
+            overflow-x: auto; margin: 1rem 0;
+            border: 1px solid var(--border); border-radius: 14px;
+        }
+
+        .trade-table {
+            width: 100%; border-collapse: collapse;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            min-width: 900px;
+        }
+
+        .trade-table th {
+            background: var(--surface2); color: var(--gold); padding: 0.8rem 0.6rem;
+            text-align: left; font-weight: 600; font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 0.5px; position: sticky; top: 0;
+        }
+
+        .trade-table td {
+            padding: 0.6rem 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.03);
+            color: var(--text);
+        }
+
+        .trade-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .trade-table .profit { color: var(--bull); font-weight: 700; }
+        .trade-table .loss { color: var(--bear); font-weight: 700; }
+        .trade-table .total-row td {
+            font-weight: 800; color: var(--gold); border-top: 2px solid rgba(255,215,64,0.3);
+            font-size: 0.85rem;
+        }
+
+        .stats-mini {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem; margin: 1.5rem 0;
+        }
+
+        .stat-mini-card {
+            background: var(--surface2); border: 1px solid var(--border);
+            border-radius: 14px; padding: 1rem; text-align: center;
+        }
+
+        .stat-mini-card .val {
+            font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 700;
+        }
+
+        .stat-mini-card .val.green { color: var(--bull); }
+        .stat-mini-card .val.gold { color: var(--gold); }
+        .stat-mini-card .lbl { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* ===== CART SYSTEM (CSS ONLY) ===== */
+        .cart-checkbox { display: none; }
+
+        .cart-drawer {
+            position: fixed; top: 0; right: -450px; width: 420px; height: 100vh;
+            background: rgba(17,19,43,0.98); backdrop-filter: blur(30px);
+            border-left: 1px solid var(--border); z-index: 3000;
+            transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            display: flex; flex-direction: column; box-shadow: -15px 0 50px rgba(0,0,0,0.6);
+        }
+
+        .cart-drawer:target { right: 0; }
+
+        .cart-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            z-index: 2999;
+        }
+
+        .cart-drawer:target ~ .cart-overlay { display: block; }
+
+        .cart-drawer-header {
+            padding: 1.5rem; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .cart-drawer-header h3 {
+            font-family: 'Playfair Display', serif; color: #fff; font-size: 1.3rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+
+        .cart-close-btn {
+            text-decoration: none; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); color: #fff;
+            width: 35px; height: 35px; border-radius: 10px; display: flex;
+            align-items: center; justify-content: center; font-size: 1rem;
+        }
+
+        .cart-items-container { flex: 1; overflow-y: auto; padding: 1rem; }
+        .cart-empty-msg { color: var(--muted); text-align: center; padding: 3rem 1rem; }
+
+        .cart-item-entry {
+            display: none; padding: 0.8rem; background: rgba(255,255,255,0.02);
+            border-radius: 12px; margin-bottom: 0.7rem; border: 1px solid rgba(255,255,255,0.04);
+            align-items: center; gap: 0.8rem;
+        }
+
+        #c1:checked ~ .cart-drawer .cart-item-1,
+        #c2:checked ~ .cart-drawer .cart-item-2,
+        #c3:checked ~ .cart-drawer .cart-item-3,
+        #c4:checked ~ .cart-drawer .cart-item-4,
+        #c5:checked ~ .cart-drawer .cart-item-5,
+        #c6:checked ~ .cart-drawer .cart-item-6,
+        #c7:checked ~ .cart-drawer .cart-item-7,
+        #c8:checked ~ .cart-drawer .cart-item-8 { display: flex; }
+
+        #c1:checked ~ .cart-drawer .cart-empty-msg,
+        #c2:checked ~ .cart-drawer .cart-empty-msg,
+        #c3:checked ~ .cart-drawer .cart-empty-msg,
+        #c4:checked ~ .cart-drawer .cart-empty-msg,
+        #c5:checked ~ .cart-drawer .cart-empty-msg,
+        #c6:checked ~ .cart-drawer .cart-empty-msg,
+        #c7:checked ~ .cart-drawer .cart-empty-msg,
+        #c8:checked ~ .cart-drawer .cart-empty-msg { display: none; }
+
+        .cart-item-thumb {
+            width: 50px; height: 50px; border-radius: 10px; display: flex;
+            align-items: center; justify-content: center; font-size: 1.8rem;
+            background: rgba(255,255,255,0.03); flex-shrink: 0;
+        }
+
+        .cart-item-info { flex: 1; color: #fff; min-width: 0; }
+        .cart-item-info .name { font-weight: 600; font-size: 0.85rem; }
+        .cart-item-info .price { font-family: 'JetBrains Mono', monospace; color: var(--bull); font-size: 0.8rem; font-weight: 600; }
+
+        .cart-item-remove {
+            background: rgba(255,61,90,0.1); border: 1px solid rgba(255,61,90,0.2);
+            color: var(--bear); padding: 0.2rem 0.6rem; border-radius: 6px;
+            cursor: pointer; font-size: 0.7rem;
+        }
+
+        .cart-drawer-footer {
+            padding: 1.5rem; border-top: 1px solid var(--border);
+            position: sticky; bottom: 0; background: rgba(17,19,43,0.98);
+        }
+
+        .cart-total-line { display: flex; justify-content: space-between; color: #fff; font-weight: 600; margin-bottom: 1rem; }
+        .cart-total-amount { font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 1.2rem; font-weight: 700; }
+
+        .checkout-btn {
+            display: block; width: 100%; padding: 0.85rem; text-align: center;
+            background: linear-gradient(135deg, var(--gold), #ff9100); color: #1a1a1a;
+            border-radius: 12px; font-weight: 700; font-size: 0.95rem;
+            cursor: pointer; transition: all 0.3s; text-decoration: none;
+            font-family: 'Inter', sans-serif; letter-spacing: 0.5px;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(255,215,64,0.3);
+        }
+
+        /* ===== CHECKOUT PAGE ===== */
+        .checkout-page {
+            display: none; position: fixed; inset: 0; z-index: 4000;
+            background: rgba(10,11,20,0.97); backdrop-filter: blur(20px);
+            flex-direction: column; align-items: center; justify-content: center;
+            padding: 2rem; overflow-y: auto;
+        }
+
+        .checkout-page:target { display: flex; }
+
+        .checkout-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 24px; max-width: 500px; width: 100%; padding: 2.5rem;
+        }
+
+        .checkout-card h2 {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #fff;
+            text-align: center; margin-bottom: 0.3rem;
+        }
+
+        .checkout-card .sub { color: var(--muted); text-align: center; margin-bottom: 2rem; font-size: 0.85rem; }
+
+        .field { margin-bottom: 1.2rem; }
+        .field label {
+            display: block; color: var(--muted); font-size: 0.75rem; margin-bottom: 0.3rem;
+            text-transform: uppercase; letter-spacing: 1px; font-family: 'Inter', sans-serif;
+        }
+
+        .field input, .field select {
+            width: 100%; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff;
+            font-family: 'DM Sans', sans-serif; font-size: 0.9rem; transition: all 0.3s;
+        }
+
+        .field input:focus, .field select:focus {
+            outline: none; border-color: var(--gold);
+            box-shadow: 0 0 20px var(--glow-gold);
+        }
+
+        .field-row { display: flex; gap: 1rem; }
+        .field-row .field { flex: 1; }
+
+        .pay-options { display: flex; flex-direction: column; gap: 0.6rem; margin: 1.5rem 0; }
+        .pay-radio { display: none; }
+
+        .pay-label {
+            display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.2rem;
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px; cursor: pointer; transition: all 0.3s; color: #fff;
+        }
+
+        .pay-label:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); }
+
+        .pay-radio:checked + .pay-label {
+            background: rgba(255,215,64,0.06); border-color: var(--gold);
+            box-shadow: 0 0 25px var(--glow-gold);
+        }
+
+        .pay-icon { font-size: 1.6rem; flex-shrink: 0; }
+
+        .pay-detail-field { display: none; margin-top: 0.5rem; }
+        #pUpi:checked ~ .pay-detail-field,
+        #pCard:checked ~ .pay-detail-field,
+        #pNet:checked ~ .pay-detail-field,
+        #pIntl:checked ~ .pay-detail-field { display: block; }
+
+        .submit-btn {
+            display: block; width: 100%; padding: 1rem; margin-top: 1rem;
+            background: linear-gradient(135deg, var(--bull), #00c853); color: #0a0b14;
+            border: none; border-radius: 12px; font-family: 'Inter', sans-serif;
+            font-weight: 700; font-size: 1.05rem; cursor: pointer; transition: all 0.3s;
+            text-align: center; text-decoration: none;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px var(--glow-green);
+        }
+
+        .close-checkout {
+            position: absolute; top: 20px; right: 30px; text-decoration: none;
+            color: #fff; font-size: 1.3rem; background: rgba(255,255,255,0.04);
+            width: 40px; height: 40px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; transition: all 0.3s;
+        }
+
+        .close-checkout:hover { background: rgba(255,61,90,0.2); }
+
+        .success-page {
+            display: none; position: fixed; inset: 0; z-index: 5000;
+            background: rgba(10,11,20,0.98); backdrop-filter: blur(20px);
+            flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .success-page:target { display: flex; }
+
+        .success-box { text-align: center; }
+        .success-box .big-icon { font-size: 5rem; margin-bottom: 1rem; }
+        .success-box h2 {
+            font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--bull);
+            margin-bottom: 0.8rem;
+        }
+        .success-box p { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; }
+
+        .back-shop-btn {
+            display: inline-block; padding: 0.8rem 2.2rem;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15);
+            color: #fff; border-radius: 30px; text-decoration: none;
+            font-weight: 600; transition: all 0.3s;
+        }
+
+        .back-shop-btn:hover { background: rgba(255,255,255,0.1); }
+
+        footer {
+            text-align: center; padding: 2rem; border-top: 1px solid var(--border);
+            color: var(--muted); font-size: 0.8rem; margin-top: 1rem;
+        }
+
+        footer a { color: var(--accent); text-decoration: none; }
+
+        @media (max-width: 900px) {
+            .hero-strip h1 { font-size: 2rem; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+            .cart-drawer { width: 100%; right: -100%; }
+            .trade-table { font-size: 0.65rem; min-width: 700px; }
+            .stats-mini { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .nav-links a { font-size: 0.72rem; padding: 0.4rem 0.6rem; }
+            .hero-strip h1 { font-size: 1.6rem; }
+            .products-grid { grid-template-columns: 1fr; padding: 0 1rem 2rem; }
+            .field-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="market-bg"></div>
+    <div class="candlestick-pattern"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Hidden Cart Checkboxes -->
+    <input type="checkbox" class="cart-checkbox" id="c1">
+    <input type="checkbox" class="cart-checkbox" id="c2">
+    <input type="checkbox" class="cart-checkbox" id="c3">
+    <input type="checkbox" class="cart-checkbox" id="c4">
+    <input type="checkbox" class="cart-checkbox" id="c5">
+    <input type="checkbox" class="cart-checkbox" id="c6">
+    <input type="checkbox" class="cart-checkbox" id="c7">
+    <input type="checkbox" class="cart-checkbox" id="c8">
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-inner">
+            <a href="#" class="brand">
+                <div class="brand-icon">📊</div>
+                <span class="brand-text">TradeStack</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#products" class="active">Products</a></li>
+                <li><a href="#cart" class="cart-nav">🛒 Cart</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO STRIP -->
+    <div class="hero-strip">
+        <div class="live-ticker">
+            <span class="up">▲ NIFTY 22,145 +0.8%</span>
+            <span class="up">▲ BANKNIFTY 48,230 +1.2%</span>
+            <span class="down">▼ INDIA VIX 13.5 -2.1%</span>
+            <span class="up">▲ USDINR 83.45 +0.1%</span>
+        </div>
+        <h1>Real Digital Products for <span class="gradient-text">Real Traders</span></h1>
+        <p>Every product below is fully functional — try the live demo before you buy. Instant download after purchase.</p>
+    </div>
+
+    <!-- PRODUCT SECTION HEADER -->
+    <div class="section-header" id="products">
+        <h2>🛠️ <span class="accent">8 Premium</span> Trading Tools</h2>
+    </div>
+
+    <!-- PRODUCTS GRID - 8 Real Products -->
+    <div class="products-grid">
+
+        <!-- Product 1: Trade Journal (WITH LIVE DEMO) -->
+        <div class="product-card featured">
+            <div class="card-badge bestseller">⭐ Bestseller</div>
+            <div class="product-thumb">📋</div>
+            <div class="product-body">
+                <div class="product-type">Excel / Google Sheets</div>
+                <div class="product-title">Pro Trade Journal with Analytics</div>
+                <div class="product-desc">Track every trade. Auto-calculates P&L, win rate, risk-reward, Sharpe ratio & monthly dashboards.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.9</span>
+                    <span>•</span>
+                    <span class="sales">4,200+ sold</span>
+                    <span>•</span>
+                    <span class="instant">⚡ Instant Download</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹499</span>
+                        <span class="price-original">₹1,999</span>
+                        <span class="price-discount">-75%</span>
+                    </div>
+                    <div class="btn-group">
+                        <a href="#demo1" class="btn-demo">👁 Live Demo</a>
+                        <label for="c1" class="buy-label">Buy Now</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 2: Screener Tool -->
+        <div class="product-card">
+            <div class="card-badge new">🆕 New</div>
+            <div class="product-thumb">🔍</div>
+            <div class="product-body">
+                <div class="product-type">Web Tool + API</div>
+                <div class="product-title">NSE/BSE Stock Screener</div>
+                <div class="product-desc">Filter stocks by RSI, MACD, volume, moving averages & breakout patterns. Real-time data.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.7</span>
+                    <span>•</span>
+                    <span class="sales">1,800+ sold</span>
+                    <span>•</span>
+                    <span class="instant">⚡ Instant Access</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹999</span>
+                        <span class="price-original">₹3,499</span>
+                        <span class="price-discount">-71%</span>
+                    </div>
+                    <div class="btn-group">
+                        <a href="#demo2" class="btn-demo">👁 Live Demo</a>
+                        <label for="c2" class="buy-label">Buy Now</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 3: Price Action Course -->
+        <div class="product-card">
+            <div class="card-badge discount">🔥 Sale</div>
+            <div class="product-thumb">🎓</div>
+            <div class="product-body">
+                <div class="product-type">Video Course + PDF</div>
+                <div class="product-title">Price Action Mastery Bundle</div>
+                <div class="product-desc">12 hours HD video + 5 eBooks. Candlesticks, S&R, trendlines, chart patterns & live examples.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.8</span>
+                    <span>•</span>
+                    <span class="sales">6,100+ enrolled</span>
+                    <span>•</span>
+                    <span class="instant">⚡ Instant Access</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹799</span>
+                        <span class="price-original">₹4,999</span>
+                        <span class="price-discount">-84%</span>
+                    </div>
+                    <div class="btn-group">
+                        <a href="#demo3" class="btn-demo">👁 Preview</a>
+                        <label for="c3" class="buy-label">Buy Now</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 4: Option Chain Analyzer -->
+        <div class="product-card">
+            <div class="card-badge bestseller">⭐ Popular</div>
+            <div class="product-thumb">⛓️</div>
+            <div class="product-body">
+                <div class="product-type">Excel Tool</div>
+                <div class="product-title">Option Chain Analyzer Pro</div>
+                <div class="product-desc">PCR, OI change, IV analysis, max pain, straddle/strangle builder. NSE real-time data pull.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.6</span>
+                    <span>•</span>
+                    <span class="sales">2,300+ sold</span>
+                    <span>•</span>
+                    <span class="instant">⚡ Instant Download</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹1,299</span>
+                        <span class="price-original">₹5,499</span>
+                        <span class="price-discount">-76%</span>
+                    </div>
+                    <div class="btn-group">
+                        <a href="#demo4" class="btn-demo">👁 Live Demo</a>
+                        <label for="c4" class="buy-label">Buy Now</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 5: Backtesting Engine -->
+        <div class="product-card featured">
+            <div class="card-badge bestseller">⭐ Bestseller</div>
+            <div class="product-thumb">⚙️</div>
+            <div class="product-body">
+                <div class="product-type">Python Script + Excel</div>
+                <div class="product-title">Strategy Backtesting Engine</div>
+                <div class="product-desc">Test any strategy on 10 years of Nifty data. Sharpe, drawdown, CAGR, win rate — all auto-calculated.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.9</span>
+                    <span>•</span>
+                    <span class="sales">1,500+ sold</span>
+                    <span>•</span>
+                    <span class="instant">⚡ Instant Download</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹1,999</span>
+                        <span class="price-original">₹7,999</span>
+                        <span class="price-discount">-75%</span>
+                    </div>
+                    <div class="btn-group">
+                        <a href="#demo5" class="btn-demo">👁 Live Demo</a>
+                        <label for="c5" class="buy-label">Buy Now</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 6: Risk Calculator -->
+        <div class="product-card">
+            <div class="card-badge new">🆕 New</div>
+            <div class="product-thumb">🎯</div>
+            <div class="product-body">
+                <div class="product-type">Web App</div>
+                <div class="product-title">Position Sizing & Risk Calculator</div>
+                <div class="product-desc">Calculate optimal position size based on your capital, risk %, stop-loss. Supports equity, F&O, commodities.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.8</span>
+                    <span>•</span>
+                    <span class="sales">980+ sold</span>
+                    <span>•</span>
+                    <span class="instant">⚡ Instant Access</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹299</span>
+                        <span class="price-original">₹999</span>
+                        <span class="price-discount">-70%</span>
+                    </div>
+                    <div class="btn-group">
+                        <a href="#demo6" class="btn-demo">👁 Live Demo</a>
+                        <label for="c6" class="buy-label">Buy Now</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 7: Economic Calendar -->
+        <div class="product-card">
+            <div class="card-badge discount">🔥 Sale</div>
+            <div class="product-thumb">📅</div>
+            <div class="product-body">
+                <div class="product-type">Notion + Google Calendar</div>
+                <div class="product-title">Economic Events Tracker</div>
+                <div class="product-desc">Pre-loaded 2024-25 events. RBI policy, GDP, CPI, FOMC. Auto-sync with Google Calendar alerts.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.5</span>
+                    <span>•</span>
+                    <span class="sales">620+ sold</span>
+                    <span>•</span>
+                    <span class="instant">⚡ Instant Download</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹199</span>
+                        <span class="price-original">₹799</span>
+                        <span class="price-discount">-75%</span>
+                    </div>
+                    <div class="btn-group">
+                        <a href="#demo7" class="btn-demo">👁 Preview</a>
+                        <label for="c7" class="buy-label">Buy Now</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 8: TradingView Indicators Pack -->
+        <div class="product-card featured">
+            <div class="card-badge bestseller">⭐ Bestseller</div>
+            <div class="product-thumb">📈</div>
+            <div class="product-body">
+                <div class="product-type">Pine Script Bundle</div>
+                <div class="product-title">10 Premium TradingView Indicators</div>
+                <div class="product-desc">SuperTrend, VWAP bands, Order Blocks, FVG, Market Profile, Volume Profile & more. Copy-paste ready.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.9</span>
+                    <span>•</span>
+                    <span class="sales">7,500+ sold</span>
+                    <span>•</span>
+                    <span class="instant">⚡ Instant Download</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹599</span>
+                        <span class="price-original">₹2,999</span>
+                        <span class="price-discount">-80%</span>
+                    </div>
+                    <div class="btn-group">
+                        <a href="#demo8" class="btn-demo">👁 Live Demo</a>
+                        <label for="c8" class="buy-label">Buy Now</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== LIVE DEMO MODALS ===== -->
+    
+    <!-- DEMO 1: Trade Journal -->
+    <div class="modal-overlay" id="demo1">
+        <div class="modal-box">
+            <a href="#" class="modal-close">✕</a>
+            <h3>📋 Pro Trade Journal — Live Demo</h3>
+            <span class="demo-label">⚡ Fully Functional Preview</span>
+            
+            <div class="stats-mini">
+                <div class="stat-mini-card">
+                    <div class="val green">₹42,850</div>
+                    <div class="lbl">Total P&L (March)</div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="val gold">68%</div>
+                    <div class="lbl">Win Rate</div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="val green">1:2.4</div>
+                    <div class="lbl">Avg Risk:Reward</div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="val gold">23</div>
+                    <div class="lbl">Total Trades</div>
+                </div>
+            </div>
+
+            <div class="trade-table-wrapper">
+                <table class="trade-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th><th>Symbol</th><th>Type</th><th>Entry</th><th>Exit</th><th>Qty</th><th>P&L</th><th>R:R</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>01/03/24</td><td>NIFTY 22100 CE</td><td>Long</td><td>₹245</td><td>₹312</td><td>100</td><td class="profit">+₹6,700</td><td>1:2.8</td></tr>
+                        <tr><td>03/03/24</td><td>BANKNIFTY</td><td>Short</td><td>48,120</td><td>47,890</td><td>30</td><td class="profit">+₹6,900</td><td>1:3.1</td></tr>
+                        <tr><td>05/03/24</td><td>RELIANCE</td><td>Long</td><td>₹2,845</td><td>₹2,790</td><td>50</td><td class="loss">-₹2,750</td><td>1:1.8</td></tr>
+                        <tr><td>07/03/24</td><td>TCS</td><td>Long</td><td>₹3,920</td><td>₹4,050</td><td>40</td><td class="profit">+₹5,200</td><td>1:2.5</td></tr>
+                        <tr><td>10/03/24</td><td>NIFTY 22200 PE</td><td>Long</td><td>₹180</td><td>₹245</td><td>150</td><td class="profit">+₹9,750</td><td>1:3.5</td></tr>
+                        <tr><td>12/03/24</td><td>INFY</td><td>Short</td><td>₹1,610</td><td>₹1,645</td><td>100</td><td class="loss">-₹3,500</td><td>1:2.1</td></tr>
+                        <tr><td>15/03/24</td><td>HDFCBANK</td><td>Long</td><td>₹1,450</td><td>₹1,532</td><td>200</td><td class="profit">+₹16,400</td><td>1:4.0</td></tr>
+                        <tr><td>18/03/24</td><td>SBIN</td><td>Long</td><td>₹740</td><td>₹770</td><td>300</td><td class="profit">+₹9,000</td><td>1:2.3</td></tr>
+                        <tr><td>20/03/24</td><td>BANKNIFTY PE</td><td>Long</td><td>₹320</td><td>₹285</td><td>60</td><td class="loss">-₹2,100</td><td>1:1.5</td></tr>
+                        <tr><td>22/03/24</td><td>ITC</td><td>Short</td><td>₹420</td><td>₹398</td><td>500</td><td class="profit">+₹11,000</td><td>1:2.7</td></tr>
+                        <tr class="total-row"><td colspan="6"><strong>March 2024 Total</strong></td><td class="profit">+₹42,850</td><td>1:2.4</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="color:var(--muted);font-size:0.75rem;margin-top:0.8rem;text-align:center;">📥 Purchase to download the editable Excel/Google Sheets template with all formulas built-in.</p>
+        </div>
+    </div>
+
+    <!-- DEMO 2: Stock Screener -->
+    <div class="modal-overlay" id="demo2">
+        <div class="modal-box">
+            <a href="#" class="modal-close">✕</a>
+            <h3>🔍 NSE/BSE Stock Screener — Live Preview</h3>
+            <span class="demo-label">⚡ Real-Time Filtering Demo</span>
+            <div class="trade-table-wrapper">
+                <table class="trade-table">
+                    <thead>
+                        <tr><th>Symbol</th><th>Price</th><th>RSI</th><th>MACD</th><th>Volume</th><th>Signal</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>RELIANCE</td><td>₹2,845</td><td>58</td><td class="profit">Bullish</td><td>2.3M</td><td class="profit">BUY</td></tr>
+                        <tr><td>TCS</td><td>₹3,920</td><td>72</td><td class="bear">Bearish</td><td>1.1M</td><td class="bear">SELL</td></tr>
+                        <tr><td>HDFCBANK</td><td>₹1,450</td><td>45</td><td class="profit">Bullish</td><td>3.8M</td><td class="profit">BUY</td></tr>
+                        <tr><td>INFY</td><td>₹1,610</td><td>35</td><td class="profit">Bullish</td><td>1.5M</td><td class="profit">BUY</td></tr>
+                        <tr><td>SBIN</td><td>₹740</td><td>62</td><td class="bear">Bearish</td><td>2.7M</td><td class="bear">SELL</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="color:var(--muted);font-size:0.75rem;margin-top:0.8rem;text-align:center;">📥 Full version includes 100+ indicators, export to Excel & custom alert settings.</p>
+        </div>
+    </div>
+
+    <!-- DEMO 3: Price Action Course -->
+    <div class="modal-overlay" id="demo3">
+        <div class="modal-box">
+            <a href="#" class="modal-close">✕</a>
+            <h3>🎓 Price Action Mastery — Course Preview</h3>
+            <span class="demo-label">⚡ Free Preview Videos</span>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1rem 0;">
+                <div style="background:var(--surface2);padding:1.2rem;border-radius:14px;text-align:center;">
+                    <div style="font-size:2.5rem;">🕯️</div>
+                    <div style="font-weight:700;color:#fff;margin:0.5rem 0;">Module 1</div>
+                    <div style="color:var(--muted);font-size:0.8rem;">Candlestick Patterns<br>2.5 Hours • 12 Lessons</div>
+                </div>
+                <div style="background:var(--surface2);padding:1.2rem;border-radius:14px;text-align:center;">
+                    <div style="font-size:2.5rem;">📐</div>
+                    <div style="font-weight:700;color:#fff;margin:0.5rem 0;">Module 2</div>
+                    <div style="color:var(--muted);font-size:0.8rem;">Support & Resistance<br>3 Hours • 15 Lessons</div>
+                </div>
+                <div style="background:var(--surface2);padding:1.2rem;border-radius:14px;text-align:center;">
+                    <div style="font-size:2.5rem;">📈</div>
+                    <div style="font-weight:700;color:#fff;margin:0.5rem 0;">Module 3</div>
+                    <div style="color:var(--muted);font-size:0.8rem;">Chart Patterns<br>3.5 Hours • 18 Lessons</div>
+                </div>
+                <div style="background:var(--surface2);padding:1.2rem;border-radius:14px;text-align:center;">
+                    <div style="font-size:2.5rem;">🎯</div>
+                    <div style="font-weight:700;color:#fff;margin:0.5rem 0;">Module 4</div>
+                    <div style="color:var(--muted);font-size:0.8rem;">Live Trading Sessions<br>3 Hours • 8 Recordings</div>
+                </div>
+            </div>
+            <p style="color:var(--muted);font-size:0.75rem;margin-top:0.8rem;text-align:center;">📥 Full access: 12+ hours HD video, 5 eBooks, lifetime updates & private Discord community.</p>
+        </div>
+    </div>
+
+    <!-- DEMO 4: Option Chain Analyzer -->
+    <div class="modal-overlay" id="demo4">
+        <div class="modal-box">
+            <a href="#" class="modal-close">✕</a>
+            <h3>⛓️ Option Chain Analyzer — Live Demo</h3>
+            <span class="demo-label">⚡ NIFTY 22,200 • 28 March Expiry</span>
+            <div class="trade-table-wrapper">
+                <table class="trade-table">
+                    <thead>
+                        <tr><th>Strike</th><th>CE OI</th><th>CE Chg</th><th>Price</th><th>PE OI</th><th>PE Chg</th><th>Signal</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>22,100</td><td>2.4M</td><td class="profit">+18%</td><td>₹245</td><td>1.8M</td><td class="bear">-12%</td><td class="profit">Bullish</td></tr>
+                        <tr><td>22,200</td><td>3.1M</td><td class="profit">+22%</td><td>₹180</td><td>2.2M</td><td class="bear">-8%</td><td class="profit">Strong Buy</td></tr>
+                        <tr><td>22,300</td><td>1.9M</td><td class="bear">-5%</td><td>₹120</td><td>2.8M</td><td class="profit">+15%</td><td class="bear">Resistance</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="stats-mini">
+                <div class="stat-mini-card"><div class="val gold">1.42</div><div class="lbl">Put/Call Ratio</div></div>
+                <div class="stat-mini-card"><div class="val green">22,200</div><div class="lbl">Max Pain</div></div>
+                <div class="stat-mini-card"><div class="val gold">24.5%</div><div class="lbl">India VIX</div></div>
+            </div>
+            <p style="color:var(--muted);font-size:0.75rem;margin-top:0.8rem;text-align:center;">📥 Full version auto-pulls live NSE data. Includes Greeks calculator & strategy builder.</p>
+        </div>
+    </div>
+
+    <!-- DEMO 5: Backtesting Engine -->
+    <div class="modal-overlay" id="demo5">
+        <div class="modal-box">
+            <a href="#" class="modal-close">✕</a>
+            <h3>⚙️ Strategy Backtesting Engine — Results Demo</h3>
+            <span class="demo-label">⚡ Moving Average Crossover • NIFTY • 10 Years</span>
+            <div class="stats-mini">
+                <div class="stat-mini-card"><div class="val green">₹12,45,000</div><div class="lbl">Total Profit</div></div>
+                <div class="stat-mini-card"><div class="val gold">52%</div><div class="lbl">Win Rate</div></div>
+                <div class="stat-mini-card"><div class="val green">1.84</div><div class="lbl">Sharpe Ratio</div></div>
+                <div class="stat-mini-card"><div class="val gold">-18%</div><div class="lbl">Max Drawdown</div></div>
+            </div>
+            <p style="color:var(--muted);font-size:0.75rem;margin-top:0.8rem;text-align:center;">📥 Includes 10 years NIFTY data, Python script & Excel template. Test any strategy in minutes.</p>
+        </div>
+    </div>
+
+    <!-- DEMO 6: Risk Calculator -->
+    <div class="modal-overlay" id="demo6">
+        <div class="modal-box">
+            <a href="#" class="modal-close">✕</a>
+            <h3>🎯 Position Sizing Calculator — Live Tool</h3>
+            <span class="demo-label">⚡ Interactive Calculator</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0;">
+                <div style="background:var(--surface2);padding:1.2rem;border-radius:14px;">
+                    <div style="color:var(--muted);font-size:0.7rem;">Capital</div>
+                    <div style="color:#fff;font-size:1.5rem;font-weight:700;">₹1,00,000</div>
+                </div>
+                <div style="background:var(--surface2);padding:1.2rem;border-radius:14px;">
+                    <div style="color:var(--muted);font-size:0.7rem;">Risk per Trade</div>
+                    <div style="color:#fff;font-size:1.5rem;font-weight:700;">2% (₹2,000)</div>
+                </div>
+                <div style="background:var(--surface2);padding:1.2rem;border-radius:14px;">
+                    <div style="color:var(--muted);font-size:0.7rem;">Entry Price</div>
+                    <div style="color:#fff;font-size:1.5rem;font-weight:700;">₹1,450</div>
+                </div>
+                <div style="background:var(--surface2);padding:1.2rem;border-radius:14px;">
+                    <div style="color:var(--muted);font-size:0.7rem;">Stop Loss</div>
+                    <div style="color:#fff;font-size:1.5rem;font-weight:700;">₹1,410</div>
+                </div>
+            </div>
+            <div style="background:rgba(0,230,118,0.1);border:2px solid var(--bull);border-radius:14px;padding:1.5rem;text-align:center;margin:1rem 0;">
+                <div style="color:var(--bull);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;">Recommended Position Size</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:800;color:var(--bull);">50 Shares</div>
+                <div style="color:var(--muted);font-size:0.8rem;">Max Loss: ₹2,000 | Investment: ₹72,500</div>
+            </div>
+            <p style="color:var(--muted);font-size:0.75rem;text-align:center;">📥 Full version supports Equity, F&O, Commodities & Crypto with custom risk profiles.</p>
+        </div>
+    </div>
+
+    <!-- DEMO 7: Economic Calendar -->
+    <div class="modal-overlay" id="demo7">
+        <div class="modal-box">
+            <a href="#" class="modal-close">✕</a>
+            <h3>📅 Economic Events Tracker — Preview</h3>
+            <span class="demo-label">⚡ Upcoming Events</span>
+            <div class="trade-table-wrapper">
+                <table class="trade-table">
+                    <thead><tr><th>Date</th><th>Event</th><th>Country</th><th>Impact</th><th>Previous</th><th>Forecast</th></tr></thead>
+                    <tbody>
+                        <tr><td>05 Apr</td><td>RBI MPC Decision</td><td>🇮🇳 India</td><td>🔴 High</td><td>6.50%</td><td>6.50%</td></tr>
+                        <tr><td>10 Apr</td><td>US CPI Data</td><td>🇺🇸 USA</td><td>🔴 High</td><td>3.2%</td><td>3.1%</td></tr>
+                        <tr><td>12 Apr</td><td>IIP Data</td><td>🇮🇳 India</td><td>🟡 Medium</td><td>3.8%</td><td>4.1%</td></tr>
+                        <tr><td>15 Apr</td><td>WPI Inflation</td><td>🇮🇳 India</td><td>🟡 Medium</td><td>0.53%</td><td>0.70%</td></tr>
+                        <tr><td>01 May</td><td>FOMC Meeting</td><td>🇺🇸 USA</td><td>🔴 High</td><td>5.50%</td><td>5.50%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="color:var(--muted);font-size:0.75rem;margin-top:0.8rem;text-align:center;">📥 Full version: 50+ events pre-loaded, Google Calendar sync, email/SMS alerts before events.</p>
+        </div>
+    </div>
+
+    <!-- DEMO 8: TradingView Indicators -->
+    <div class="modal-overlay" id="demo8">
+        <div class="modal-box">
+            <a href="#" class="modal-close">✕</a>
+            <h3>📈 TradingView Indicators — Pine Script Code Preview</h3>
+            <span class="demo-label">⚡ SuperTrend Indicator • Pine Script v5</span>
+            <div style="background:#0d1117;border-radius:14px;padding:1.5rem;margin:1rem 0;overflow-x:auto;">
+                <pre style="color:#c9d1d9;font-family:'JetBrains Mono',monospace;font-size:0.7rem;line-height:1.6;"><code><span style="color:#ff7b72;">//@version=5</span>
+<span style="color:#d2a8ff;">indicator</span>(<span style="color:#a5d6ff;">"SuperTrend Pro"</span>, overlay=<span style="color:#79c0ff;">true</span>)
+
+<span style="color:#8b949e;">// Input Parameters</span>
+atrPeriod = <span style="color:#d2a8ff;">input.int</span>(<span style="color:#a5d6ff;">10</span>, <span style="color:#a5d6ff;">"ATR Period"</span>)
+factor = <span style="color:#d2a8ff;">input.float</span>(<span style="color:#a5d6ff;">3.0</span>, <span style="color:#a5d6ff;">"Factor"</span>, step=<span style="color:#a5d6ff;">0.1</span>)
+
+<span style="color:#8b949e;">// SuperTrend Calculation</span>
+[supertrend, direction] = <span style="color:#d2a8ff;">ta.supertrend</span>(factor, atrPeriod)
+
+<span style="color:#8b949e;">// Plot</span>
+bullish = direction < <span style="color:#a5d6ff;">0</span>
+<span style="color:#d2a8ff;">plot</span>(bullish ? supertrend : <span style="color:#79c0ff;">na</span>, <span style="color:#a5d6ff;">"Up Trend"</span>, color=<span style="color:#7ee787;">color.green</span>, linewidth=<span style="color:#a5d6ff;">2</span>)
+<span style="color:#d2a8ff;">plot</span>(<span style="color:#79c0ff;">not</span> bullish ? supertrend : <span style="color:#79c0ff;">na</span>, <span style="color:#a5d6ff;">"Down Trend"</span>, color=<span style="color:#f85149;">color.red</span>, linewidth=<span style="color:#a5d6ff;">2</span>)
+
+<span style="color:#8b949e;">// Buy/Sell Signals</span>
+<span style="color:#d2a8ff;">plotshape</span>(<span style="color:#d2a8ff;">ta.crossover</span>(direction, <span style="color:#a5d6ff;">0</span>), <span style="color:#a5d6ff;">"BUY"</span>, color=<span style="color:#7ee787;">color.green</span>, style=<span style="color:#79c0ff;">shape.labelup</span>)
+<span style="color:#d2a8ff;">plotshape</span>(<span style="color:#d2a8ff;">ta.crossunder</span>(direction, <span style="color:#a5d6ff;">0</span>), <span style="color:#a5d6ff;">"SELL"</span>, color=<span style="color:#f85149;">color.red</span>, style=<span style="color:#79c0ff;">shape.labeldown</span>)</code></pre>
+            </div>
+            <p style="color:var(--muted);font-size:0.75rem;margin-top:0.8rem;text-align:center;">📥 Full pack: 10 indicators with source code, installation guide & customization tutorial video.</p>
+        </div>
+    </div>
+
+    <!-- CART DRAWER -->
+    <div class="cart-drawer" id="cart">
+        <div class="cart-drawer-header">
+            <h3>🛒 Your Cart</h3>
+            <a href="#" class="cart-close-btn">✕</a>
+        </div>
+        <div class="cart-items-container">
+            <p class="cart-empty-msg">No products selected yet.<br>Browse & add your tools!</p>
+            <div class="cart-item-entry cart-item-1"><div class="cart-item-thumb">📋</div><div class="cart-item-info"><div class="name">Pro Trade Journal with Analytics</div><div class="price">₹499</div></div><label for="c1" class="cart-item-remove">✕</label></div>
+            <div class="cart-item-entry cart-item-2"><div class="cart-item-thumb">🔍</div><div class="cart-item-info"><div class="name">NSE/BSE Stock Screener</div><div class="price">₹999</div></div><label for="c2" class="cart-item-remove">✕</label></div>
+            <div class="cart-item-entry cart-item-3"><div class="cart-item-thumb">🎓</div><div class="cart-item-info"><div class="name">Price Action Mastery Bundle</div><div class="price">₹799</div></div><label for="c3" class="cart-item-remove">✕</label></div>
+            <div class="cart-item-entry cart-item-4"><div class="cart-item-thumb">⛓️</div><div class="cart-item-info"><div class="name">Option Chain Analyzer Pro</div><div class="price">₹1,299</div></div><label for="c4" class="cart-item-remove">✕</label></div>
+            <div class="cart-item-entry cart-item-5"><div class="cart-item-thumb">⚙️</div><div class="cart-item-info"><div class="name">Strategy Backtesting Engine</div><div class="price">₹1,999</div></div><label for="c5" class="cart-item-remove">✕</label></div>
+            <div class="cart-item-entry cart-item-6"><div class="cart-item-thumb">🎯</div><div class="cart-item-info"><div class="name">Position Sizing & Risk Calculator</div><div class="price">₹299</div></div><label for="c6" class="cart-item-remove">✕</label></div>
+            <div class="cart-item-entry cart-item-7"><div class="cart-item-thumb">📅</div><div class="cart-item-info"><div class="name">Economic Events Tracker</div><div class="price">₹199</div></div><label for="c7" class="cart-item-remove">✕</label></div>
+            <div class="cart-item-entry cart-item-8"><div class="cart-item-thumb">📈</div><div class="cart-item-info"><div class="name">10 Premium TradingView Indicators</div><div class="price">₹599</div></div><label for="c8" class="cart-item-remove">✕</label></div>
+        </div>
+        <div class="cart-drawer-footer">
+            <div class="cart-total-line"><span>Estimated Total:</span><span class="cart-total-amount">Review items ↑</span></div>
+            <a href="#checkout" class="checkout-btn">Proceed to Checkout →</a>
+        </div>
+    </div>
+    <div class="cart-overlay"></div>
+
+    <!-- CHECKOUT PAGE -->
+    <div class="checkout-page" id="checkout">
+        <a href="#" class="close-checkout">✕</a>
+        <div class="checkout-card">
+            <h2>💳 Complete Purchase</h2>
+            <p class="sub">Instant digital delivery after payment</p>
+            <form action="#success" method="get">
+                <div class="field"><label>Full Name</label><input type="text" placeholder="Enter full name" required></div>
+                <div class="field"><label>Email (for delivery)</label><input type="email" placeholder="your@email.com" required></div>
+                <div class="field-row">
+                    <div class="field"><label>Phone</label><input type="tel" placeholder="+91 9876543210" required></div>
+                    <div class="field"><label>Country</label><select required><option>India</option><option>USA</option><option>UK</option><option>UAE</option><option>Other</option></select></div>
+                </div>
+                <p style="color:#fff;font-weight:600;margin:1.3rem 0 0.5rem;">Payment Method</p>
+                <div class="pay-options">
+                    <input type="radio" name="pay" class="pay-radio" id="pUpi" checked>
+                    <label for="pUpi" class="pay-label"><span class="pay-icon">📱</span><div><strong>UPI</strong><small style="color:var(--muted);display:block;">Google Pay • PhonePe • Paytm</small></div></label>
+                    <input type="radio" name="pay" class="pay-radio" id="pCard">
+                    <label for="pCard" class="pay-label"><span class="pay-icon">💳</span><div><strong>Card</strong><small style="color:var(--muted);display:block;">Visa • Mastercard • RuPay</small></div></label>
+                    <input type="radio" name="pay" class="pay-radio" id="pNet">
+                    <label for="pNet" class="pay-label"><span class="pay-icon">🏦</span><div><strong>Net Banking</strong><small style="color:var(--muted);display:block;">All Indian banks</small></div></label>
+                    <input type="radio" name="pay" class="pay-radio" id="pIntl">
+                    <label for="pIntl" class="pay-label"><span class="pay-icon">🌍</span><div><strong>International</strong><small style="color:var(--muted);display:block;">PayPal • Stripe • Wise</small></div></label>
+                </div>
+                <div class="pay-detail-field"><div class="field"><label>Payment ID / UPI</label><input type="text" placeholder="yourname@upi" required></div></div>
+                <button type="submit" class="submit-btn">Pay & Download Instantly ⚡</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SUCCESS PAGE -->
+    <div class="success-page" id="success">
+        <div class="success-box">
+            <div class="big-icon">✅</div>
+            <h2>Payment Successful!</h2>
+            <p>📧 Download link sent to your email<br>⚡ Instant access — check your inbox</p>
+            <a href="#" class="back-shop-btn">← Back to Store</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 <a href="#">TradeStack Pro</a> — Real Tools for Real Traders | 📈 Every product has a live demo | <a href="#">Refund Policy</a></p>
+    </footer>
+</body>
+</html>

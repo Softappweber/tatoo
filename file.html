@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>loverssread</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#000;
+      --bg2:#0aa7ff;
+      --accent:#ff2d2d;
+      --text:#eaf4ff;
+      --muted:rgba(234,244,255,.75);
+      --border:rgba(255,255,255,.14);
+      --shadow: 0 14px 40px rgba(0,0,0,.55);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(10,167,255,.35), transparent 60%),
+        radial-gradient(800px 450px at 85% 20%, rgba(255,45,45,.30), transparent 55%),
+        linear-gradient(135deg, #000 0%, #071018 30%, #061018 60%, #000 100%);
+    }
+
+    header{
+      padding:28px 18px 16px;
+      text-align:center;
+    }
+
+    .brand{
+      display:inline-flex;
+      align-items:center;
+      gap:14px;
+      padding:14px 18px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      background: linear-gradient(135deg, rgba(0,0,0,.70), rgba(10,167,255,.18));
+      backdrop-filter: blur(10px);
+    }
+
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      background: linear-gradient(135deg, #000 0%, rgba(10,167,255,.95) 45%, rgba(255,45,45,.95) 100%);
+      box-shadow: 0 10px 30px rgba(10,167,255,.22);
+      border:1px solid rgba(255,255,255,.18);
+    }
+
+    h1{ margin:0; font-size:26px; letter-spacing:.2px; font-weight:800; }
+    .subtitle{ margin-top:6px; color:var(--muted); font-size:13px; }
+
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding:18px 14px 56px;
+    }
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background: rgba(0,0,0,.35);
+      backdrop-filter: blur(8px);
+    }
+
+    .menu{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+
+    .menu button{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color:var(--muted);
+      font-weight:800;
+      font-size:13px;
+      padding:10px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      transition: transform .12s ease, filter .12s ease, background .12s ease, border-color .12s ease;
+    }
+
+    .menu button:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+    .menu button.active{
+      color:#fff;
+      border-color: rgba(255,255,255,.22);
+      background: linear-gradient(135deg, rgba(10,167,255,.25), rgba(255,45,45,.18));
+    }
+
+    .hint{
+      color:var(--muted);
+      font-weight:800;
+      font-size:12px;
+      line-height:1.25;
+    }
+
+    .status{
+      margin:14px 2px 0;
+      color:var(--muted);
+      font-weight:800;
+      font-size:13px;
+      min-height:20px;
+    }
+
+    .grid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+    }
+
+    .card{
+      grid-column: span 12;
+      border-radius:18px;
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.35));
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: linear-gradient(135deg, rgba(10,167,255,.25), rgba(255,45,45,.18), rgba(0,0,0,.0));
+      opacity:.65;
+      pointer-events:none;
+    }
+
+    .card-inner{
+      position:relative;
+      padding:16px 16px 14px;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(6px);
+    }
+
+    .tagline{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+      color:var(--muted);
+      font-weight:800;
+      font-size:12px;
+    }
+
+    .pill{
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(10,167,255,.12);
+      border:1px solid rgba(10,167,255,.25);
+    }
+
+    .pill.red{
+      background: rgba(255,45,45,.12);
+      border:1px solid rgba(255,45,45,.28);
+    }
+
+    .title{
+      margin:10px 0 0;
+      font-size:18px;
+      font-weight:900;
+      line-height:1.25;
+      word-break:break-word;
+    }
+
+    .excerpt{
+      margin:10px 0 0;
+      color:rgba(234,244,255,.75);
+      font-size:13px;
+      line-height:1.45;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+
+    .actions{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    a.item-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:900;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(135deg, rgba(10,167,255,.30), rgba(255,45,45,.18));
+      transition: transform .12s ease, filter .12s ease;
+      white-space:nowrap;
+    }
+    a.item-link:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+
+    .small{
+      color:var(--muted);
+      font-weight:800;
+      font-size:12px;
+    }
+
+    footer{
+      text-align:center;
+      padding:18px 12px 30px;
+      color:rgba(234,244,255,.6);
+      font-size:12px;
+      font-weight:800;
+    }
+
+    @media (min-width: 760px){
+      .card{ grid-column: span 6; }
+      .card:nth-child(3n+1){ grid-column: span 6; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="brand" aria-label="loverssread">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>loverssread</h1>
+        <div class="subtitle">RSS reader • clickable items • same-tab opens</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="controls">
+      <div class="menu" role="tablist" aria-label="RSS Categories">
+        <button class="active" data-cat="finance">📈 Finance</button>
+        <button data-cat="tech">⚡ Tech</button>
+        <button data-cat="books">📚 Books</button>
+        <button data-cat="selfhelp">🧠 Self‑help</button>
+        <button data-cat="marathi">🌐 Marathi</button>
+        <button data-cat="english">🇬🇧 English</button>
+        <button data-cat="blogs">📰 Blogs</button>
+      </div>
+      <div class="hint">Tip: Some RSS feeds require a proxy/CORS; if nothing loads, use your own proxy.</div>
+    </div>
+
+    <div class="status" id="status" role="status"></div>
+
+    <section class="grid" id="grid" aria-live="polite"></section>
+  </main>
+
+  <footer>Links open in the same tab</footer>
+
+  <script>
+    const grid = document.getElementById('grid');
+    const statusEl = document.getElementById('status');
+
+    // If feeds don’t load due to CORS, set a proxy endpoint:
+    // Example: https://your-domain.com/proxy?url=
+    const PROXY_URL = ""; // optional
+
+    // These are feed URLs to populate each menu.
+    // (If any stop working, replace with working RSS URLs.)
+    const FEEDS = {
+      finance: {
+        label: "Finance",
+        rss: [
+          "https://feeds.bbci.co.uk/news/business/rss.xml",
+          "https://www.investing.com/rss/news.rss",
+          "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml"
+        ]
+      },
+      tech: {
+        label: "Tech",
+        rss: [
+          "https://feeds.arstechnica.com/arstechnica/index",
+          "https://www.theverge.com/rss/index.xml",
+          "https://www.engadget.com/rss.xml"
+        ]
+      },
+      books: {
+        label: "Books",
+        rss: [
+          "https://www.theguardian.com/books/rss",
+          "https://www.publishersweekly.com/rss/featured/?format=feed",
+          "https://www.readinggroupguides.com/rss"
+        ]
+      },
+      selfhelp: {
+        label: "Self‑help",
+        rss: [
+          "https://www.psychologytoday.com/us/rss",
+          "https://www.mindbodygreen.com/rss",
+          "https://www.success.com/feed/"
+        ]
+      },
+      marathi: {
+        label: "Marathi",
+        rss: [
+          // Replace with Marathi RSS feeds you know are working.
+          // Many Marathi sites don't provide RSS; you can use any working Marathi-English RSS.
+          "https://www.loksatta.com/feed/",
+          "https://marathi.abplive.com/rss.xml"
+        ]
+      },
+      english: {
+        label: "English",
+        rss: [
+          "https://www.reddit.com/r/technology/.rss",
+          "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+          "https://www.bbc.co.uk/news/rss.xml"
+        ]
+      },
+      blogs: {
+        label: "Blogs",
+        rss: [
+          "https://blog.google/products/ai/rss/",
+          "https://www.smashingmagazine.com/feed/",
+          "https://css-tricks.com/feed/"
+        ]
+      }
+    };
+
+    function escapeHtml(str){
+      return String(str ?? "").replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
+    }
+
+    function pickLink(item){
+      const link = item.querySelector('link')?.textContent?.trim();
+      if(link) return link;
+      const enclosure = item.querySelector('enclosure')?.getAttribute('url');
+      if(enclosure) return enclosure;
+      const guid = item.querySelector('guid')?.textContent?.trim();
+      if(guid) return guid;
+      return "";
+    }
+
+    function getText(item, selector){
+      const el = item.querySelector(selector);
+      return el ? (el.textContent || '').trim() : "";
+    }
+
+    async function fetchRSS(url){
+      const target = PROXY_URL ? (PROXY_URL + encodeURIComponent(url)) : url;
+      const res = await fetch(target, { mode: "cors" });
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      const xmlText = await res.text();
+      return new DOMParser().parseFromString(xmlText, "application/xml");
+    }
+
+    function renderItem({ title, link, pubDate, description, categoryLabel }){
+      const card = document.createElement('article');
+      card.className = 'card';
+
+      const lower = (title || "").toLowerCase();
+      const pill2 = "Open";
+      const pill1 = categoryLabel || (lower.includes("tech") ? "Tech" : "Blogs");
+
+      card.innerHTML = `
+        <div class="card-inner">
+          <div class="tagline">
+            <span class="pill">${escapeHtml(pill1)}</span>
+            <span class="pill red">${escapeHtml(pill2)}</span>
+          </div>
+          <h3 class="title">${escapeHtml(title || "Untitled")}</h3>
+          ${description ? `<p class="excerpt">${escapeHtml(description)}</p>` : ``}
+          <div class="actions">
+            ${
+              link
+                ? `<a class="item-link" href="${escapeHtml(link)}">
+                     Read
+                     <span class="small">↗</span>
+                   </a>`
+                : `<div class="small">No valid link in feed item</div>`
+            }
+            ${pubDate ? `<div class="small">🕒 ${escapeHtml(pubDate)}</div>` : ``}
+          </div>
+        </div>
+      `;
+
+      return card;
+    }
+
+    function setStatus(msg){ statusEl.textContent = msg; }
+
+    function sliceUnique(items, max=12){
+      const seen = new Set();
+      const out = [];
+      for(const it of items){
+        const key = (it.link || "") + "|" + (it.title || "");
+        if(seen.has(key)) continue;
+        seen.add(key);
+        out.push(it);
+        if(out.length >= max) break;
+      }
+      return out;
+    }
+
+    async function loadCategory(cat){
+      const def = FEEDS[cat];
+      if(!def) return;
+
+      grid.innerHTML = "";
+      setStatus("Loading " + def.label + " RSS…");
+
+      try{
+        const feeds = def.rss;
+        let all = [];
+
+        for(const url of feeds){
+          const doc = await fetchRSS(url);
+
+          const parseError = doc.querySelector('parsererror');
+          if(parseError) continue;
+
+          const items = Array.from(doc.querySelectorAll('item')).slice(0, 6);
+          if(items.length){
+            for(const item of items){
+              all.push({
+                title: getText(item,'title'),
+                link: pickLink(item),
+                pubDate: getText(item,'pubDate') || getText(item,'published') || "",
+                description: getText(item,'description') || getText(item,'summary') || "",
+                categoryLabel: def.label
+              });
+            }
+            continue;
+          }
+
+          const entries = Array.from(doc.querySelectorAll('entry')).slice(0, 6);
+          for(const entry of entries){
+            const title = getText(entry,'title');
+            const linkEl = entry.querySelector('link[rel="alternate"]') || entry.querySelector('link');
+            const link = linkEl?.getAttribute('href') || linkEl?.textContent || "";
+            const pubDate = getText(entry,'updated') || getText(entry,'published') || "";
+            const description = getText(entry,'description') || getText(entry,'summary') || "";
+            all.push({ title, link, pubDate, description, categoryLabel: def.label });
+          }
+        }
+
+        const finalItems = sliceUnique(all, 12);
+        if(finalItems.length === 0){
+          setStatus("No items loaded. Feeds may require a proxy/CORS.");
+          return;
+        }
+
+        for(const it of finalItems){
+          grid.appendChild(renderItem(it));
+        }
+
+        setStatus("Done. Showing latest items.");
+      }catch(err){
+        setStatus("Could not load RSS. CORS/proxy may be required. " + err.message);
+      }
+    }
+
+    document.querySelectorAll('.menu button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        loadCategory(btn.dataset.cat);
+      });
+    });
+
+    // load default
+    loadCategory('finance');
+  </script>
+</body>
+</html>

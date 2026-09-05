@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeStack | Digital Tools for Traders</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0a0b14;
+            --surface: #11132b;
+            --surface2: #181b3a;
+            --bull: #00e676;
+            --bear: #ff3d5a;
+            --gold: #ffd740;
+            --accent: #448aff;
+            --text: #e8eaf6;
+            --muted: #7c7fa3;
+            --border: rgba(255,255,255,0.05);
+            --glow-green: rgba(0,230,118,0.2);
+            --glow-red: rgba(255,61,90,0.2);
+            --glow-gold: rgba(255,215,64,0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Animated Market Grid Background */
+        .market-bg {
+            position: fixed; inset: 0; z-index: -2;
+            background: 
+                linear-gradient(180deg, #0a0b14 0%, #0d0f1f 30%, #0f1228 60%, #0a0b14 100%);
+        }
+
+        .candlestick-pattern {
+            position: fixed; inset: 0; z-index: -1; opacity: 0.03;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,230,118,0.5) 19px, rgba(0,230,118,0.5) 20px),
+                repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,0.3) 59px, rgba(255,255,255,0.3) 60px);
+            background-size: 60px 40px;
+            animation: patternShift 30s linear infinite;
+        }
+
+        @keyframes patternShift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 40px); }
+        }
+
+        /* Floating Orbs */
+        .orb {
+            position: fixed; border-radius: 50%; filter: blur(100px); z-index: -1;
+            animation: orbDrift 15s ease-in-out infinite;
+        }
+        .orb-1 { width: 350px; height: 350px; background: rgba(0,230,118,0.06); top: 10%; left: -5%; }
+        .orb-2 { width: 280px; height: 280px; background: rgba(255,61,90,0.05); bottom: 15%; right: -3%; animation-delay: -5s; }
+        .orb-3 { width: 220px; height: 220px; background: rgba(255,215,64,0.04); top: 50%; left: 50%; animation-delay: -10s; }
+
+        @keyframes orbDrift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(60px, -40px) scale(1.1); }
+            50% { transform: translate(-30px, 50px) scale(0.9); }
+            75% { transform: translate(-50px, -20px) scale(1.05); }
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(10,11,20,0.9); backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            max-width: 1300px; margin: 0 auto; padding: 0.9rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .brand {
+            display: flex; align-items: center; gap: 0.7rem; text-decoration: none;
+        }
+
+        .brand-icon {
+            width: 42px; height: 42px;
+            background: linear-gradient(135deg, var(--bull), #00c853);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; box-shadow: 0 4px 20px var(--glow-green);
+        }
+
+        .brand-text {
+            font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800;
+            background: linear-gradient(135deg, #fff, var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex; gap: 0.3rem; list-style: none; align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none; color: var(--muted); font-weight: 500; font-size: 0.85rem;
+            padding: 0.5rem 1rem; border-radius: 10px; transition: all 0.25s;
+            font-family: 'Inter', sans-serif; letter-spacing: 0.3px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #fff; background: rgba(255,255,255,0.04);
+        }
+
+        .nav-links .cart-nav {
+            background: rgba(255,215,64,0.1); border: 1px solid rgba(255,215,64,0.2);
+            color: var(--gold); display: flex; align-items: center; gap: 0.4rem;
+        }
+
+        /* HERO STRIP */
+        .hero-strip {
+            margin-top: 75px; padding: 2.5rem 2rem; text-align: center;
+            background: linear-gradient(180deg, rgba(0,230,118,0.03) 0%, transparent 100%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-strip .live-ticker {
+            display: inline-flex; gap: 2rem; flex-wrap: wrap; justify-content: center;
+            margin-bottom: 1.5rem;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            background: var(--surface); border: 1px solid var(--border);
+            padding: 0.6rem 1.5rem; border-radius: 50px;
+        }
+
+        .live-ticker .up { color: var(--bull); }
+        .live-ticker .down { color: var(--bear); }
+        .live-ticker span { letter-spacing: 0.5px; }
+
+        .hero-strip h1 {
+            font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 900;
+            line-height: 1.1; max-width: 700px; margin: 0 auto 0.8rem;
+            letter-spacing: -1.5px;
+        }
+
+        .hero-strip h1 .gradient-text {
+            background: linear-gradient(135deg, var(--bull) 20%, var(--gold) 50%, var(--accent) 80%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .hero-strip p {
+            color: var(--muted); font-size: 1.05rem; max-width: 550px; margin: 0 auto;
+            font-weight: 400;
+        }
+
+        /* STATS ROW */
+        .stats-row {
+            display: flex; gap: 1.5rem; max-width: 1300px; margin: 0 auto;
+            padding: 0 2rem 1.5rem; flex-wrap: wrap; justify-content: center;
+        }
+
+        .stat-card {
+            flex: 1; min-width: 200px; max-width: 300px;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 1.5rem; text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-3px);
+        }
+
+        .stat-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700;
+            letter-spacing: -1px;
+        }
+        .stat-value.green { color: var(--bull); }
+        .stat-value.gold { color: var(--gold); }
+        .stat-label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* SECTION HEADER */
+        .section-header {
+            max-width: 1300px; margin: 0 auto; padding: 1rem 2rem 2rem;
+            display: flex; justify-content: space-between; align-items: flex-end;
+            flex-wrap: wrap; gap: 1rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .section-header h2 .accent { color: var(--bull); }
+        .filter-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+        .filter-pill {
+            padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.8rem;
+            font-weight: 500; cursor: pointer; transition: all 0.25s;
+            background: var(--surface); border: 1px solid var(--border); color: var(--muted);
+            text-decoration: none; font-family: 'Inter', sans-serif;
+        }
+
+        .filter-pill:hover, .filter-pill.active {
+            background: rgba(0,230,118,0.1); border-color: var(--bull); color: var(--bull);
+        }
+
+        /* PRODUCTS GRID */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.3rem; max-width: 1300px; margin: 0 auto; padding: 0 2rem 3rem;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            position: relative;
+            display: flex; flex-direction: column;
+            text-decoration: none; color: inherit;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.12);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .product-card.featured {
+            border-color: rgba(255,215,64,0.25);
+        }
+
+        .product-card.featured::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--bull), var(--gold));
+            z-index: 1; animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .card-badge {
+            position: absolute; top: 16px; left: 16px; z-index: 2;
+            padding: 0.3rem 0.9rem; border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        .card-badge.bestseller {
+            background: linear-gradient(135deg, var(--gold), #ff9100);
+            color: #1a1a1a;
+        }
+
+        .card-badge.new {
+            background: rgba(68,138,255,0.2); color: var(--accent);
+            border: 1px solid rgba(68,138,255,0.3);
+        }
+
+        .card-badge.discount {
+            background: rgba(255,61,90,0.2); color: var(--bear);
+            border: 1px solid rgba(255,61,90,0.3);
+        }
+
+        .product-thumb {
+            height: 240px; position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,230,118,0.03));
+            font-size: 6rem; transition: all 0.4s;
+        }
+
+        .product-card:hover .product-thumb {
+            transform: scale(1.04);
+        }
+
+        .product-thumb img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        .product-thumb .overlay-icon {
+            position: absolute; bottom: 12px; right: 12px;
+            background: rgba(0,0,0,0.7); border-radius: 50%; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; opacity: 0; transition: all 0.3s;
+        }
+
+        .product-card:hover .product-thumb .overlay-icon { opacity: 1; }
+
+        .product-body { padding: 1.3rem; flex: 1; display: flex; flex-direction: column; }
+
+        .product-type {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            color: var(--bull); text-transform: uppercase; letter-spacing: 1.5px;
+            margin-bottom: 0.4rem;
+        }
+
+        .product-title {
+            font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700;
+            color: #fff; margin-bottom: 0.3rem; letter-spacing: -0.3px;
+            line-height: 1.3;
+        }
+
+        .product-desc {
+            color: var(--muted); font-size: 0.82rem; margin-bottom: 1rem;
+            flex: 1; line-height: 1.5;
+        }
+
+        .product-meta {
+            display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem;
+            font-size: 0.75rem; color: var(--muted);
+        }
+
+        .product-meta .rating { color: var(--gold); font-weight: 600; }
+        .product-meta .sales { font-weight: 500; }
+
+        .product-footer {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .price-block {
+            display: flex; align-items: baseline; gap: 0.4rem;
+        }
+
+        .price-current {
+            font-family: 'JetBrains Mono', monospace; font-size: 1.3rem;
+            font-weight: 700; color: #fff;
+        }
+
+        .price-original {
+            font-size: 0.75rem; color: rgba(255,255,255,0.3);
+            text-decoration: line-through;
+        }
+
+        .price-discount {
+            font-size: 0.65rem; color: var(--bull); font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .buy-label {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            padding: 0.5rem 1.2rem;
+            background: linear-gradient(135deg, var(--bull), #00c853);
+            color: #0a0b14; border-radius: 10px; font-weight: 700;
+            font-size: 0.8rem; cursor: pointer; transition: all 0.3s;
+            font-family: 'Inter', sans-serif; letter-spacing: 0.3px;
+            text-decoration: none;
+        }
+
+        .buy-label:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px var(--glow-green);
+        }
+
+        .buy-label.secondary {
+            background: rgba(255,255,255,0.06); color: #fff;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .buy-label.secondary:hover {
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.08);
+        }
+
+        /* ===== CART SYSTEM (CSS ONLY) ===== */
+        .cart-checkbox { display: none; }
+
+        /* Cart Sidebar */
+        .cart-drawer {
+            position: fixed; top: 0; right: -450px; width: 420px; height: 100vh;
+            background: rgba(17,19,43,0.98); backdrop-filter: blur(30px);
+            border-left: 1px solid var(--border); z-index: 3000;
+            transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            display: flex; flex-direction: column; box-shadow: -15px 0 50px rgba(0,0,0,0.6);
+        }
+
+        .cart-drawer:target { right: 0; }
+
+        .cart-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            z-index: 2999;
+        }
+
+        .cart-drawer:target ~ .cart-overlay { display: block; }
+
+        .cart-drawer-header {
+            padding: 1.5rem; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .cart-drawer-header h3 {
+            font-family: 'Playfair Display', serif; color: #fff; font-size: 1.3rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+
+        .cart-drawer-header .cart-count-badge {
+            background: var(--bull); color: #0a0b14; font-size: 0.7rem;
+            width: 24px; height: 24px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+        }
+
+        .cart-close-btn {
+            text-decoration: none; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); color: #fff;
+            width: 35px; height: 35px; border-radius: 10px; display: flex;
+            align-items: center; justify-content: center; font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .cart-close-btn:hover {
+            background: rgba(255,61,90,0.2); border-color: rgba(255,61,90,0.3);
+        }
+
+        .cart-items-container { flex: 1; overflow-y: auto; padding: 1rem; }
+
+        .cart-empty-msg { color: var(--muted); text-align: center; padding: 3rem 1rem; }
+
+        .cart-item-entry {
+            display: none; padding: 0.8rem; background: rgba(255,255,255,0.02);
+            border-radius: 12px; margin-bottom: 0.7rem; border: 1px solid rgba(255,255,255,0.04);
+            align-items: center; gap: 0.8rem;
+        }
+
+        /* Show/hide cart items based on checkboxes */
+        #c1:checked ~ .cart-drawer .cart-item-1,
+        #c2:checked ~ .cart-drawer .cart-item-2,
+        #c3:checked ~ .cart-drawer .cart-item-3,
+        #c4:checked ~ .cart-drawer .cart-item-4,
+        #c5:checked ~ .cart-drawer .cart-item-5,
+        #c6:checked ~ .cart-drawer .cart-item-6,
+        #c7:checked ~ .cart-drawer .cart-item-7,
+        #c8:checked ~ .cart-drawer .cart-item-8,
+        #c9:checked ~ .cart-drawer .cart-item-9,
+        #c10:checked ~ .cart-drawer .cart-item-10 { display: flex; }
+
+        /* Hide empty message when any item checked */
+        #c1:checked ~ .cart-drawer .cart-empty-msg,
+        #c2:checked ~ .cart-drawer .cart-empty-msg,
+        #c3:checked ~ .cart-drawer .cart-empty-msg,
+        #c4:checked ~ .cart-drawer .cart-empty-msg,
+        #c5:checked ~ .cart-drawer .cart-empty-msg,
+        #c6:checked ~ .cart-drawer .cart-empty-msg,
+        #c7:checked ~ .cart-drawer .cart-empty-msg,
+        #c8:checked ~ .cart-drawer .cart-empty-msg,
+        #c9:checked ~ .cart-drawer .cart-empty-msg,
+        #c10:checked ~ .cart-drawer .cart-empty-msg { display: none; }
+
+        .cart-item-thumb {
+            width: 50px; height: 50px; border-radius: 10px; display: flex;
+            align-items: center; justify-content: center; font-size: 1.8rem;
+            background: rgba(255,255,255,0.03); flex-shrink: 0;
+        }
+
+        .cart-item-info { flex: 1; color: #fff; min-width: 0; }
+        .cart-item-info .name { font-weight: 600; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .cart-item-info .price { font-family: 'JetBrains Mono', monospace; color: var(--bull); font-size: 0.8rem; font-weight: 600; }
+
+        .cart-item-remove {
+            background: rgba(255,61,90,0.1); border: 1px solid rgba(255,61,90,0.2);
+            color: var(--bear); padding: 0.2rem 0.6rem; border-radius: 6px;
+            cursor: pointer; font-size: 0.7rem; transition: all 0.3s; text-decoration: none;
+        }
+
+        .cart-item-remove:hover { background: rgba(255,61,90,0.2); }
+
+        .cart-drawer-footer {
+            padding: 1.5rem; border-top: 1px solid var(--border);
+            position: sticky; bottom: 0; background: rgba(17,19,43,0.98);
+        }
+
+        .cart-total-line { display: flex; justify-content: space-between; color: #fff; font-weight: 600; margin-bottom: 1rem; }
+        .cart-total-amount { font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 1.2rem; font-weight: 700; }
+
+        .checkout-btn {
+            display: block; width: 100%; padding: 0.85rem; text-align: center;
+            background: linear-gradient(135deg, var(--gold), #ff9100); color: #1a1a1a;
+            border-radius: 12px; font-weight: 700; font-size: 0.95rem;
+            cursor: pointer; transition: all 0.3s; text-decoration: none;
+            font-family: 'Inter', sans-serif; letter-spacing: 0.5px;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(255,215,64,0.3);
+        }
+
+        /* ===== CHECKOUT PAGE ===== */
+        .checkout-page {
+            display: none; position: fixed; inset: 0; z-index: 4000;
+            background: rgba(10,11,20,0.97); backdrop-filter: blur(20px);
+            flex-direction: column; align-items: center; justify-content: center;
+            padding: 2rem; overflow-y: auto;
+        }
+
+        .checkout-page:target { display: flex; }
+
+        .checkout-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 24px; max-width: 500px; width: 100%; padding: 2.5rem;
+        }
+
+        .checkout-card h2 {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #fff;
+            text-align: center; margin-bottom: 0.3rem;
+        }
+
+        .checkout-card .sub { color: var(--muted); text-align: center; margin-bottom: 2rem; font-size: 0.85rem; }
+
+        .field { margin-bottom: 1.2rem; }
+        .field label {
+            display: block; color: var(--muted); font-size: 0.75rem; margin-bottom: 0.3rem;
+            text-transform: uppercase; letter-spacing: 1px; font-family: 'Inter', sans-serif;
+        }
+
+        .field input, .field select {
+            width: 100%; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff;
+            font-family: 'DM Sans', sans-serif; font-size: 0.9rem; transition: all 0.3s;
+        }
+
+        .field input:focus, .field select:focus {
+            outline: none; border-color: var(--gold);
+            box-shadow: 0 0 20px var(--glow-gold);
+        }
+
+        .field-row { display: flex; gap: 1rem; }
+        .field-row .field { flex: 1; }
+
+        .pay-options { display: flex; flex-direction: column; gap: 0.6rem; margin: 1.5rem 0; }
+        .pay-radio { display: none; }
+
+        .pay-label {
+            display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.2rem;
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px; cursor: pointer; transition: all 0.3s; color: #fff;
+        }
+
+        .pay-label:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); }
+
+        .pay-radio:checked + .pay-label {
+            background: rgba(255,215,64,0.06); border-color: var(--gold);
+            box-shadow: 0 0 25px var(--glow-gold);
+        }
+
+        .pay-icon { font-size: 1.6rem; flex-shrink: 0; }
+
+        .pay-detail-field { display: none; margin-top: 0.5rem; }
+        #pUpi:checked ~ .pay-detail-field,
+        #pCard:checked ~ .pay-detail-field,
+        #pNet:checked ~ .pay-detail-field,
+        #pIntl:checked ~ .pay-detail-field { display: block; }
+
+        .submit-btn {
+            display: block; width: 100%; padding: 1rem; margin-top: 1rem;
+            background: linear-gradient(135deg, var(--bull), #00c853); color: #0a0b14;
+            border: none; border-radius: 12px; font-family: 'Inter', sans-serif;
+            font-weight: 700; font-size: 1.05rem; cursor: pointer; transition: all 0.3s;
+            text-align: center; text-decoration: none;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px var(--glow-green);
+        }
+
+        .close-checkout {
+            position: absolute; top: 20px; right: 30px; text-decoration: none;
+            color: #fff; font-size: 1.3rem; background: rgba(255,255,255,0.04);
+            width: 40px; height: 40px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; transition: all 0.3s;
+        }
+
+        .close-checkout:hover { background: rgba(255,61,90,0.2); }
+
+        /* Success Page */
+        .success-page {
+            display: none; position: fixed; inset: 0; z-index: 5000;
+            background: rgba(10,11,20,0.98); backdrop-filter: blur(20px);
+            flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .success-page:target { display: flex; }
+
+        .success-box { text-align: center; }
+        .success-box .big-icon { font-size: 5rem; margin-bottom: 1rem; }
+        .success-box h2 {
+            font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--bull);
+            margin-bottom: 0.8rem;
+        }
+
+        .success-box p { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; }
+
+        .back-shop-btn {
+            display: inline-block; padding: 0.8rem 2.2rem;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15);
+            color: #fff; border-radius: 30px; text-decoration: none;
+            font-weight: 600; transition: all 0.3s;
+        }
+
+        .back-shop-btn:hover { background: rgba(255,255,255,0.1); }
+
+        /* FOOTER */
+        footer {
+            text-align: center; padding: 2rem; border-top: 1px solid var(--border);
+            color: var(--muted); font-size: 0.8rem; margin-top: 1rem;
+        }
+
+        footer a { color: var(--accent); text-decoration: none; }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero-strip h1 { font-size: 2.2rem; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+            .cart-drawer { width: 100%; right: -100%; }
+        }
+
+        @media (max-width: 600px) {
+            .nav-links a { font-size: 0.72rem; padding: 0.4rem 0.6rem; }
+            .hero-strip h1 { font-size: 1.7rem; }
+            .products-grid { grid-template-columns: 1fr; padding: 0 1rem 2rem; }
+            .stats-row { padding: 0 1rem 1rem; }
+            .field-row { flex-direction: column; }
+            .checkout-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="market-bg"></div>
+    <div class="candlestick-pattern"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Hidden Cart Checkboxes -->
+    <input type="checkbox" class="cart-checkbox" id="c1">
+    <input type="checkbox" class="cart-checkbox" id="c2">
+    <input type="checkbox" class="cart-checkbox" id="c3">
+    <input type="checkbox" class="cart-checkbox" id="c4">
+    <input type="checkbox" class="cart-checkbox" id="c5">
+    <input type="checkbox" class="cart-checkbox" id="c6">
+    <input type="checkbox" class="cart-checkbox" id="c7">
+    <input type="checkbox" class="cart-checkbox" id="c8">
+    <input type="checkbox" class="cart-checkbox" id="c9">
+    <input type="checkbox" class="cart-checkbox" id="c10">
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-inner">
+            <a href="#" class="brand">
+                <div class="brand-icon">📊</div>
+                <span class="brand-text">TradeStack</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#products" class="active">Products</a></li>
+                <li><a href="#bestsellers">Best Sellers</a></li>
+                <li><a href="#free">Free Tools</a></li>
+                <li><a href="#cart" class="cart-nav">🛒 Cart</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO STRIP -->
+    <div class="hero-strip">
+        <div class="live-ticker">
+            <span class="up">▲ NIFTY 22,145 +0.8%</span>
+            <span class="up">▲ BANKNIFTY 48,230 +1.2%</span>
+            <span class="down">▼ INDIA VIX 13.5 -2.1%</span>
+            <span class="up">▲ USDINR 83.45 +0.1%</span>
+        </div>
+        <h1>Digital Tools for <span class="gradient-text">Smarter Traders</span></h1>
+        <p>Premium templates, courses, indicators, and software — everything you need to trade like a pro. Instant download. Lifetime access.</p>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon">📦</div>
+            <div class="stat-value green">50+</div>
+            <div class="stat-label">Digital Products</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value gold">12,000+</div>
+            <div class="stat-label">Happy Traders</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-value green">4.8</div>
+            <div class="stat-label">Average Rating</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-value gold">Instant</div>
+            <div class="stat-label">Download Delivery</div>
+        </div>
+    </div>
+
+    <!-- PRODUCT SECTION HEADER -->
+    <div class="section-header" id="products">
+        <h2>🔥 <span class="accent">Trending</span> Digital Products</h2>
+        <div class="filter-pills">
+            <a href="#" class="filter-pill active">All</a>
+            <a href="#" class="filter-pill">Indicators</a>
+            <a href="#" class="filter-pill">Templates</a>
+            <a href="#" class="filter-pill">Courses</a>
+            <a href="#" class="filter-pill">Software</a>
+        </div>
+    </div>
+
+    <!-- PRODUCTS GRID - 10 Products -->
+    <div class="products-grid">
+
+        <!-- Product 1 - FEATURED -->
+        <div class="product-card featured">
+            <div class="card-badge bestseller">⭐ Bestseller</div>
+            <div class="product-thumb">📈</div>
+            <div class="product-body">
+                <div class="product-type">Trading Indicator</div>
+                <div class="product-title">Bull-Bear Power Zone Indicator</div>
+                <div class="product-desc">Advanced MT4/MT5 indicator with buy/sell signals, support-resistance zones & real-time alerts. No repaint.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.9</span>
+                    <span>•</span>
+                    <span class="sales">3,200+ sold</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹1,499</span>
+                        <span class="price-original">₹3,999</span>
+                        <span class="price-discount">-62%</span>
+                    </div>
+                    <label for="c1" class="buy-label">Get Instant Access</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card">
+            <div class="card-badge new">🆕 New</div>
+            <div class="product-thumb">📋</div>
+            <div class="product-body">
+                <div class="product-type">Excel Template</div>
+                <div class="product-title">Trade Journal & P&L Tracker</div>
+                <div class="product-desc">Automated Excel sheet with dashboards, win-rate calculator, risk-reward analyzer & monthly P&L reports.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.7</span>
+                    <span>•</span>
+                    <span class="sales">1,800+ sold</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹599</span>
+                        <span class="price-original">₹1,299</span>
+                        <span class="price-discount">-54%</span>
+                    </div>
+                    <label for="c2" class="buy-label secondary">Add to Cart</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card">
+            <div class="card-badge discount">🔥 Sale</div>
+            <div class="product-thumb">🎓</div>
+            <div class="product-body">
+                <div class="product-type">Video Course</div>
+                <div class="product-title">Price Action Mastery Course</div>
+                <div class="product-desc">15+ hours of HD video content covering candlestick patterns, S&R, trendlines & live market examples.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.8</span>
+                    <span>•</span>
+                    <span class="sales">5,600+ enrolled</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹999</span>
+                        <span class="price-original">₹4,999</span>
+                        <span class="price-discount">-80%</span>
+                    </div>
+                    <label for="c3" class="buy-label">Enroll Now</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="product-card">
+            <div class="product-thumb">🤖</div>
+            <div class="product-body">
+                <div class="product-type">Trading Bot</div>
+                <div class="product-title">Auto-Trade EA for MT5</div>
+                <div class="product-desc">Fully automated Expert Advisor with risk management, trailing stop-loss & multi-currency support.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.6</span>
+                    <span>•</span>
+                    <span class="sales">950+ sold</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹2,999</span>
+                        <span class="price-original">₹7,999</span>
+                        <span class="price-discount">-62%</span>
+                    </div>
+                    <label for="c4" class="buy-label secondary">Add to Cart</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="product-card featured">
+            <div class="card-badge bestseller">⭐ Bestseller</div>
+            <div class="product-thumb">📊</div>
+            <div class="product-body">
+                <div class="product-type">Dashboard</div>
+                <div class="product-title">Live Market Screener Tool</div>
+                <div class="product-desc">Web-based screener filtering stocks by RSI, MACD, volume & breakout patterns. Real-time NSE/BSE data.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.9</span>
+                    <span>•</span>
+                    <span class="sales">4,100+ users</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹799</span>
+                        <span class="price-original">₹2,499</span>
+                        <span class="price-discount">-68%</span>
+                    </div>
+                    <label for="c5" class="buy-label">Get Instant Access</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 6 -->
+        <div class="product-card">
+            <div class="card-badge new">🆕 New</div>
+            <div class="product-thumb">📝</div>
+            <div class="product-body">
+                <div class="product-type">Notion Template</div>
+                <div class="product-title">Trader's Second Brain OS</div>
+                <div class="product-desc">All-in-one Notion workspace: trade log, watchlists, strategy library, market notes & daily routine.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.8</span>
+                    <span>•</span>
+                    <span class="sales">720+ sold</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹399</span>
+                        <span class="price-original">₹999</span>
+                        <span class="price-discount">-60%</span>
+                    </div>
+                    <label for="c6" class="buy-label secondary">Add to Cart</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 7 -->
+        <div class="product-card">
+            <div class="card-badge discount">🔥 Sale</div>
+            <div class="product-thumb">📱</div>
+            <div class="product-body">
+                <div class="product-type">Mobile App</div>
+                <div class="product-title">Trade Alarm Pro App</div>
+                <div class="product-desc">Android/iOS app with price alerts, F&O signals, economic calendar & portfolio tracker. Push notifications.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.5</span>
+                    <span>•</span>
+                    <span class="sales">2,300+ installs</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹299</span>
+                        <span class="price-original">₹899</span>
+                        <span class="price-discount">-67%</span>
+                    </div>
+                    <label for="c7" class="buy-label">Buy License</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 8 -->
+        <div class="product-card">
+            <div class="product-thumb">📚</div>
+            <div class="product-body">
+                <div class="product-type">eBook Bundle</div>
+                <div class="product-title">Ultimate Trading eBook Collection</div>
+                <div class="product-desc">10 eBooks covering technical analysis, options strategies, psychology & risk management. PDF format.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.7</span>
+                    <span>•</span>
+                    <span class="sales">6,800+ sold</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹199</span>
+                        <span class="price-original">₹1,499</span>
+                        <span class="price-discount">-87%</span>
+                    </div>
+                    <label for="c8" class="buy-label secondary">Add to Cart</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 9 -->
+        <div class="product-card featured">
+            <div class="card-badge bestseller">⭐ Bestseller</div>
+            <div class="product-thumb">🎯</div>
+            <div class="product-body">
+                <div class="product-type">Signal Service</div>
+                <div class="product-title">Premium Trading Signals (1 Year)</div>
+                <div class="product-desc">Daily 3-5 high-probability trades via Telegram. BankNifty & Nifty focus. 75%+ accuracy track record.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.6</span>
+                    <span>•</span>
+                    <span class="sales">1,500+ subscribers</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹4,999</span>
+                        <span class="price-original">₹14,999</span>
+                        <span class="price-discount">-67%</span>
+                    </div>
+                    <label for="c9" class="buy-label">Subscribe Now</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 10 -->
+        <div class="product-card">
+            <div class="card-badge new">🆕 New</div>
+            <div class="product-thumb">🔧</div>
+            <div class="product-body">
+                <div class="product-type">Toolkit</div>
+                <div class="product-title">Options Strategy Builder Kit</div>
+                <div class="product-desc">Interactive payoff graph generator, Greeks calculator, strategy finder & position sizing tool. Excel + Web.</div>
+                <div class="product-meta">
+                    <span class="rating">★ 4.8</span>
+                    <span>•</span>
+                    <span class="sales">480+ sold</span>
+                </div>
+                <div class="product-footer">
+                    <div class="price-block">
+                        <span class="price-current">₹1,299</span>
+                        <span class="price-original">₹3,499</span>
+                        <span class="price-discount">-63%</span>
+                    </div>
+                    <label for="c10" class="buy-label secondary">Add to Cart</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CART DRAWER -->
+    <div class="cart-drawer" id="cart">
+        <div class="cart-drawer-header">
+            <h3>🛒 Your Cart <span class="cart-count-badge">•</span></h3>
+            <a href="#" class="cart-close-btn">✕</a>
+        </div>
+        <div class="cart-items-container">
+            <p class="cart-empty-msg">No digital products selected yet.<br>Browse above & add your tools!</p>
+
+            <div class="cart-item-entry cart-item-1">
+                <div class="cart-item-thumb">📈</div>
+                <div class="cart-item-info"><div class="name">Bull-Bear Power Zone Indicator</div><div class="price">₹1,499</div></div>
+                <label for="c1" class="cart-item-remove">✕</label>
+            </div>
+            <div class="cart-item-entry cart-item-2">
+                <div class="cart-item-thumb">📋</div>
+                <div class="cart-item-info"><div class="name">Trade Journal & P&L Tracker</div><div class="price">₹599</div></div>
+                <label for="c2" class="cart-item-remove">✕</label>
+            </div>
+            <div class="cart-item-entry cart-item-3">
+                <div class="cart-item-thumb">🎓</div>
+                <div class="cart-item-info"><div class="name">Price Action Mastery Course</div><div class="price">₹999</div></div>
+                <label for="c3" class="cart-item-remove">✕</label>
+            </div>
+            <div class="cart-item-entry cart-item-4">
+                <div class="cart-item-thumb">🤖</div>
+                <div class="cart-item-info"><div class="name">Auto-Trade EA for MT5</div><div class="price">₹2,999</div></div>
+                <label for="c4" class="cart-item-remove">✕</label>
+            </div>
+            <div class="cart-item-entry cart-item-5">
+                <div class="cart-item-thumb">📊</div>
+                <div class="cart-item-info"><div class="name">Live Market Screener Tool</div><div class="price">₹799</div></div>
+                <label for="c5" class="cart-item-remove">✕</label>
+            </div>
+            <div class="cart-item-entry cart-item-6">
+                <div class="cart-item-thumb">📝</div>
+                <div class="cart-item-info"><div class="name">Trader's Second Brain OS</div><div class="price">₹399</div></div>
+                <label for="c6" class="cart-item-remove">✕</label>
+            </div>
+            <div class="cart-item-entry cart-item-7">
+                <div class="cart-item-thumb">📱</div>
+                <div class="cart-item-info"><div class="name">Trade Alarm Pro App</div><div class="price">₹299</div></div>
+                <label for="c7" class="cart-item-remove">✕</label>
+            </div>
+            <div class="cart-item-entry cart-item-8">
+                <div class="cart-item-thumb">📚</div>
+                <div class="cart-item-info"><div class="name">Ultimate Trading eBook Collection</div><div class="price">₹199</div></div>
+                <label for="c8" class="cart-item-remove">✕</label>
+            </div>
+            <div class="cart-item-entry cart-item-9">
+                <div class="cart-item-thumb">🎯</div>
+                <div class="cart-item-info"><div class="name">Premium Trading Signals (1 Year)</div><div class="price">₹4,999</div></div>
+                <label for="c9" class="cart-item-remove">✕</label>
+            </div>
+            <div class="cart-item-entry cart-item-10">
+                <div class="cart-item-thumb">🔧</div>
+                <div class="cart-item-info"><div class="name">Options Strategy Builder Kit</div><div class="price">₹1,299</div></div>
+                <label for="c10" class="cart-item-remove">✕</label>
+            </div>
+        </div>
+        <div class="cart-drawer-footer">
+            <div class="cart-total-line"><span>Estimated Total:</span><span class="cart-total-amount">Review items ↑</span></div>
+            <a href="#checkout" class="checkout-btn">Proceed to Checkout →</a>
+        </div>
+    </div>
+    <div class="cart-overlay"></div>
+
+    <!-- CHECKOUT PAGE -->
+    <div class="checkout-page" id="checkout">
+        <a href="#" class="close-checkout">✕</a>
+        <div class="checkout-card">
+            <h2>💳 Complete Purchase</h2>
+            <p class="sub">Instant digital delivery after payment</p>
+            <form action="#success" method="get">
+                <div class="field"><label>Full Name</label><input type="text" placeholder="Enter full name" required></div>
+                <div class="field"><label>Email (for delivery)</label><input type="email" placeholder="your@email.com" required></div>
+                <div class="field-row">
+                    <div class="field"><label>Phone</label><input type="tel" placeholder="+91 9876543210" required></div>
+                    <div class="field"><label>Country</label><select required><option>India</option><option>USA</option><option>UK</option><option>UAE</option><option>Other</option></select></div>
+                </div>
+                <p style="color:#fff;font-weight:600;margin:1.3rem 0 0.5rem;">Payment Method</p>
+                <div class="pay-options">
+                    <input type="radio" name="pay" class="pay-radio" id="pUpi" checked>
+                    <label for="pUpi" class="pay-label"><span class="pay-icon">📱</span><div><strong>UPI</strong><small style="color:var(--muted);display:block;">Google Pay • PhonePe • Paytm</small></div></label>
+
+                    <input type="radio" name="pay" class="pay-radio" id="pCard">
+                    <label for="pCard" class="pay-label"><span class="pay-icon">💳</span><div><strong>Card</strong><small style="color:var(--muted);display:block;">Visa • Mastercard • RuPay</small></div></label>
+
+                    <input type="radio" name="pay" class="pay-radio" id="pNet">
+                    <label for="pNet" class="pay-label"><span class="pay-icon">🏦</span><div><strong>Net Banking</strong><small style="color:var(--muted);display:block;">All Indian banks</small></div></label>
+
+                    <input type="radio" name="pay" class="pay-radio" id="pIntl">
+                    <label for="pIntl" class="pay-label"><span class="pay-icon">🌍</span><div><strong>International</strong><small style="color:var(--muted);display:block;">PayPal • Stripe • Wise</small></div></label>
+                </div>
+                <div class="pay-detail-field"><div class="field"><label>Payment ID / UPI</label><input type="text" placeholder="yourname@upi" required></div></div>
+                <button type="submit" class="submit-btn">Pay & Download Instantly ⚡</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SUCCESS PAGE -->
+    <div class="success-page" id="success">
+        <div class="success-box">
+            <div class="big-icon">✅</div>
+            <h2>Payment Successful!</h2>
+            <p>📧 Download link sent to your email<br>⚡ Instant access — check your inbox</p>
+            <a href="#" class="back-shop-btn">← Back to Store</a>
+        </div>
+    </div>
+
+    <footer id="free">
+        <p>© 2024 <a href="#">TradeStack</a> — Digital Tools for Smarter Traders | 📈 All products are digital downloads | <a href="#">Refund Policy</a></p>
+    </footer>
+</body>
+</html>

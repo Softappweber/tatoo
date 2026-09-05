@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>NEXUS — Premium SaaS Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <style>
+        /* ============================================================
+           ROOT VARIABLES — 8 COLOR SCHEMES (ENHANCED)
+           ============================================================ */
+
+        /* ----- SCHEME 1: DARK LUXURY (ENHANCED) ----- */
+        .theme-dark-luxury {
+            --bg-primary: #0a0a12;
+            --bg-secondary: #10101a;
+            --bg-card: #161622;
+            --bg-card-hover: #20203a;
+            --bg-input: #161622;
+            --text-primary: #f0f0f8;
+            --text-secondary: #a0a0c0;
+            --text-muted: #6a6a8a;
+            --border-color: #2a2a42;
+            --accent-1: #8b5cf6;
+            --accent-2: #6d28d9;
+            --accent-3: #a78bfa;
+            --gradient-1: linear-gradient(135deg, #8b5cf6, #6d28d9, #4c1d95);
+            --gradient-2: linear-gradient(135deg, #a78bfa, #8b5cf6, #6d28d9);
+            --shadow: 0 20px 60px rgba(0,0,0,0.6);
+            --shadow-hover: 0 30px 80px rgba(139, 92, 246, 0.2);
+            --nav-bg: rgba(10, 10, 18, 0.9);
+            --card-border: rgba(139,92,246,0.12);
+            --hero-overlay: radial-gradient(ellipse at 30% 50%, rgba(139,92,246,0.12), transparent 60%);
+            --pricing-popular: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            --success: #34d399;
+            --error: #f87171;
+        }
+
+        /* ----- SCHEME 2: LIGHT MINIMAL (ENHANCED) ----- */
+        .theme-light-minimal {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f8fafc;
+            --bg-input: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --accent-1: #0f172a;
+            --accent-2: #3b82f6;
+            --accent-3: #8b5cf6;
+            --gradient-1: linear-gradient(135deg, #0f172a, #3b82f6, #8b5cf6);
+            --gradient-2: linear-gradient(135deg, #3b82f6, #8b5cf6, #0f172a);
+            --shadow: 0 20px 60px rgba(0,0,0,0.06);
+            --shadow-hover: 0 30px 80px rgba(59, 130, 246, 0.12);
+            --nav-bg: rgba(248, 250, 252, 0.9);
+            --card-border: rgba(0,0,0,0.04);
+            --hero-overlay: radial-gradient(ellipse at 30% 50%, rgba(59,130,246,0.04), transparent 60%);
+            --pricing-popular: linear-gradient(135deg, #0f172a, #3b82f6);
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        /* ----- SCHEME 3: DARK GRADIENT (ENHANCED) ----- */
+        .theme-dark-gradient {
+            --bg-primary: #0f0a1a;
+            --bg-secondary: #1a0f2a;
+            --bg-card: #1a0f2a;
+            --bg-card-hover: #2a1a3a;
+            --bg-input: #1a0f2a;
+            --text-primary: #ffffff;
+            --text-secondary: #c8b0e8;
+            --text-muted: #8a7aaa;
+            --border-color: #2a1a4a;
+            --accent-1: #a855f7;
+            --accent-2: #d946ef;
+            --accent-3: #f472b6;
+            --gradient-1: linear-gradient(135deg, #a855f7, #d946ef, #f472b6);
+            --gradient-2: linear-gradient(135deg, #d946ef, #f472b6, #a855f7);
+            --shadow: 0 20px 60px rgba(0,0,0,0.7);
+            --shadow-hover: 0 30px 80px rgba(168, 85, 247, 0.2);
+            --nav-bg: rgba(15, 10, 26, 0.92);
+            --card-border: rgba(168,85,247,0.12);
+            --hero-overlay: radial-gradient(ellipse at 30% 50%, rgba(168,85,247,0.12), transparent 60%);
+            --pricing-popular: linear-gradient(135deg, #a855f7, #d946ef);
+            --success: #34d399;
+            --error: #f87171;
+        }
+
+        /* ----- SCHEME 4: LIGHT GRADIENT (ENHANCED) ----- */
+        .theme-light-gradient {
+            --bg-primary: #faf5ff;
+            --bg-secondary: #f3ebff;
+            --bg-card: #ffffff;
+            --bg-card-hover: #faf5ff;
+            --bg-input: #ffffff;
+            --text-primary: #1a0a2a;
+            --text-secondary: #5a4a6a;
+            --text-muted: #9a8aaa;
+            --border-color: #e8d5f5;
+            --accent-1: #7c3aed;
+            --accent-2: #a855f7;
+            --accent-3: #d946ef;
+            --gradient-1: linear-gradient(135deg, #7c3aed, #a855f7, #d946ef);
+            --gradient-2: linear-gradient(135deg, #a855f7, #d946ef, #7c3aed);
+            --shadow: 0 20px 60px rgba(0,0,0,0.05);
+            --shadow-hover: 0 30px 80px rgba(124, 58, 237, 0.12);
+            --nav-bg: rgba(250, 245, 255, 0.9);
+            --card-border: rgba(124,58,237,0.06);
+            --hero-overlay: radial-gradient(ellipse at 30% 50%, rgba(124,58,237,0.06), transparent 60%);
+            --pricing-popular: linear-gradient(135deg, #7c3aed, #a855f7);
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        /* ----- SCHEME 5: WARM SUNSET (ENHANCED) ----- */
+        .theme-sunset {
+            --bg-primary: #0f0808;
+            --bg-secondary: #1a0e0a;
+            --bg-card: #1a0e0a;
+            --bg-card-hover: #2a1812;
+            --bg-input: #1a0e0a;
+            --text-primary: #ffffff;
+            --text-secondary: #f0c8b8;
+            --text-muted: #9a7a6a;
+            --border-color: #2a1812;
+            --accent-1: #f97316;
+            --accent-2: #ef4444;
+            --accent-3: #ec4899;
+            --gradient-1: linear-gradient(135deg, #f97316, #ef4444, #ec4899);
+            --gradient-2: linear-gradient(135deg, #ef4444, #ec4899, #f97316);
+            --shadow: 0 20px 60px rgba(0,0,0,0.7);
+            --shadow-hover: 0 30px 80px rgba(249, 115, 22, 0.2);
+            --nav-bg: rgba(15, 8, 8, 0.92);
+            --card-border: rgba(249,115,22,0.12);
+            --hero-overlay: radial-gradient(ellipse at 30% 50%, rgba(249,115,22,0.12), transparent 60%);
+            --pricing-popular: linear-gradient(135deg, #f97316, #ef4444);
+            --success: #34d399;
+            --error: #f87171;
+        }
+
+        /* ----- SCHEME 6: OCEAN DEEP (ENHANCED) ----- */
+        .theme-ocean {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #0f1a2a;
+            --bg-card: #0f1a2a;
+            --bg-card-hover: #1a2a3a;
+            --bg-input: #0f1a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #90c8e8;
+            --text-muted: #5a8aaa;
+            --border-color: #1a2a4a;
+            --accent-1: #0ea5e9;
+            --accent-2: #06b6d4;
+            --accent-3: #8b5cf6;
+            --gradient-1: linear-gradient(135deg, #0ea5e9, #06b6d4, #8b5cf6);
+            --gradient-2: linear-gradient(135deg, #06b6d4, #8b5cf6, #0ea5e9);
+            --shadow: 0 20px 60px rgba(0,0,0,0.7);
+            --shadow-hover: 0 30px 80px rgba(14, 165, 233, 0.2);
+            --nav-bg: rgba(10, 15, 26, 0.92);
+            --card-border: rgba(14,165,233,0.12);
+            --hero-overlay: radial-gradient(ellipse at 30% 50%, rgba(14,165,233,0.12), transparent 60%);
+            --pricing-popular: linear-gradient(135deg, #0ea5e9, #06b6d4);
+            --success: #34d399;
+            --error: #f87171;
+        }
+
+        /* ----- SCHEME 7: FOREST EARTH (ENHANCED) ----- */
+        .theme-forest {
+            --bg-primary: #0a1008;
+            --bg-secondary: #101a0e;
+            --bg-card: #101a0e;
+            --bg-card-hover: #1a2a18;
+            --bg-input: #101a0e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0d0a8;
+            --text-muted: #5a8a62;
+            --border-color: #1a2a18;
+            --accent-1: #22c55e;
+            --accent-2: #10b981;
+            --accent-3: #14b8a6;
+            --gradient-1: linear-gradient(135deg, #22c55e, #10b981, #14b8a6);
+            --gradient-2: linear-gradient(135deg, #10b981, #14b8a6, #22c55e);
+            --shadow: 0 20px 60px rgba(0,0,0,0.7);
+            --shadow-hover: 0 30px 80px rgba(34, 197, 94, 0.2);
+            --nav-bg: rgba(10, 16, 8, 0.92);
+            --card-border: rgba(34,197,94,0.12);
+            --hero-overlay: radial-gradient(ellipse at 30% 50%, rgba(34,197,94,0.12), transparent 60%);
+            --pricing-popular: linear-gradient(135deg, #22c55e, #10b981);
+            --success: #34d399;
+            --error: #f87171;
+        }
+
+        /* ----- SCHEME 8: ROYAL GOLD (ENHANCED) ----- */
+        .theme-royal {
+            --bg-primary: #0a0808;
+            --bg-secondary: #140e0a;
+            --bg-card: #140e0a;
+            --bg-card-hover: #241a12;
+            --bg-input: #140e0a;
+            --text-primary: #ffffff;
+            --text-secondary: #f0e0b8;
+            --text-muted: #9a8a5a;
+            --border-color: #2a1a0a;
+            --accent-1: #f59e0b;
+            --accent-2: #d97706;
+            --accent-3: #f97316;
+            --gradient-1: linear-gradient(135deg, #f59e0b, #d97706, #f97316);
+            --gradient-2: linear-gradient(135deg, #d97706, #f97316, #f59e0b);
+            --shadow: 0 20px 60px rgba(0,0,0,0.7);
+            --shadow-hover: 0 30px 80px rgba(245, 158, 11, 0.2);
+            --nav-bg: rgba(10, 8, 8, 0.92);
+            --card-border: rgba(245,158,11,0.12);
+            --hero-overlay: radial-gradient(ellipse at 30% 50%, rgba(245,158,11,0.12), transparent 60%);
+            --pricing-popular: linear-gradient(135deg, #f59e0b, #d97706);
+            --success: #34d399;
+            --error: #f87171;
+        }
+
+        /* ============================================================
+           BASE STYLES
+           ============================================================ */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ============================================================
+           SCROLLBAR
+           ============================================================ */
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-1);
+            border-radius: 10px;
+        }
+
+        /* ============================================================
+           THEME TOGGLER — 8 COLOR SCHEMES
+           ============================================================ */
+
+        .theme-toggler {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--bg-card);
+            padding: 14px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(16px);
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .theme-toggler::-webkit-scrollbar {
+            width: 2px;
+        }
+
+        .theme-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.15);
+            border-color: var(--accent-1);
+        }
+
+        .theme-btn.active {
+            border-color: var(--accent-1);
+            box-shadow: 0 0 24px var(--accent-1);
+        }
+
+        .theme-btn .tooltip {
+            position: absolute;
+            right: 46px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.2s;
+            border: 1px solid var(--border-color);
+        }
+
+        .theme-btn:hover .tooltip {
+            opacity: 1;
+        }
+
+        /* Theme button colors — enhanced with richer colors */
+        .theme-btn[data-theme="dark-luxury"] { 
+            background: linear-gradient(135deg, #0a0a12, #2a2a4a, #8b5cf6); 
+            border-color: #2a2a4a; 
+        }
+        .theme-btn[data-theme="light-minimal"] { 
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0, #3b82f6); 
+            border-color: #e2e8f0; 
+        }
+        .theme-btn[data-theme="dark-gradient"] { 
+            background: linear-gradient(135deg, #0f0a1a, #2a1a3a, #a855f7); 
+            border-color: #2a1a4a; 
+        }
+        .theme-btn[data-theme="light-gradient"] { 
+            background: linear-gradient(135deg, #faf5ff, #e8d5f5, #7c3aed); 
+            border-color: #e8d5f5; 
+        }
+        .theme-btn[data-theme="sunset"] { 
+            background: linear-gradient(135deg, #0f0808, #2a1812, #f97316); 
+            border-color: #2a1812; 
+        }
+        .theme-btn[data-theme="ocean"] { 
+            background: linear-gradient(135deg, #0a0f1a, #1a2a4a, #0ea5e9); 
+            border-color: #1a2a4a; 
+        }
+        .theme-btn[data-theme="forest"] { 
+            background: linear-gradient(135deg, #0a1008, #1a2a18, #22c55e); 
+            border-color: #1a2a18; 
+        }
+        .theme-btn[data-theme="royal"] { 
+            background: linear-gradient(135deg, #0a0808, #2a1a0a, #f59e0b); 
+            border-color: #2a1a0a; 
+        }
+
+        /* ============================================================
+           NAVIGATION
+           ============================================================ */
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.4s ease;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: var(--gradient-1);
+            color: #fff !important;
+            padding: 10px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            -webkit-text-fill-color: #fff !important;
+        }
+
+        .nav-cta::after {
+            display: none !important;
+        }
+
+        .nav-cta:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* ============================================================
+           HERO
+           ============================================================ */
+
+        .hero {
+            padding: 140px 0 80px;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--hero-overlay);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 6px 18px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--accent-1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 4.2rem;
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin-bottom: 32px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: var(--gradient-1);
+            color: #fff;
+            padding: 16px 40px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-outline {
+            display: inline-block;
+            background: transparent;
+            color: var(--text-primary);
+            padding: 16px 40px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 1.5px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-card);
+            border-color: var(--accent-1);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .hero-stats .number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .hero-stats .label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-card {
+            background: var(--bg-card);
+            border: 1px solid var(--card-border);
+            border-radius: 32px;
+            padding: 48px 40px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 480px;
+            backdrop-filter: blur(8px);
+            transition: all 0.4s ease;
+        }
+
+        .hero-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .hero-card .icon-big {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        .hero-card h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .hero-card p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .hero-card .pricing {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .hero-card .pricing span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .hero-card .tag {
+            display: inline-block;
+            background: var(--bg-primary);
+            padding: 4px 16px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--accent-1);
+            border: 1px solid var(--border-color);
+            margin-top: 12px;
+        }
+
+        /* ============================================================
+           PRICING SECTION
+           ============================================================ */
+
+        .pricing-section {
+            padding: 80px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 40px 32px;
+            transition: all 0.3s ease;
+            position: relative;
+            text-align: center;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-1);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--accent-1);
+            background: var(--bg-card-hover);
+        }
+
+        .pricing-card.popular::before {
+            content: '🔥 Most Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--pricing-popular);
+            color: #fff;
+            padding: 4px 20px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pricing-card .plan-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .pricing-card .plan-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .pricing-card .price {
+            font-size: 3.2rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .pricing-card .price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .pricing-card .features-list {
+            list-style: none;
+            text-align: left;
+            margin: 20px 0 30px;
+            padding: 0;
+        }
+
+        .pricing-card .features-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-card .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-card .features-list li .check {
+            color: var(--accent-1);
+            font-weight: 700;
+        }
+
+        .pricing-card .btn-pricing {
+            width: 100%;
+            padding: 14px;
+            border-radius: 60px;
+            background: var(--gradient-1);
+            color: #fff;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card .btn-pricing:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* ============================================================
+           CONTACT / PAYMENT SECTION
+           ============================================================ */
+
+        .contact-section {
+            padding: 80px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 48px;
+        }
+
+        .contact-form {
+            background: var(--bg-card);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-form:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-1);
+        }
+
+        .contact-form h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .contact-form p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-1);
+            box-shadow: 0 0 0 4px var(--accent-1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            border-radius: 60px;
+            background: var(--gradient-1);
+            color: #fff;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Payment Info */
+        .payment-info {
+            background: var(--bg-card);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 40px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .payment-info:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-1);
+        }
+
+        .payment-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .payment-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        .payment-info .upi-id {
+            background: var(--bg-primary);
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-family: 'Inter', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-1);
+            border: 1px solid var(--border-color);
+            margin-bottom: 16px;
+            word-break: break-all;
+        }
+
+        .payment-info .btn-pay {
+            display: inline-block;
+            background: var(--gradient-1);
+            color: #fff;
+            padding: 16px 40px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .payment-info .btn-pay:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .payment-info .qr-placeholder {
+            background: var(--bg-primary);
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 16px;
+        }
+
+        .payment-info .qr-placeholder .qr-icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* ============================================================
+           TESTIMONIALS
+           ============================================================ */
+
+        .testimonials {
+            padding: 80px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .testimonial-card {
+            background: var(--bg-card);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-1);
+        }
+
+        .testimonial-card .stars {
+            color: #facc15;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+
+        .testimonial-card blockquote {
+            color: var(--text-primary);
+            font-style: italic;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+
+        .testimonial-card .author {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .testimonial-card .role {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ============================================================
+           CTA
+           ============================================================ */
+
+        .cta-section {
+            padding: 80px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            position: relative;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--hero-overlay);
+            pointer-events: none;
+        }
+
+        .cta-section .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin: 0 auto 32px;
+            font-size: 1.1rem;
+        }
+
+        .cta-section .btn-primary {
+            padding: 18px 56px;
+            font-size: 1.1rem;
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer .social a {
+            margin-left: 20px;
+            color: var(--text-muted);
+            transition: 0.2s;
+            font-size: 1.2rem;
+        }
+
+        footer .social a:hover {
+            color: var(--accent-1);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
+                padding-top: 120px;
+            }
+
+            .hero p {
+                margin: 0 auto 32px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .features-grid,
+            .testimonials-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .theme-toggler {
+                flex-direction: row;
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 12px;
+                max-height: none;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: auto;
+                max-width: 90vw;
+            }
+
+            .theme-btn .tooltip {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .features-grid,
+            .testimonials-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .cta-section h2 {
+                font-size: 2.2rem;
+            }
+
+            .hero-stats {
+                gap: 24px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-card {
+                padding: 32px 24px;
+            }
+
+            .hero-card .pricing {
+                font-size: 2.2rem;
+            }
+
+            .contact-form,
+            .payment-info {
+                padding: 24px;
+            }
+
+            .pricing-card {
+                padding: 28px 20px;
+            }
+
+            .theme-toggler {
+                bottom: 16px;
+                right: 16px;
+                padding: 8px 10px;
+                gap: 6px;
+            }
+
+            .theme-btn {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .btn-primary,
+            .btn-outline {
+                padding: 14px 28px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 12px;
+                align-items: center;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .pricing-card .price {
+                font-size: 2.4rem;
+            }
+
+            .payment-info .upi-id {
+                font-size: 0.9rem;
+                padding: 12px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    THEME TOGGLER — 8 COLOR SCHEMES
+    ============================================================ -->
+
+    <div class="theme-toggler" id="themeToggler">
+        <button class="theme-btn active" data-theme="dark-luxury" title="Dark Luxury">
+            <span class="tooltip">Dark Luxury</span>
+        </button>
+        <button class="theme-btn" data-theme="light-minimal" title="Light Minimal">
+            <span class="tooltip">Light Minimal</span>
+        </button>
+        <button class="theme-btn" data-theme="dark-gradient" title="Dark Gradient">
+            <span class="tooltip">Dark Gradient</span>
+        </button>
+        <button class="theme-btn" data-theme="light-gradient" title="Light Gradient">
+            <span class="tooltip">Light Gradient</span>
+        </button>
+        <button class="theme-btn" data-theme="sunset" title="Warm Sunset">
+            <span class="tooltip">Warm Sunset</span>
+        </button>
+        <button class="theme-btn" data-theme="ocean" title="Ocean Deep">
+            <span class="tooltip">Ocean Deep</span>
+        </button>
+        <button class="theme-btn" data-theme="forest" title="Forest Earth">
+            <span class="tooltip">Forest Earth</span>
+        </button>
+        <button class="theme-btn" data-theme="royal" title="Royal Gold">
+            <span class="tooltip">Royal Gold</span>
+        </button>
+    </div>
+
+    <!-- ============================================================
+    NAVIGATION
+    ============================================================ -->
+
+    <nav>
+        <div class="container">
+            <div class="logo">NEXUS</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact" class="nav-cta">Buy Now</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+    HERO
+    ============================================================ -->
+
+    <section class="hero container">
+        <div class="hero-content">
+            <span class="hero-badge">✦ Next-Gen Platform</span>
+            <h1>Build <span>premium</span> products<br />at warp speed</h1>
+            <p>Nexus gives you everything you need to launch, scale, and dominate your market.</p>
+            <div class="hero-buttons">
+                <a href="#pricing" class="btn-primary">Start Free Trial →</a>
+                <a href="#contact" class="btn-outline">Contact Sales</a>
+            </div>
+            <div class="hero-stats">
+                <div>
+                    <div class="number">12K+</div>
+                    <div class="label">Active users</div>
+                </div>
+                <div>
+                    <div class="number">99.9%</div>
+                    <div class="label">Uptime</div>
+                </div>
+                <div>
+                    <div class="number">4.9★</div>
+                    <div class="label">User rating</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-card">
+                <div class="icon-big">⚡</div>
+                <h3>Nexus Pro</h3>
+                <p>Enterprise-grade platform with AI-powered automation.</p>
+                <div class="pricing">$299 <span>/ month</span></div>
+                <span class="tag">🔥 Limited offer — 40% off</span>
+                <br />
+                <a href="#pricing" class="btn-primary" style="margin-top: 16px; display: inline-block;">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FEATURES
+    ============================================================ -->
+
+    <section class="features container" id="features">
+        <span class="section-label">✦ Features</span>
+        <h2 class="section-title">Built for the future</h2>
+        <p class="section-sub">Everything you need to build world-class products.</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon">🧠</div>
+                <h4>AI-Powered Insights</h4>
+                <p>Real-time analytics and predictive modeling to drive decisions.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⚡</div>
+                <h4>Blazing Fast</h4>
+                <p>Sub-100ms response times with edge computing and caching.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🎨</div>
+                <h4>Design System</h4>
+                <p>Fully customizable components with dark/light support out of the box.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔒</div>
+                <h4>Enterprise Security</h4>
+                <p>Bank-grade encryption, SOC2 compliance, and SSO.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🌍</div>
+                <h4>Global CDN</h4>
+                <p>Deploy to 50+ edge locations worldwide for maximum speed.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🤝</div>
+                <h4>24/7 Support</h4>
+                <p>Dedicated team with < 2 hour response time for enterprise.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    PRICING
+    ============================================================ -->
+
+    <section class="pricing-section container" id="pricing">
+        <span class="section-label">✦ Pricing</span>
+        <h2 class="section-title">Choose your plan</h2>
+        <p class="section-sub">Flexible pricing for teams of all sizes.</p>
+        <div class="pricing-grid">
+            <!-- Starter -->
+            <div class="pricing-card">
+                <div class="plan-name">Starter</div>
+                <div class="plan-desc">Perfect for small teams</div>
+                <div class="price">$49 <span>/ month</span></div>
+                <ul class="features-list">
+                    <li><span class="check">✓</span> 10,000 monthly visits</li>
+                    <li><span class="check">✓</span> 5 team members</li>
+                    <li><span class="check">✓</span> Basic analytics</li>
+                    <li><span class="check">✓</span> Email support</li>
+                </ul>
+                <a href="https://softappweber.github.io/sushantcoder" class="btn-pricing">Buy Now</a>
+            </div>
+
+            <!-- Pro (Popular) -->
+            <div class="pricing-card popular">
+                <div class="plan-name">Pro</div>
+                <div class="plan-desc">For growing businesses</div>
+                <div class="price">$149 <span>/ month</span></div>
+                <ul class="features-list">
+                    <li><span class="check">✓</span> 50,000 monthly visits</li>
+                    <li><span class="check">✓</span> 15 team members</li>
+                    <li><span class="check">✓</span> Advanced analytics</li>
+                    <li><span class="check">✓</span> AI-powered insights</li>
+                    <li><span class="check">✓</span> Priority support</li>
+                </ul>
+                <a href="https://softappweber.github.io/sushantcoder" class="btn-pricing">Buy Now</a>
+            </div>
+
+            <!-- Enterprise -->
+            <div class="pricing-card">
+                <div class="plan-name">Enterprise</div>
+                <div class="plan-desc">For large organizations</div>
+                <div class="price">$499 <span>/ month</span></div>
+                <ul class="features-list">
+                    <li><span class="check">✓</span> Unlimited visits</li>
+                    <li><span class="check">✓</span> Unlimited team members</li>
+                    <li><span class="check">✓</span> Enterprise analytics</li>
+                    <li><span class="check">✓</span> Dedicated AI model</li>
+                    <li><span class="check">✓</span> 24/7 phone support</li>
+                    <li><span class="check">✓</span> Custom integrations</li>
+                </ul>
+                <a href="https://softappweber.github.io/sushantcoder" class="btn-pricing">Buy Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    TESTIMONIALS
+    ============================================================ -->
+
+    <section class="testimonials container" id="testimonials">
+        <span class="section-label">✦ Testimonials</span>
+        <h2 class="section-title">Loved by industry leaders</h2>
+        <p class="section-sub">Real feedback from real companies.</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <blockquote>“Nexus transformed our entire workflow. We’ve saved 80+ hours a month.”</blockquote>
+                <div class="author">— Elena V.</div>
+                <div class="role">CTO, Apex Industries</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <blockquote>“The most polished product we’ve ever used. Our team loves it.”</blockquote>
+                <div class="author">— James W.</div>
+                <div class="role">VP Eng, Solara Tech</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <blockquote>“We increased our deployment speed by 200%. Absolute game-changer.”</blockquote>
+                <div class="author">— Priya M.</div>
+                <div class="role">Director, Luminary Inc.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    CONTACT / PAYMENT
+    ============================================================ -->
+
+    <section class="contact-section container" id="contact">
+        <span class="section-label">✦ Contact & Payment</span>
+        <h2 class="section-title">Get in touch</h2>
+        <p class="section-sub">Fill the form, then pay securely via UPI.</p>
+        <div class="contact-grid">
+            <!-- Contact Form -->
+            <div class="contact-form">
+                <h3>📧 Contact Us</h3>
+                <p>We'll get back to you within 24 hours.</p>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="John Doe" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="john@example.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Tell us about your project..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Send Message →</button>
+                </form>
+            </div>
+
+            <!-- Payment Info -->
+            <div class="payment-info">
+                <h3>💳 Payment</h3>
+                <p>Pay securely via UPI</p>
+                <div class="upi-id">
+                    📱 UPI ID: <strong>8275679175@upi</strong>
+                </div>
+                <p><strong>OR</strong></p>
+                <p>Scan QR or pay to above UPI ID</p>
+                <div class="qr-placeholder">
+                    <span class="qr-icon">📱</span>
+                    <p>Scan QR code with your UPI app</p>
+                    <p style="font-size: 0.8rem; margin-top: 8px;">(QR code will appear here in production)</p>
+                </div>
+                <div style="margin-top: 16px;">
+                    <a href="https://softappweber.github.io/sushantcoder" class="btn-pay" style="display: block; text-align: center;">Buy Now →</a>
+                </div>
+                <p style="font-size: 0.8rem; margin-top: 16px; color: var(--text-muted);">
+                    ⚡ You'll get 2 confirmation emails with Order ID
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    CTA
+    ============================================================ -->
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to take <span style="background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">your product</span> to the next level?</h2>
+            <p>Join 12,000+ companies already building with Nexus.</p>
+            <a href="https://softappweber.github.io/sushantcoder" class="btn-primary">Start Free Trial →</a>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+
+    <footer class="container">
+        <span>© 2026 Nexus — Premium SaaS Platform</span>
+        <div class="social">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+    JAVASCRIPT — THEME TOGGLER + TRACKER + FORM
+    ============================================================ -->
+
+    <script>
+        // ============================================================
+        // 1. THEME TOGGLER — 8 COLOR SCHEMES
+        // ============================================================
+
+        (function() {
+            const body = document.body;
+            const themeBtns = document.querySelectorAll('.theme-btn');
+
+            // Load saved theme from localStorage
+            const savedTheme = localStorage.getItem('nexus-theme') || 'dark-luxury';
+            applyTheme(savedTheme);
+
+            themeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const theme = this.dataset.theme;
+                    applyTheme(theme);
+                    localStorage.setItem('nexus-theme', theme);
+
+                    themeBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            function applyTheme(theme) {
+                body.className = body.className
+                    .split(' ')
+                    .filter(c => !c.startsWith('theme-'))
+                    .join(' ');
+
+                body.classList.add('theme-' + theme);
+            }
+        })();
+
+        // ============================================================
+        // 2. CONTACT FORM HANDLER
+        // ============================================================
+
+        (function() {
+            const form = document.getElementById('contactForm');
+
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const name = document.getElementById('name').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const message = document.getElementById('message').value.trim();
+
+                    if (!name || !email || !message) {
+                        alert('Please fill in all fields.');
+                        return;
+                    }
+
+                    // Simple email validation
+                    if (!email.includes('@') || !email.includes('.')) {
+                        alert('Please enter a valid email address.');
+                        return;
+                    }
+
+                    // Log the form data (you can send to Google Sheets here)
+                    console.log('📧 Form submitted:', { name, email, message });
+
+                    alert('✅ Thank you! We\'ll get back to you within 24 hours.');
+
+                    // Send to your Google Apps Script (optional)
+                    // fetch('YOUR_SCRIPT_URL', {
+                    //   method: 'POST',
+                    //   mode: 'no-cors',
+                    //   headers: { 'Content-Type': 'application/json' },
+                    //   body: JSON.stringify({ type: 'contact', name, email, message })
+                    // }).catch(() => {});
+
+                    form.reset();
+                });
+            }
+        })();
+
+        // ============================================================
+        // 3. WEBSITE TRACKER
+        // ============================================================
+
+        (function() {
+            const data = {
+                page: 'nexus-saas-premium',
+                email: 'softappweber@gmail.com',
+                url: window.location.href,
+                referrer: document.referrer || 'direct',
+                time: new Date().toISOString()
+            };
+
+            // REPLACE WITH YOUR GOOGLE SCRIPT URL
+            const SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL_HERE';
+
+            try {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', SCRIPT_URL, true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify(data));
+                console.log('📊 Nexus premium page tracked');
+            } catch(e) {
+                // Silent fail — tracker won't break the page
+            }
+        })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>LoverssRead · RSS reader</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, #0b0e1a, #0a0c1a 60%, #1a0e1e 100%);
+      background-attachment: fixed;
+      padding: 1.2rem 1rem 3rem;
+      color: #f0f2fa;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app {
+      max-width: 1400px;
+      width: 100%;
+    }
+
+    /* header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.5rem;
+      margin-bottom: 2.2rem;
+      padding: 0.4rem 0.2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #f0eaff, #b7adff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 20px rgba(140, 100, 255, 0.3);
+    }
+
+    .brand span {
+      font-size: 2rem;
+      -webkit-text-fill-color: initial;
+      color: #ff7b9c;
+      text-shadow: 0 0 20px #ff3b6f80;
+    }
+
+    .status-badge {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px);
+      padding: 0.4rem 1rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: #b9c4e6;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 10px;
+      background: #3eff9e;
+      box-shadow: 0 0 12px #3eff9e80;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0% { opacity: 0.6; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.6; transform: scale(0.9); }
+    }
+
+    /* category pills */
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 12px;
+      margin-bottom: 2.5rem;
+      justify-content: center;
+    }
+
+    .pill {
+      background: rgba(20, 25, 45, 0.55);
+      backdrop-filter: blur(10px);
+      padding: 0.5rem 1.2rem;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+      color: #d6defa;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill:hover {
+      background: rgba(70, 80, 150, 0.4);
+      border-color: #6f7dcd60;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px #00000040;
+      color: white;
+    }
+
+    .pill:active {
+      transform: scale(0.96);
+    }
+
+    /* feed grid */
+    .feed-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 0.4rem;
+    }
+
+    /* glass card */
+    .card {
+      background: rgba(18, 24, 42, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 1.5rem 1.3rem 1.3rem;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      height: fit-content;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(170, 180, 255, 0.15);
+      box-shadow: 0 28px 50px -16px #000000cc, 0 0 0 1px rgba(200, 180, 255, 0.1) inset;
+    }
+
+    .card-source {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #9aa6d9;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-source::before {
+      content: "◆";
+      font-size: 0.5rem;
+      color: #7d8fd9;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 0.6rem;
+      color: #f0f3ff;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: #b8c2e6;
+      line-height: 1.5;
+      margin-bottom: 1.2rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      opacity: 0.85;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: auto;
+    }
+
+    .card-link {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      color: #ccd7ff;
+      font-weight: 500;
+      font-size: 0.8rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      letter-spacing: 0.2px;
+    }
+
+    .card-link::after {
+      content: "→";
+      transition: transform 0.2s;
+    }
+
+    .card-link:hover {
+      background: rgba(120, 140, 255, 0.15);
+      border-color: #6b7fdd80;
+      color: white;
+      box-shadow: 0 6px 16px #00000055;
+    }
+
+    .card-link:active {
+      transform: scale(0.95);
+    }
+
+    .card-link:focus-visible {
+      outline: 2px solid #a0b0ff;
+      outline-offset: 4px;
+    }
+
+    /* error / empty */
+    .error-banner {
+      background: rgba(200, 60, 80, 0.15);
+      backdrop-filter: blur(6px);
+      padding: 1.2rem 1.5rem;
+      border-radius: 24px;
+      border-left: 4px solid #ff6178;
+      color: #f2d0d6;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+      grid-column: 1 / -1;
+    }
+
+    .loading-spinner {
+      text-align: center;
+      padding: 3rem 0;
+      grid-column: 1 / -1;
+      color: #aab4e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.04);
+      border-top: 3px solid #8b9eff;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* responsive */
+    @media (max-width: 600px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .brand { font-size: 1.7rem; }
+      .feed-grid { grid-template-columns: 1fr; }
+      .pill { font-size: 0.75rem; padding: 0.4rem 1rem; }
+    }
+
+    @media (min-width: 800px) {
+      .feed-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1200px) {
+      .feed-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* scrollable feed – all good */
+    .feed-grid {
+      max-height: none;
+      overflow: visible;
+    }
+
+    /* small glow */
+    .glow-text {
+      text-shadow: 0 0 40px #3f4faa30;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="brand">
+      <span>❤️</span> LoverssRead
+    </div>
+    <div class="status-badge">
+      <span class="status-dot"></span> live · 16 feeds
+    </div>
+  </header>
+
+  <!-- category pills (all open in same tab) -->
+  <div class="pills">
+    <a class="pill" href="https://finance.yahoo.com/rss" target="_self">📈 Finance</a>
+    <a class="pill" href="https://techcrunch.com/feed/" target="_self">⚡ Tech</a>
+    <a class="pill" href="https://bookriot.com/feed/" target="_self">📚 Books</a>
+    <a class="pill" href="https://www.psychologytoday.com/us/blog/feed" target="_self">🧠 Self-help</a>
+    <a class="pill" href="https://www.mymaharashtra.com/feed/" target="_self">🌐 Marathi</a>
+    <a class="pill" href="https://www.theguardian.com/uk/rss" target="_self">🇬🇧 English</a>
+    <a class="pill" href="https://mashable.com/feeds/rss/all" target="_self">📰 Blogs</a>
+  </div>
+
+  <!-- feed grid -->
+  <div id="feedContainer" class="feed-grid">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <span>loading universe of stories …</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ------------------------------------------------------------
+    // FEEDS – only confirmed working, all CORS via proxy
+    // ------------------------------------------------------------
+    const FEED_SOURCES = [
+      { name: 'TechCrunch', url: 'https://techcrunch.com/feed/' },
+      { name: 'The Verge', url: 'https://www.theverge.com/rss/index.xml' },
+      { name: 'Wired', url: 'https://www.wired.com/feed/rss' },
+      { name: 'Ars Technica', url: 'https://feeds.arstechnica.com/arstechnica/index' },
+      { name: 'Engadget', url: 'https://www.engadget.com/rss.xml' },
+      { name: 'CNET', url: 'https://www.cnet.com/rss/news/' },
+      { name: 'Lifehacker', url: 'https://lifehacker.com/rss' },
+      { name: 'Mashable', url: 'https://mashable.com/feeds/rss/all' },
+      { name: 'YourStory', url: 'https://yourstory.com/feed' },
+      { name: 'Inc42', url: 'https://inc42.com/feed/' },
+      { name: 'MyMaharashtra', url: 'https://www.mymaharashtra.com/feed/' },
+      { name: 'BookGuru', url: 'https://bookguru.in/feed/' },
+      { name: 'Lokmat', url: 'https://www.lokmat.com/rss/feed/' },
+      { name: 'Psychology Today', url: 'https://www.psychologytoday.com/us/blog/feed' },
+      { name: 'Book Riot', url: 'https://bookriot.com/feed/' },
+      { name: 'Literary Hub', url: 'https://lithub.com/feed/' }
+    ];
+
+    // CORS proxy (corsproxy.io)
+    const PROXY = 'https://corsproxy.io/?';
+
+    const container = document.getElementById('feedContainer');
+
+    // helper: fetch feed with proxy
+    async function fetchFeed(source) {
+      const proxyUrl = PROXY + encodeURIComponent(source.url);
+      const response = await fetch(proxyUrl, {
+        headers: { 'Accept': 'application/rss+xml, application/xml, text/xml' }
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const text = await response.text();
+      return { sourceName: source.name, xml: text };
+    }
+
+    // parse RSS (simple, robust)
+    function parseRSS(xmlText, sourceName) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(xmlText, 'text/xml');
+      // find <item> or <entry>
+      let items = doc.querySelectorAll('item');
+      if (items.length === 0) items = doc.querySelectorAll('entry');
+      if (items.length === 0) return [];
+
+      const articles = [];
+      for (let i = 0; i < Math.min(items.length, 30); i++) {
+        const el = items[i];
+        // title
+        const titleEl = el.querySelector('title');
+        let title = titleEl ? titleEl.textContent.trim() : 'Untitled';
+
+        // description / summary
+        let desc = '';
+        const descEl = el.querySelector('description') || el.querySelector('summary');
+        if (descEl) {
+          let raw = descEl.textContent.trim();
+          // strip HTML tags
+          const tmp = document.createElement('div');
+          tmp.innerHTML = raw;
+          desc = tmp.textContent || tmp.innerText || '';
+          desc = desc.substring(0, 200).trim();
+          if (desc.length === 0) desc = 'Read more …';
+        } else {
+          desc = '…';
+        }
+
+        // link
+        let link = '';
+        const linkEl = el.querySelector('link');
+        if (linkEl) {
+          link = linkEl.textContent.trim();
+          // sometimes link has href attribute? 
+          if (!link && linkEl.getAttribute) {
+            link = linkEl.getAttribute('href') || '';
+          }
+        }
+        // if no link, try <guid> or <id>
+        if (!link) {
+          const guid = el.querySelector('guid');
+          if (guid) link = guid.textContent.trim();
+        }
+        if (!link) {
+          const id = el.querySelector('id');
+          if (id) link = id.textContent.trim();
+        }
+        // if link is relative, skip (rare)
+        if (link && !link.startsWith('http')) link = '';
+
+        // source name
+        articles.push({
+          title: title,
+          description: desc,
+          link: link,
+          source: sourceName
+        });
+      }
+      return articles;
+    }
+
+    // render cards
+    function renderCards(allArticles) {
+      if (allArticles.length === 0) {
+        container.innerHTML = `
+          <div class="error-banner">✨ No articles found. Try again later.</div>
+        `;
+        return;
+      }
+
+      // shuffle a bit to mix sources
+      const shuffled = allArticles.sort(() => Math.random() - 0.5);
+
+      let html = '';
+      for (let art of shuffled) {
+        // fallback link
+        const link = art.link || '#';
+        const title = art.title || 'Untitled';
+        const desc = art.description || ' ';
+        const source = art.source || 'source';
+
+        html += `
+          <div class="card">
+            <div class="card-source">${source}</div>
+            <div class="card-title">${escapeHtml(title)}</div>
+            <div class="card-desc">${escapeHtml(desc)}</div>
+            <div class="card-footer">
+              <a href="${link}" target="_self" class="card-link">Read article</a>
+            </div>
+          </div>
+        `;
+      }
+      container.innerHTML = html;
+    }
+
+    // simple escape
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ----- main: fetch all feeds in parallel, collect, render -----
+    async function loadAllFeeds() {
+      try {
+        // show loading
+        container.innerHTML = `
+          <div class="loading-spinner">
+            <div class="spinner"></div>
+            <span>loading universe of stories …</span>
+          </div>
+        `;
+
+        const feedPromises = FEED_SOURCES.map(source => 
+          fetchFeed(source).catch(err => {
+            console.warn(`Feed error (${source.name}):`, err);
+            return null; // graceful
+          })
+        );
+
+        const results = await Promise.all(feedPromises);
+
+        // collect articles
+        let allArticles = [];
+        let feedErrors = 0;
+
+        for (let res of results) {
+          if (!res) {
+            feedErrors++;
+            continue;
+          }
+          try {
+            const articles = parseRSS(res.xml, res.sourceName);
+            if (articles.length > 0) {
+              allArticles = allArticles.concat(articles);
+            } else {
+              feedErrors++;
+            }
+          } catch (e) {
+            console.warn('Parse error for', res.sourceName, e);
+            feedErrors++;
+          }
+        }
+
+        // if no articles, show message
+        if (allArticles.length === 0) {
+          container.innerHTML = `
+            <div class="error-banner">⚠️ Could not load any feeds. Please refresh or try again later.</div>
+          `;
+          return;
+        }
+
+        // render
+        renderCards(allArticles);
+
+        // if some feeds failed, show a small note (non-intrusive)
+        if (feedErrors > 0) {
+          const note = document.createElement('div');
+          note.style.cssText = 'margin-top: 1.5rem; font-size: 0.8rem; color: #99a4cc; text-align: center; opacity: 0.7;';
+          note.textContent = `⚡ ${feedErrors} feed(s) temporarily unavailable — others loaded.`;
+          container.appendChild(note);
+        }
+
+      } catch (err) {
+        console.error('Fatal:', err);
+        container.innerHTML = `
+          <div class="error-banner">🚀 Something went wrong. Please refresh.</div>
+        `;
+      }
+    }
+
+    // start
+    loadAllFeeds();
+
+    // periodic refresh every 10 min (optional)
+    // setInterval(loadAllFeeds, 10 * 60 * 1000);
+  })();
+</script>
+</body>
+</html>

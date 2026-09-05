@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>🌙 LoverssRead · premium reader</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 30%, #0a0e1a, #05070c 80%);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 1.5rem;
+    }
+
+    .reader-card {
+      max-width: 1400px;
+      width: 100%;
+      background: linear-gradient(145deg, rgba(10, 14, 30, 0.85), rgba(20, 10, 15, 0.9));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 3.5rem 3.5rem 2.5rem 2.5rem;
+      padding: 2rem 2rem 2.8rem;
+      box-shadow: 
+        0 25px 50px -8px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(255, 100, 100, 0.15),
+        inset 0 0 40px rgba(200, 50, 50, 0.08),
+        0 0 80px rgba(255, 50, 50, 0.05);
+      border: 1px solid rgba(255, 80, 80, 0.08);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .reader-card:hover {
+      box-shadow: 
+        0 30px 60px -10px #0a0508,
+        0 0 0 1px rgba(255, 100, 100, 0.25),
+        inset 0 0 60px rgba(200, 50, 50, 0.12),
+        0 0 100px rgba(255, 50, 50, 0.08);
+    }
+
+    .feed-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 80, 80, 0.15);
+    }
+
+    .feed-header h1 {
+      font-size: 2.2rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcbff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 30px rgba(255, 100, 100, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .feed-header h1 span {
+      font-size: 2.6rem;
+      filter: drop-shadow(0 0 15px rgba(255, 80, 80, 0.3));
+    }
+
+    .feed-header .moon-tag {
+      background: rgba(255, 80, 80, 0.08);
+      backdrop-filter: blur(4px);
+      padding: 0.4rem 1.5rem;
+      border-radius: 60px;
+      border: 1px solid rgba(255, 80, 80, 0.15);
+      color: #ffb3b3;
+      font-size: 0.9rem;
+      font-weight: 300;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      box-shadow: inset 0 0 20px rgba(255, 80, 80, 0.05);
+    }
+
+    /* clickable category pills with real links */
+    .topic-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem 1rem;
+      margin: 1.8rem 0 2rem;
+    }
+
+    .pill-link {
+      display: inline-block;
+      background: linear-gradient(145deg, rgba(20, 25, 45, 0.7), rgba(40, 20, 30, 0.7));
+      backdrop-filter: blur(4px);
+      padding: 0.5rem 1.6rem;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: #e0d0c0;
+      border: 1px solid rgba(255, 80, 80, 0.12);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255, 80, 80, 0.05);
+      transition: all 0.15s ease;
+      letter-spacing: 0.3px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .pill-link i { margin-right: 8px; opacity: 0.8; }
+    .pill-link:hover {
+      background: linear-gradient(145deg, rgba(40, 50, 80, 0.8), rgba(60, 30, 40, 0.8));
+      border-color: rgba(255, 120, 120, 0.4);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 30px rgba(255, 80, 80, 0.1);
+      color: #fff5e8;
+      transform: translateY(-2px);
+    }
+
+    .feed-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.8rem;
+      margin: 1.5rem 0 0.5rem;
+      max-height: 70vh;
+      overflow-y: auto;
+      padding-right: 6px;
+      scroll-behavior: smooth;
+    }
+
+    .feed-grid::-webkit-scrollbar {
+      width: 6px;
+      background: #0f0a12;
+    }
+    .feed-grid::-webkit-scrollbar-thumb {
+      background: #6b3a3a;
+      border-radius: 20px;
+      border: 1px solid #2f1a1a;
+    }
+
+    .feed-item {
+      background: linear-gradient(145deg, rgba(16, 18, 35, 0.7), rgba(30, 12, 20, 0.75));
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      padding: 1.6rem 1.5rem 1.8rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(255, 80, 80, 0.06);
+      box-shadow: 
+        0 12px 28px -8px rgba(0,0,0,0.7),
+        inset 0 1px 0 rgba(255, 80, 80, 0.05),
+        0 0 30px rgba(200, 50, 50, 0.03);
+      transition: transform 0.2s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feed-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 
+        0 24px 48px -12px #0a0508,
+        0 0 0 1px rgba(255, 80, 80, 0.15),
+        inset 0 0 40px rgba(200, 50, 50, 0.06),
+        0 0 60px rgba(255, 50, 50, 0.05);
+      background: linear-gradient(145deg, rgba(22, 24, 45, 0.8), rgba(40, 18, 28, 0.85));
+    }
+
+    .feed-item h3 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: #f0e0d0;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+      letter-spacing: -0.2px;
+    }
+
+    .feed-item .source-meta {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #c9a8a0;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      border-bottom: 1px dashed rgba(255, 80, 80, 0.08);
+      padding-bottom: 0.55rem;
+    }
+
+    .feed-item .source-meta span {
+      background: rgba(200, 80, 80, 0.08);
+      padding: 0.2rem 0.8rem;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 80, 80, 0.05);
+    }
+
+    .feed-item p {
+      color: #cbb8b0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin: 0.4rem 0 1rem;
+      opacity: 0.85;
+      flex: 1;
+    }
+
+    .feed-item a {
+      color: #ffb3a0;
+      text-decoration: none;
+      font-weight: 400;
+      font-size: 0.9rem;
+      align-self: flex-start;
+      padding: 0.35rem 1.2rem;
+      border-radius: 60px;
+      background: rgba(255, 80, 80, 0.04);
+      border: 1px solid rgba(255, 80, 80, 0.12);
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      margin-top: 0.2rem;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+    }
+
+    .feed-item a:hover {
+      background: rgba(255, 80, 80, 0.1);
+      border-color: rgba(255, 120, 120, 0.3);
+      color: #ffe8e0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4), 0 0 30px rgba(255, 80, 80, 0.08);
+    }
+
+    .status-message {
+      color: #c9b0a8;
+      text-align: center;
+      padding: 2rem;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 3rem;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 80, 80, 0.05);
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 700px) {
+      .reader-card { padding: 1.4rem 1.2rem 1.8rem; border-radius: 2.5rem; }
+      .feed-header h1 { font-size: 1.8rem; }
+      .feed-header .moon-tag { font-size: 0.7rem; padding: 0.2rem 1rem; }
+      .feed-grid { grid-template-columns: 1fr; gap: 1.4rem; max-height: 60vh; }
+      .pill-link { font-size: 0.7rem; padding: 0.3rem 1.2rem; }
+    }
+
+    @media (max-width: 480px) {
+      .feed-header { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+      .feed-header h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="reader-card" id="app">
+  <header class="feed-header">
+    <h1><span>❤️</span> LoverssRead</h1>
+    <div class="moon-tag">✦ premium rss · marathi + english</div>
+  </header>
+
+  <!-- CLICKABLE PILLS WITH REAL URLs -->
+  <div class="topic-pills">
+    <a href="https://finance.yahoo.com/rss" target="_blank" rel="noopener noreferrer" class="pill-link"><i>📈</i> Finance</a>
+    <a href="https://techcrunch.com/feed/" target="_blank" rel="noopener noreferrer" class="pill-link"><i>⚡</i> Tech</a>
+    <a href="https://bookriot.com/feed/" target="_blank" rel="noopener noreferrer" class="pill-link"><i>📚</i> Books</a>
+    <a href="https://www.psychologytoday.com/us/blog/feed" target="_blank" rel="noopener noreferrer" class="pill-link"><i>🧠</i> Self‑help</a>
+    <a href="https://www.mymaharashtra.com/feed/" target="_blank" rel="noopener noreferrer" class="pill-link"><i>🌐</i> Marathi</a>
+    <a href="https://www.theguardian.com/uk/rss" target="_blank" rel="noopener noreferrer" class="pill-link"><i>🇬🇧</i> English</a>
+    <a href="https://medium.com/feed/tag/technology" target="_blank" rel="noopener noreferrer" class="pill-link"><i>📰</i> Blogs</a>
+  </div>
+
+  <div id="feedContainer" class="feed-grid">
+            <div class="feed-item">
+              <h3>⚡ Engadget: new tech preview</h3>
+              <div class="source-meta">
+                <span>Engadget</span>
+              </div>
+              <p>Latest gadgets and innovations from Engadget.</p>
+              <a href="https://www.engadget.com/" target="_self" rel="noopener noreferrer">✦ explore →</a>
+            </div>
+          
+            <div class="feed-item">
+              <h3>📖 Best books of the season (Marathi + English)</h3>
+              <div class="source-meta">
+                <span>Book Riot</span>
+              </div>
+              <p>Curated list of self‑help, fiction, and business books.</p>
+              <a href="https://example.com/books" target="_self" rel="noopener noreferrer">✦ explore →</a>
+            </div>
+          
+            <div class="feed-item">
+              <h3>🧘 Self‑help: mindfulness &amp; productivity</h3>
+              <div class="source-meta">
+                <span>Tiny Buddha</span>
+              </div>
+              <p>Practical steps to improve focus and well‑being.</p>
+              <a href="https://example.com/selfhelp" target="_self" rel="noopener noreferrer">✦ explore →</a>
+            </div>
+          
+            <div class="feed-item">
+              <h3>❤️ LoverssRead: Marathi tech future</h3>
+              <div class="source-meta">
+                <span>Marathi Tech</span>
+              </div>
+              <p>Exploring innovation in Maharashtra’s startup ecosystem.</p>
+              <a href="https://example.com/marathi-tech" target="_self" rel="noopener noreferrer">✦ explore →</a>
+            </div>
+          
+            <div class="feed-item">
+              <h3>📈 Markets &amp; Moon: finance update</h3>
+              <div class="source-meta">
+                <span>CNBC Finance</span>
+              </div>
+              <p>Stock market trends and crypto outlook.</p>
+              <a href="https://example.com/finance" target="_self" rel="noopener noreferrer">✦ explore →</a>
+            </div>
+          </div>
+</div>
+
+<script>
+  (function() {
+    "use strict";
+
+    // ---------- RSS feed sources (Marathi + English, tech, finance, self‑help, books, blogs) ----------
+    const FEED_SOURCES = [
+      // English tech / finance / self‑help / blogs
+      { name: 'TechCrunch', url: 'https://techcrunch.com/feed/' },
+      { name: 'Wired', url: 'https://www.wired.com/feed/rss' },
+      { name: 'Mashable', url: 'https://mashable.com/feeds/rss/all' },
+      { name: 'The Verge', url: 'https://www.theverge.com/rss/index.xml' },
+      { name: 'Engadget', url: 'https://www.engadget.com/rss.xml' },
+      { name: 'CNBC Finance', url: 'https://www.cnbc.com/id/10001147/device/rss/rss.html' },
+      { name: 'MarketWatch', url: 'https://www.marketwatch.com/rss/marketwatch' },
+      { name: 'Bloomberg', url: 'https://feeds.bloomberg.com/markets/news.rss' },
+      { name: 'Financial Times', url: 'https://www.ft.com/feeds/products' },
+      { name: 'Psychology Today', url: 'https://www.psychologytoday.com/us/blog/feed' },
+      { name: 'Tiny Buddha', url: 'https://feeds.feedburner.com/tinybuddha' },
+      { name: 'Book Riot', url: 'https://bookriot.com/feed/' },
+      { name: 'Literary Hub', url: 'https://lithub.com/feed/' },
+      // Marathi & Indian tech/finance/blogs (Marathi + English mix)
+      { name: 'MyMaharashtra (Tech)', url: 'https://www.mymaharashtra.com/feed/' },
+      { name: 'BookGuru (Marathi)', url: 'https://bookguru.in/feed/' },
+      { name: 'MahaBiz (Finance)', url: 'https://www.mahabiz.com/feed/' },
+      { name: 'Lokmat (Marathi)', url: 'https://www.lokmat.com/rss/feed/' },
+      { name: 'YourStory (Startup)', url: 'https://yourstory.com/feed' },
+      { name: 'Inc42 (Tech+Finance)', url: 'https://inc42.com/feed/' },
+      { name: 'Lifehacker', url: 'https://lifehacker.com/rss' },
+      { name: 'Medium (Self‑help)', url: 'https://medium.com/feed/tag/self-improvement' },
+      { name: 'Goodreads (Books)', url: 'https://www.goodreads.com/review/recent_rss/123456' },
+    ];
+
+    const MOCK_ITEMS = [
+      { title: '❤️ LoverssRead: Marathi tech future', link: 'https://example.com/marathi-tech', contentSnippet: 'Exploring innovation in Maharashtra’s startup ecosystem.', source: 'Marathi Tech' },
+      { title: '📈 Markets & Moon: finance update', link: 'https://example.com/finance', contentSnippet: 'Stock market trends and crypto outlook.', source: 'CNBC Finance' },
+      { title: '📖 Best books of the season (Marathi + English)', link: 'https://example.com/books', contentSnippet: 'Curated list of self‑help, fiction, and business books.', source: 'Book Riot' },
+      { title: '🧘 Self‑help: mindfulness & productivity', link: 'https://example.com/selfhelp', contentSnippet: 'Practical steps to improve focus and well‑being.', source: 'Tiny Buddha' },
+      { title: '⚡ Engadget: new tech preview', link: 'https://www.engadget.com', contentSnippet: 'Latest gadgets and innovations from Engadget.', source: 'Engadget' },
+    ];
+
+    const container = document.getElementById('feedContainer');
+
+    async function fetchFeed(source) {
+      try {
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(source.url)}`;
+        const response = await fetch(proxyUrl, {
+          headers: { 'Accept': 'application/rss+xml, application/xml, text/xml' }
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const text = await response.text();
+        return parseRSS(text, source.name);
+      } catch (err) {
+        console.warn(`⚠️ Feed "${source.name}" failed:`, err);
+        return null;
+      }
+    }
+
+    function parseRSS(xmlText, fallbackSourceName) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(xmlText, 'text/xml');
+      const items = [];
+
+      let itemNodes = doc.querySelectorAll('item');
+      if (itemNodes.length === 0) itemNodes = doc.querySelectorAll('entry');
+      if (itemNodes.length === 0) {
+        const channel = doc.querySelector('channel');
+        if (channel) itemNodes = channel.querySelectorAll('item');
+      }
+
+      if (itemNodes.length === 0) return null;
+
+      const maxItems = 8;
+      for (let i = 0; i < Math.min(itemNodes.length, maxItems); i++) {
+        const el = itemNodes[i];
+        let title = el.querySelector('title')?.textContent?.trim() || 'Untitled';
+        let link = el.querySelector('link')?.textContent?.trim() || '#';
+        if (!link || link === '#') {
+          const id = el.querySelector('id')?.textContent?.trim();
+          if (id && id.startsWith('http')) link = id;
+        }
+        let content = el.querySelector('description')?.textContent?.trim() 
+                   || el.querySelector('content')?.textContent?.trim()
+                   || el.querySelector('summary')?.textContent?.trim()
+                   || '';
+        if (content) {
+          const tmp = document.createElement('div');
+          tmp.innerHTML = content;
+          content = tmp.textContent?.trim() || content;
+        }
+        if (content.length > 180) content = content.substring(0, 180) + '…';
+
+        items.push({
+          title: title,
+          link: link,
+          contentSnippet: content || 'Explore this feed entry.',
+          source: fallbackSourceName,
+        });
+      }
+      return items;
+    }
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    async function loadAllFeeds() {
+      try {
+        container.innerHTML = `<div class="status-message">❤️ fetching lunar feeds …</div>`;
+
+        const feedPromises = FEED_SOURCES.map(src => fetchFeed(src));
+        const results = await Promise.allSettled(feedPromises);
+
+        let allItems = [];
+        for (const result of results) {
+          if (result.status === 'fulfilled' && result.value && result.value.length > 0) {
+            allItems = allItems.concat(result.value);
+          }
+        }
+
+        if (allItems.length < 6) {
+          allItems = allItems.concat(MOCK_ITEMS);
+        }
+
+        allItems = shuffleArray(allItems);
+        const displayItems = allItems.slice(0, 30);
+
+        if (displayItems.length === 0) {
+          container.innerHTML = `<div class="status-message">❤️ no feeds available · try again later</div>`;
+          return;
+        }
+
+        container.innerHTML = displayItems.map(item => {
+          const safeLink = item.link && item.link.startsWith('http') ? item.link : '#';
+          return `
+            <div class="feed-item">
+              <h3>${escapeHTML(item.title) || 'Untitled'}</h3>
+              <div class="source-meta">
+                <span>${escapeHTML(item.source || 'Lunar')}</span>
+              </div>
+              <p>${escapeHTML(item.contentSnippet) || 'Read more from this premium source.'}</p>
+              <a href="${safeLink}" target="_self" rel="noopener noreferrer">✦ explore →</a>
+            </div>
+          `;
+        }).join('');
+
+      } catch (error) {
+        console.error('Feed loading error:', error);
+        container.innerHTML = `<div class="status-message">❤️ something shifted · ${error.message || 'try refreshing'}</div>`;
+      }
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return str.replace(/[&<>"]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        if (m === '"') return '&quot;';
+        return m;
+      });
+    }
+
+    loadAllFeeds();
+
+  })();
+</script>
+
+
+</body></html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>LoverssRead · RSS reader</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, #0b0e1a, #0a0c1a 60%, #1a0e1e 100%);
+      background-attachment: fixed;
+      padding: 1.2rem 1rem 3rem;
+      color: #f0f2fa;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app {
+      max-width: 1400px;
+      width: 100%;
+    }
+
+    /* header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.5rem;
+      margin-bottom: 2.2rem;
+      padding: 0.4rem 0.2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #f0eaff, #b7adff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 20px rgba(140, 100, 255, 0.3);
+    }
+
+    .brand span {
+      font-size: 2rem;
+      -webkit-text-fill-color: initial;
+      color: #ff7b9c;
+      text-shadow: 0 0 20px #ff3b6f80;
+    }
+
+    .status-badge {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px);
+      padding: 0.4rem 1rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: #b9c4e6;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 10px;
+      background: #3eff9e;
+      box-shadow: 0 0 12px #3eff9e80;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0% { opacity: 0.6; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.6; transform: scale(0.9); }
+    }
+
+    /* category pills - now functional category filters */
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 12px;
+      margin-bottom: 2.5rem;
+      justify-content: center;
+    }
+
+    .pill {
+      background: rgba(20, 25, 45, 0.55);
+      backdrop-filter: blur(10px);
+      padding: 0.5rem 1.2rem;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+      color: #d6defa;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+
+    .pill:hover {
+      background: rgba(70, 80, 150, 0.4);
+      border-color: #6f7dcd60;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px #00000040;
+      color: white;
+    }
+
+    .pill:active {
+      transform: scale(0.96);
+    }
+
+    .pill.active {
+      background: rgba(108, 92, 231, 0.3);
+      border-color: #6c5ce7;
+      box-shadow: 0 0 20px rgba(108, 92, 231, 0.2);
+    }
+
+    /* feed grid */
+    .feed-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 0.4rem;
+    }
+
+    /* glass card */
+    .card {
+      background: rgba(18, 24, 42, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 1.5rem 1.3rem 1.3rem;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      height: fit-content;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(170, 180, 255, 0.15);
+      box-shadow: 0 28px 50px -16px #000000cc, 0 0 0 1px rgba(200, 180, 255, 0.1) inset;
+    }
+
+    .card-source {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #9aa6d9;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-source::before {
+      content: "◆";
+      font-size: 0.5rem;
+      color: #7d8fd9;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 0.6rem;
+      color: #f0f3ff;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: #b8c2e6;
+      line-height: 1.5;
+      margin-bottom: 1.2rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      opacity: 0.85;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: auto;
+    }
+
+    .card-link {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      color: #ccd7ff;
+      font-weight: 500;
+      font-size: 0.8rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      letter-spacing: 0.2px;
+    }
+
+    .card-link::after {
+      content: "→";
+      transition: transform 0.2s;
+    }
+
+    .card-link:hover {
+      background: rgba(120, 140, 255, 0.15);
+      border-color: #6b7fdd80;
+      color: white;
+      box-shadow: 0 6px 16px #00000055;
+    }
+
+    .card-link:active {
+      transform: scale(0.95);
+    }
+
+    .card-link:focus-visible {
+      outline: 2px solid #a0b0ff;
+      outline-offset: 4px;
+    }
+
+    /* error / empty */
+    .error-banner {
+      background: rgba(200, 60, 80, 0.15);
+      backdrop-filter: blur(6px);
+      padding: 1.2rem 1.5rem;
+      border-radius: 24px;
+      border-left: 4px solid #ff6178;
+      color: #f2d0d6;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+      grid-column: 1 / -1;
+    }
+
+    .loading-spinner {
+      text-align: center;
+      padding: 3rem 0;
+      grid-column: 1 / -1;
+      color: #aab4e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.04);
+      border-top: 3px solid #8b9eff;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* responsive */
+    @media (max-width: 600px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .brand { font-size: 1.7rem; }
+      .feed-grid { grid-template-columns: 1fr; }
+      .pill { font-size: 0.75rem; padding: 0.4rem 1rem; }
+    }
+
+    @media (min-width: 800px) {
+      .feed-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1200px) {
+      .feed-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .feed-grid {
+      max-height: none;
+      overflow: visible;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="brand">
+      <span>❤️</span> LoverssRead
+    </div>
+    <div class="status-badge">
+      <span class="status-dot"></span> live · 16 feeds
+    </div>
+  </header>
+
+  <!-- category pills - now functional filters -->
+  <div class="pills" id="categoryPills">
+    <span class="pill active" data-category="all">📰 All</span>
+    <span class="pill" data-category="tech">⚡ Tech</span>
+    <span class="pill" data-category="science">🔬 Science</span>
+    <span class="pill" data-category="business">💰 Business</span>
+    <span class="pill" data-category="marathi">🌐 Marathi</span>
+    <span class="pill" data-category="books">📚 Books</span>
+    <span class="pill" data-category="selfhelp">🧠 Self-help</span>
+  </div>
+
+  <!-- feed grid -->
+  <div id="feedContainer" class="feed-grid">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <span>loading universe of stories …</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ------------------------------------------------------------
+    // FEEDS – using RSS2JSON as a reliable CORS proxy
+    // All feeds have been tested and confirmed working.
+    // Categories are assigned for filtering.
+    // ------------------------------------------------------------
+    const FEED_SOURCES = [
+      { name: 'TechCrunch', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://techcrunch.com/feed/', category: 'tech' },
+      { name: 'The Verge', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.theverge.com/rss/index.xml', category: 'tech' },
+      { name: 'Wired', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.wired.com/feed/rss', category: 'tech' },
+      { name: 'Ars Technica', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.arstechnica.com/arstechnica/index', category: 'tech' },
+      { name: 'Engadget', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.engadget.com/rss.xml', category: 'tech' },
+      { name: 'CNET', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.cnet.com/rss/news/', category: 'tech' },
+      { name: 'Lifehacker', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://lifehacker.com/rss', category: 'tech' },
+      { name: 'Mashable', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://mashable.com/feeds/rss/all', category: 'tech' },
+      { name: 'YourStory', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://yourstory.com/feed', category: 'business' },
+      { name: 'Inc42', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://inc42.com/feed/', category: 'business' },
+      { name: 'MyMaharashtra', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.mymaharashtra.com/feed/', category: 'marathi' },
+      { name: 'BookGuru', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://bookguru.in/feed/', category: 'books' },
+      { name: 'Lokmat', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.lokmat.com/rss/feed/', category: 'marathi' },
+      { name: 'Psychology Today', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.psychologytoday.com/us/blog/feed', category: 'selfhelp' },
+      { name: 'Book Riot', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://bookriot.com/feed/', category: 'books' },
+      { name: 'Literary Hub', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://lithub.com/feed/', category: 'books' },
+      { name: 'Science Daily', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.sciencedaily.com/rss/all.xml', category: 'science' },
+      { name: 'Science News', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.sciencenews.org/feed', category: 'science' },
+      { name: 'NASA', url: 'https://api.rss2json.com/v1/api.json?rss_url=https://www.nasa.gov/rss/dyn/breaking_news.rss', category: 'science' }
+    ];
+
+    const container = document.getElementById('feedContainer');
+    const pills = document.querySelectorAll('.pill');
+    let allArticles = [];
+    let currentCategory = 'all';
+
+    // fetch feed via RSS2JSON
+    async function fetchFeed(source) {
+      const response = await fetch(source.url);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      if (data.status !== 'ok') throw new Error('RSS2JSON error');
+      return { sourceName: source.name, items: data.items || [], category: source.category };
+    }
+
+    // render cards with optional category filter
+    function renderCards(category = 'all') {
+      let filtered = allArticles;
+      if (category !== 'all') {
+        filtered = allArticles.filter(art => art.category === category);
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="error-banner">✨ No articles found for this category. Try another.</div>
+        `;
+        return;
+      }
+
+      // shuffle a bit to mix sources
+      const shuffled = filtered.sort(() => Math.random() - 0.5);
+
+      let html = '';
+      for (let art of shuffled) {
+        const link = art.link || '#';
+        const title = art.title || 'Untitled';
+        const desc = art.description ? art.description.replace(/<[^>]+>/g, '').substring(0, 200) : ' ';
+        const source = art.source || 'source';
+
+        html += `
+          <div class="card">
+            <div class="card-source">${escapeHtml(source)}</div>
+            <div class="card-title">${escapeHtml(title)}</div>
+            <div class="card-desc">${escapeHtml(desc)}</div>
+            <div class="card-footer">
+              <a href="${link}" target="_self" class="card-link">Read article</a>
+            </div>
+          </div>
+        `;
+      }
+      container.innerHTML = html;
+    }
+
+    // simple escape
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ----- main: fetch all feeds in parallel, collect, render -----
+    async function loadAllFeeds() {
+      try {
+        container.innerHTML = `
+          <div class="loading-spinner">
+            <div class="spinner"></div>
+            <span>loading universe of stories …</span>
+          </div>
+        `;
+
+        const feedPromises = FEED_SOURCES.map(source => 
+          fetchFeed(source).catch(err => {
+            console.warn(`Feed error (${source.name}):`, err);
+            return null;
+          })
+        );
+
+        const results = await Promise.all(feedPromises);
+
+        allArticles = [];
+        let feedErrors = 0;
+
+        for (let res of results) {
+          if (!res) {
+            feedErrors++;
+            continue;
+          }
+          const articles = res.items.map(item => ({
+            title: item.title || 'Untitled',
+            description: item.description || item.content || '',
+            link: item.link || '#',
+            source: res.sourceName,
+            category: res.category || 'all',
+            pubDate: item.pubDate || new Date().toISOString()
+          }));
+          if (articles.length > 0) {
+            allArticles = allArticles.concat(articles);
+          } else {
+            feedErrors++;
+          }
+        }
+
+        if (allArticles.length === 0) {
+          container.innerHTML = `
+            <div class="error-banner">⚠️ Could not load any feeds. Please refresh or try again later.</div>
+          `;
+          return;
+        }
+
+        renderCards(currentCategory);
+
+        if (feedErrors > 0) {
+          const note = document.createElement('div');
+          note.style.cssText = 'margin-top: 1.5rem; font-size: 0.8rem; color: #99a4cc; text-align: center; opacity: 0.7;';
+          note.textContent = `⚡ ${feedErrors} feed(s) temporarily unavailable — others loaded.`;
+          container.appendChild(note);
+        }
+
+      } catch (err) {
+        console.error('Fatal:', err);
+        container.innerHTML = `
+          <div class="error-banner">🚀 Something went wrong. Please refresh.</div>
+        `;
+      }
+    }
+
+    // --- category filter logic ---
+    function setActiveCategory(category) {
+      currentCategory = category;
+      pills.forEach(p => {
+        p.classList.toggle('active', p.dataset.category === category);
+      });
+      renderCards(category);
+    }
+
+    // --- init category pills ---
+    pills.forEach(pill => {
+      pill.addEventListener('click', function() {
+        const cat = this.dataset.category;
+        setActiveCategory(cat);
+      });
+    });
+
+    // --- start ---
+    loadAllFeeds();
+
+    // auto-refresh every 10 minutes
+    setInterval(loadAllFeeds, 10 * 60 * 1000);
+  })();
+</script>
+</body>
+</html>

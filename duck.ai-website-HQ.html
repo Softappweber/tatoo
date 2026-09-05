@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OrbitOps — GitHub Intelligence Platform</title>
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+</head>
+
+<body>
+  <header>
+    <nav aria-label="Primary navigation">
+      <table width="100%" cellpadding="12">
+        <tr>
+          <td>
+            <strong>
+              <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" fill="#111827"></circle>
+                <path d="M7 12h10M12 7v10" stroke="white" stroke-width="2"></path>
+              </svg>
+              ORBITOPS
+            </strong>
+          </td>
+
+          <td align="center">
+            <a href="#platform">Platform</a>
+            &nbsp;&nbsp;
+            <a href="#solutions">Solutions</a>
+            &nbsp;&nbsp;
+            <a href="#security">Security</a>
+            &nbsp;&nbsp;
+            <a href="#pricing">Pricing</a>
+          </td>
+
+          <td align="right">
+            <a href="#login">Sign in</a>
+            &nbsp;
+            <button type="button" onclick="openDemo()">Book a demo</button>
+          </td>
+        </tr>
+      </table>
+    </nav>
+  </header>
+
+  <main>
+    <section id="hero" aria-labelledby="hero-title">
+      <table width="100%" cellpadding="24">
+        <tr>
+          <td width="58%" valign="top">
+            <p>
+              <mark>GITHUB INTELLIGENCE PLATFORM</mark>
+            </p>
+
+            <h1 id="hero-title">
+              Turn engineering activity into business momentum.
+            </h1>
+
+            <p>
+              OrbitOps gives modern engineering organizations a live command
+              center for delivery, security, quality, and developer efficiency.
+            </p>
+
+            <p>
+              <button type="button" onclick="openDemo()">Start a private tour</button>
+              <button type="button" onclick="scrollToSection('platform')">
+                Explore the platform
+              </button>
+            </p>
+
+            <p>
+              <small>
+                No credit card required · GitHub App installation · Enterprise-ready
+              </small>
+            </p>
+          </td>
+
+          <td width="42%" valign="top">
+            <fieldset>
+              <legend><strong>Live organization pulse</strong></legend>
+
+              <table width="100%" cellpadding="10">
+                <tr>
+                  <td><small>Delivery health</small><br /><strong>Excellent</strong></td>
+                  <td align="right"><meter min="0" max="100" value="92">92%</meter></td>
+                </tr>
+                <tr>
+                  <td><small>Security posture</small><br /><strong>Protected</strong></td>
+                  <td align="right"><meter min="0" max="100" value="86">86%</meter></td>
+                </tr>
+                <tr>
+                  <td><small>Release confidence</small><br /><strong>94%</strong></td>
+                  <td align="right"><progress max="100" value="94">94%</progress></td>
+                </tr>
+              </table>
+
+              <figure>
+                <canvas id="heroChart" height="180" aria-label="Delivery performance chart"></canvas>
+                <figcaption>
+                  <small>Continuous delivery performance · Last 30 days</small>
+                </figcaption>
+              </figure>
+            </fieldset>
+          </td>
+        </tr>
+      </table>
+    </section>
+
+    <hr />
+
+    <section aria-label="Trusted companies">
+      <p align="center">
+        <small>BUILT FOR TEAMS THAT SHIP IMPORTANT SOFTWARE</small>
+      </p>
+
+      <table width="100%" cellpadding="12">
+        <tr align="center">
+          <td><strong>Northstar</strong></td>
+          <td><strong>Vertex</strong></td>
+          <td><strong>Arc Labs</strong></td>
+          <td><strong>Monument</strong></td>
+          <td><strong>Helio</strong></td>
+        </tr>
+      </table>
+    </section>
+
+    <hr />
+
+    <section id="platform" aria-labelledby="platform-title">
+      <p><mark>ONE CONTROL PLANE</mark></p>
+      <h2 id="platform-title">Everything your GitHub organization needs to move with confidence.</h2>
+
+      <table width="100%" cellpadding="18">
+        <tr valign="top">
+          <td width="33%">
+            <fieldset>
+              <legend>
+                <i data-lucide="activity"></i>
+                <strong>Engineering intelligence</strong>
+              </legend>
+              <p>
+                Discover delivery bottlenecks before they become missed dates.
+              </p>
+              <ul>
+                <li>PR review-time analytics</li>
+                <li>Deployment frequency trends</li>
+                <li>Team workload signals</li>
+                <li>Release forecasting</li>
+              </ul>
+            </fieldset>
+          </td>
+
+          <td width="33%">
+            <fieldset>
+              <legend>
+                <i data-lucide="shield-check"></i>
+                <strong>Security automation</strong>
+              </legend>
+              <p>
+                Convert security findings into prioritized, owned remediation work.
+              </p>
+              <ul>
+                <li>Dependency intelligence</li>
+                <li>Secret and code scanning</li>
+                <li>Permission drift detection</li>
+                <li>Audit-ready reporting</li>
+              </ul>
+            </fieldset>
+          </td>
+
+          <td width="33%">
+            <fieldset>
+              <legend>
+                <i data-lucide="workflow"></i>
+                <strong>Release operations</strong>
+              </legend>
+              <p>
+                Operate every workflow, deployment, and environment from one place.
+              </p>
+              <ul>
+                <li>Workflow reliability</li>
+                <li>CI cost visibility</li>
+                <li>Flaky test detection</li>
+                <li>Rollback readiness</li>
+              </ul>
+            </fieldset>
+          </td>
+        </tr>
+      </table>
+    </section>
+
+    <hr />
+
+    <section id="solutions" aria-labelledby="solutions-title">
+      <p><mark>FROM SIGNAL TO ACTION</mark></p>
+      <h2 id="solutions-title">Your GitHub data should not just be visible. It should be useful.</h2>
+
+      <details open>
+        <summary><strong>01 · Find what is slowing your teams down</strong></summary>
+        <p>
+          OrbitOps connects pull requests, reviews, commits, issues, workflows,
+          deployments, and ownership data to reveal operational patterns.
+        </p>
+      </details>
+
+      <details>
+        <summary><strong>02 · Explain why it matters</strong></summary>
+        <p>
+          Each signal is translated into business impact: delayed releases,
+          elevated risk, overloaded teams, or unnecessary infrastructure cost.
+        </p>
+      </details>
+
+      <details>
+        <summary><strong>03 · Fix it automatically</strong></summary>
+        <p>
+          Generate pull requests, assign owners, notify teams, create tickets,
+          and apply approved repository policies without leaving the platform.
+        </p>
+      </details>
+    </section>
+
+    <hr />
+
+    <section id="security" aria-labelledby="security-title">
+      <table width="100%" cellpadding="24">
+        <tr>
+          <td width="55%" valign="top">
+            <p><mark>ENTERPRISE BY DESIGN</mark></p>
+            <h2 id="security-title">A command center your security team will approve.</h2>
+            <p>
+              Install OrbitOps as a GitHub App with granular permissions.
+              Keep your engineering systems observable, governed, and auditable.
+            </p>
+
+            <ul>
+              <li>Role-based access control</li>
+              <li>Organization-level policy management</li>
+              <li>Immutable audit events</li>
+              <li>SSO and enterprise identity support</li>
+              <li>Webhook-driven synchronization</li>
+              <li>Private deployment options</li>
+            </ul>
+          </td>
+
+          <td width="45%" valign="top">
+            <fieldset>
+              <legend><strong>Policy coverage</strong></legend>
+
+              <table width="100%" cellpadding="8">
+                <tr>
+                  <td>Branch protection</td>
+                  <td align="right"><meter min="0" max="100" value="96">96%</meter></td>
+                </tr>
+                <tr>
+                  <td>Required reviews</td>
+                  <td align="right"><meter min="0" max="100" value="89">89%</meter></td>
+                </tr>
+                <tr>
+                  <td>Security workflows</td>
+                  <td align="right"><meter min="0" max="100" value="94">94%</meter></td>
+                </tr>
+                <tr>
+                  <td>Repository ownership</td>
+                  <td align="right"><meter min="0" max="100" value="78">78%</meter></td>
+                </tr>
+              </table>
+            </fieldset>
+          </td>
+        </tr>
+      </table>
+    </section>
+
+    <hr />
+
+    <section aria-labelledby="metric-title">
+      <p><mark>DESIGNED FOR OUTCOMES</mark></p>
+      <h2 id="metric-title">Make progress measurable.</h2>
+
+      <table width="100%" cellpadding="16">
+        <tr align="center">
+          <td>
+            <h2>31%</h2>
+            <p>faster review cycles</p>
+          </td>
+          <td>
+            <h2>44%</h2>
+            <p>fewer recurring CI failures</p>
+          </td>
+          <td>
+            <h2>3.7×</h2>
+            <p>faster security remediation</p>
+          </td>
+          <td>
+            <h2>18h</h2>
+            <p>saved per platform engineer</p>
+          </td>
+        </tr>
+      </table>
+    </section>
+
+    <hr />
+
+    <section id="pricing" aria-labelledby="pricing-title">
+      <p><mark>SIMPLE, PREDICTABLE PRICING</mark></p>
+      <h2 id="pricing-title">Start small. Scale with your organization.</h2>
+
+      <table width="100%" border="1" cellpadding="18">
+        <thead>
+          <tr>
+            <th>Plan</th>
+            <th>For</th>
+            <th>Includes</th>
+            <th>Investment</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td><strong>Launch</strong></td>
+            <td>Small teams</td>
+            <td>Analytics, PR insights, Slack alerts</td>
+            <td><strong>$299 / month</strong></td>
+          </tr>
+
+          <tr>
+            <td><strong>Scale</strong></td>
+            <td>Growing companies</td>
+            <td>Security, Actions intelligence, governance</td>
+            <td><strong>$1,499 / month</strong></td>
+          </tr>
+
+          <tr>
+            <td><strong>Enterprise</strong></td>
+            <td>Large organizations</td>
+            <td>SSO, private deployment, advanced policies, support</td>
+            <td><strong>Custom</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr />
+
+    <section aria-labelledby="cta-title">
+      <fieldset>
+        <legend><strong>Ready to build a calmer engineering organization?</strong></legend>
+        <h2 id="cta-title">Give your teams leverage, not more dashboards.</h2>
+        <p>
+          See how OrbitOps can turn your GitHub organization into an intelligent,
+          automated operating system.
+        </p>
+        <button type="button" onclick="openDemo()">Request executive demo</button>
+      </fieldset>
+    </section>
+  </main>
+
+  <footer>
+    <br />
+    <table width="100%" cellpadding="12">
+      <tr>
+        <td>
+          <strong>ORBITOPS</strong><br />
+          <small>Engineering intelligence for ambitious teams.</small>
+        </td>
+        <td align="right">
+          <a href="#platform">Platform</a>
+          &nbsp;·&nbsp;
+          <a href="#security">Security</a>
+          &nbsp;·&nbsp;
+          <a href="#pricing">Pricing</a>
+        </td>
+      </tr>
+    </table>
+    <p align="center">
+      <small>© <span id="year"></span> OrbitOps. All rights reserved.</small>
+    </p>
+  </footer>
+
+  <dialog id="demoDialog">
+    <form method="dialog">
+      <h2>Request your private tour</h2>
+
+      <p>
+        <label>
+          Work email<br />
+          <input type="email" id="email" required placeholder="you@company.com" />
+        </label>
+      </p>
+
+      <p>
+        <label>
+          Company size<br />
+          <select id="companySize">
+            <option>1–20 employees</option>
+            <option>21–100 employees</option>
+            <option>101–500 employees</option>
+            <option>500+ employees</option>
+          </select>
+        </label>
+      </p>
+
+      <p>
+        <label>
+          Main priority<br />
+          <select id="priority">
+            <option>Engineering intelligence</option>
+            <option>Security and compliance</option>
+            <option>CI/CD reliability</option>
+            <option>Repository governance</option>
+          </select>
+        </label>
+      </p>
+
+      <p>
+        <button value="cancel">Cancel</button>
+        <button value="submit" onclick="submitDemo(event)">Request demo</button>
+      </p>
+
+      <output id="formMessage"></output>
+    </form>
+  </dialog>
+
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      $("#year").textContent = new Date().getFullYear();
+
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+
+      const canvas = $("#heroChart");
+
+      new Chart(canvas, {
+        type: "line",
+        data: {
+          labels: ["01", "05", "10", "15", "20", "25", "30"],
+          datasets: [
+            {
+              label: "Delivery score",
+              data: [61, 68, 64, 77, 74, 88, 92],
+              borderColor: "#111827",
+              backgroundColor: "rgba(17, 24, 39, 0.12)",
+              fill: true,
+              tension: 0.4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              min: 0,
+              max: 100
+            }
+          }
+        }
+      });
+    });
+
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+
+    function openDemo() {
+      $("#demoDialog").showModal();
+    }
+
+    function submitDemo(event) {
+      event.preventDefault();
+
+      const email = $("#email").value.trim();
+      const size = $("#companySize").value;
+      const priority = $("#priority").value;
+
+      if (!email) {
+        $("#formMessage").textContent = "Please enter your work email.";
+        return;
+      }
+
+      $("#formMessage").textContent =
+        `Thank you. We will contact ${email} about ${priority.toLowerCase()} for a ${size.toLowerCase()} company.`;
+
+      event.target.disabled = true;
+    }
+  </script>
+</body>
+</html>

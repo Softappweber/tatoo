@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - TradingHub</title>
+    <style>
+        :root {
+            --bg-primary: #0D0D0D;
+            --bg-card: #1A1A1A;
+            --accent-gold: #FFB800;
+            --accent-green: #00C853;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --text-muted: #757575;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --border-radius: 14px;
+            --transition: all 0.25s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* === TOP BAR === */
+        .top-bar {
+            background: #000;
+            padding: 0.4rem 1rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        /* === NAVIGATION === */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(13, 13, 13, 0.92);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 1.5rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 65px;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+
+        .back-btn {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            color: #FFD54F;
+        }
+
+        /* === PRODUCT LAYOUT === */
+        .product-container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        /* === IMAGE SECTION === */
+        .image-section {
+            position: sticky;
+            top: 90px;
+            align-self: start;
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+        }
+
+        .image-placeholder-fallback {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            font-size: 5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .thumbnail-row {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .thumbnail {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            background: var(--bg-card);
+        }
+
+        .thumbnail:hover, .thumbnail.active {
+            border-color: var(--accent-gold);
+        }
+
+        /* === DETAILS SECTION === */
+        .product-details h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .category-tag {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 15px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: rgba(255,184,0,0.15);
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .stars { color: var(--accent-gold); font-size: 1rem; }
+        .rating-text { color: var(--text-muted); font-size: 0.85rem; }
+
+        .description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* === PRICE === */
+        .price-block {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .price-display {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .price-display .currency {
+            font-size: 1.3rem;
+            color: var(--accent-gold);
+        }
+
+        .price-display .original {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            margin-left: 0.8rem;
+            font-weight: 500;
+        }
+
+        .savings-badge {
+            display: inline-block;
+            background: rgba(0,200,83,0.15);
+            color: var(--accent-green);
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        /* === SPECS === */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .spec-item {
+            background: var(--bg-card);
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .spec-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .spec-value {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        /* === BUTTONS === */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn-upi {
+            background: var(--accent-gold);
+            color: #000;
+            font-size: 1.1rem;
+        }
+
+        .btn-upi:hover {
+            background: #FFD54F;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,184,0,0.2);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: #fff;
+        }
+
+        .btn-whatsapp:hover {
+            background: #1ebe57;
+            transform: translateY(-2px);
+        }
+
+        .btn-back {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-back:hover {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        /* === TRUST BADGES === */
+        .trust-row {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .trust-badge {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            padding: 0.4rem 0.8rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* === FOOTER === */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+            font-size: 0.8rem;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .product-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .image-section {
+                position: static;
+            }
+            .product-details h1 {
+                font-size: 1.5rem;
+            }
+            .price-display {
+                font-size: 2rem;
+            }
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        📈 FREE Shipping on orders above ₹999 | UPI Payments Accepted
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">📊 TradingHub</a>
+            <a href="index.html" class="back-btn">← Back to Products</a>
+        </div>
+    </nav>
+
+    <!-- PRODUCT SECTION -->
+    <div class="product-container">
+        
+        <!-- IMAGE SECTION -->
+        <div class="image-section">
+            <img id="productImage" class="product-image" src="" alt="Product Image" 
+                 onerror="this.style.display='none'; document.getElementById('imageFallback').style.display='flex';">
+            <div id="imageFallback" class="image-placeholder-fallback" style="display:none;">📷</div>
+        </div>
+
+        <!-- DETAILS SECTION -->
+        <div class="product-details">
+            <span id="productCategory" class="category-tag"></span>
+            <h1 id="productTitle"></h1>
+            
+            <div class="rating">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="rating-text">4.9 (120+ reviews)</span>
+            </div>
+
+            <p id="productDescription" class="description"></p>
+
+            <!-- SPECS -->
+            <div id="productSpecs" class="specs-grid"></div>
+
+            <!-- PRICE BLOCK -->
+            <div class="price-block">
+                <div id="productPrice" class="price-display"></div>
+                <div id="productSavings" class="savings-badge"></div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="btn-group">
+                <button class="btn btn-upi" onclick="goToUpiPayment()">
+                    💰 Pay ₹<span id="btnAmount">---</span> via UPI
+                </button>
+                <button class="btn btn-whatsapp" onclick="contactViaWhatsApp()">
+                    💬 Order via WhatsApp
+                </button>
+                <button class="btn btn-back" onclick="window.location.href='index.html'">
+                    ← Continue Shopping
+                </button>
+            </div>
+
+            <!-- TRUST BADGES -->
+            <div class="trust-row">
+                <span class="trust-badge">🔒 Secure UPI Payment</span>
+                <span class="trust-badge">✅ Instant Confirmation</span>
+                <span class="trust-badge">🚚 Pan India Delivery</span>
+                <span class="trust-badge">🔄 Easy Returns</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2026 TradingHub. All products for traders, by traders.</p>
+    </footer>
+
+    <script>
+        // ============================================
+        // LOAD PRODUCT FROM SESSION STORAGE
+        // ============================================
+        const product = JSON.parse(sessionStorage.getItem('currentProduct'));
+
+        if (product && product.price) {
+            // Set image
+            document.getElementById('productImage').src = product.image;
+            
+            // Set title
+            document.getElementById('productTitle').textContent = product.title;
+            
+            // Set category
+            const categoryNames = { crafts: '🎨 Crafts & Statues', books: '📚 Books', excel: '📊 Excel Tools', software: '💻 Software' };
+            document.getElementById('productCategory').textContent = categoryNames[product.category] || product.category.toUpperCase();
+            
+            // Set description
+            document.getElementById('productDescription').textContent = product.fullDescription || product.description;
+            
+            // Set price
+            document.getElementById('productPrice').innerHTML = `
+                <span class="currency">₹</span>${product.price.toLocaleString('en-IN')}
+                ${product.originalPrice ? `<span class="original">₹${product.originalPrice.toLocaleString('en-IN')}</span>` : ''}
+            `;
+            
+            // Set button amount
+            document.getElementById('btnAmount').textContent = product.price.toLocaleString('en-IN');
+            
+            // Set savings
+            if (product.originalPrice && product.originalPrice > product.price) {
+                const savings = product.originalPrice - product.price;
+                const percent = Math.round((savings / product.originalPrice) * 100);
+                document.getElementById('productSavings').textContent = `🎉 You save ₹${savings.toLocaleString('en-IN')} (${percent}% OFF)`;
+            }
+            
+            // Set specs
+            if (product.specs && product.specs.length > 0) {
+                const specsGrid = document.getElementById('productSpecs');
+                specsGrid.innerHTML = product.specs.map(s => `
+                    <div class="spec-item">
+                        <div class="spec-label">${s.label}</div>
+                        <div class="spec-value">${s.value || '—'}</div>
+                    </div>
+                `).join('');
+            }
+            
+            // Store product data for payment page
+            sessionStorage.setItem('paymentProduct', JSON.stringify({
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                image: product.image
+            }));
+            
+        } else {
+            // No product found
+            document.querySelector('.product-container').innerHTML = `
+                <div style="grid-column:1/-1; text-align:center; padding:4rem;">
+                    <h1 style="font-size:3rem;">📦</h1>
+                    <h2>No Product Selected</h2>
+                    <p style="color:#B0B0B0; margin:1rem 0;">Please go back and select a product.</p>
+                    <a href="index.html" style="color:#FFB800; font-weight:700;">← Browse Products</a>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // UPI PAYMENT REDIRECT
+        // ============================================
+        function goToUpiPayment() {
+            if (!product || !product.price) {
+                alert('No product selected!');
+                return;
+            }
+            // Redirect to your UPI payment gateway
+            window.location.href = 'https://softappweber.github.io/sushantcoder';
+        }
+
+        // ============================================
+        // WHATSAPP ORDER
+        // ============================================
+        function contactViaWhatsApp() {
+            const phone = '919XXXXXXXXX'; // <-- REPLACE WITH YOUR WHATSAPP NUMBER
+            const message = encodeURIComponent(
+                `Hi TradingHub! 🚀\n\n` +
+                `I want to order:\n` +
+                `📦 Product: ${product.title}\n` +
+                `💰 Price: ₹${product.price.toLocaleString('en-IN')}\n` +
+                `🆔 Product ID: #${product.id}\n\n` +
+                `Please confirm my order and share payment details.`
+            );
+            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+        }
+    </script>
+</body>
+</html>

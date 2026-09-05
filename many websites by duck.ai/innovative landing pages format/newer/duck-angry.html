@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Premium Home Decor — Landing Page</title>
+  <style>
+    :root{
+      --bg:#0b0f19;
+      --text:#e9eefc;
+      --muted:rgba(233,238,252,.72);
+      --card:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.12);
+      --primary:#6d5efc;
+      --primary2:#35d3ff;
+      --shadow:0 18px 60px rgba(0,0,0,.35);
+      --ring:rgba(109,94,252,.35);
+      --radius:18px;
+      --max:1100px;
+    }
+    :root[data-theme="light"]{
+      --bg:#f7f8ff;
+      --text:#0b1020;
+      --muted:rgba(11,16,32,.68);
+      --card:rgba(11,16,32,.05);
+      --border:rgba(11,16,32,.14);
+      --primary:#4f3dff;
+      --primary2:#0077ff;
+      --shadow:0 20px 70px rgba(21,30,60,.14);
+      --ring:rgba(79,61,255,.25);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background:
+        radial-gradient(1000px 600px at 15% -10%, rgba(109,94,252,.35), transparent 60%),
+        radial-gradient(900px 540px at 90% 10%, rgba(53,211,255,.25), transparent 58%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.5;
+      overflow-x:hidden;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{max-width:var(--max); margin:0 auto; padding:0 22px}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(0,0,0,.12);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    :root[data-theme="light"] .topbar{
+      background: rgba(247,248,255,.7);
+      border-bottom:1px solid rgba(11,16,32,.08);
+    }
+    .topbar-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0; gap:14px;
+    }
+    .brand{display:flex; gap:10px; align-items:center; font-weight:900; letter-spacing:.2px}
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: 0 10px 30px rgba(109,94,252,.3);
+      position:relative;
+    }
+    .logo:after{
+      content:""; position:absolute; inset:9px;
+      border-radius:9px;
+      background: rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.25);
+      transform: rotate(6deg);
+    }
+
+    .btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      padding:11px 14px;
+      border-radius:14px;
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      font-weight:800;
+      letter-spacing:.1px;
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.25); background: rgba(255,255,255,.06);}
+    .btn:focus{outline:none; box-shadow:0 0 0 4px var(--ring);}
+    .btn-primary{
+      border-color: rgba(109,94,252,.45);
+      background: linear-gradient(135deg, rgba(109,94,252,.95), rgba(53,211,255,.75));
+      color:#07101d;
+      box-shadow:0 18px 45px rgba(109,94,252,.25);
+    }
+    :root[data-theme="light"] .btn-primary{ color:#06101b; }
+    .btn-primary:hover{
+      border-color: rgba(109,94,252,.65);
+      background: linear-gradient(135deg, rgba(109,94,252,1), rgba(53,211,255,.88));
+    }
+    .hero{padding:54px 0 10px; position:relative;}
+    .hero-grid{
+      display:grid; grid-template-columns: 1.15fr .85fr; gap:22px; align-items:start;
+    }
+    @media (max-width:960px){ .hero-grid{grid-template-columns:1fr;} }
+
+    .h-eyebrow{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin-bottom:14px;
+    }
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 12px; border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size:13px;
+      white-space:nowrap;
+      font-weight:800;
+    }
+    .dot{width:8px; height:8px; border-radius:50%; background:#3ef7b1; box-shadow:0 0 0 6px rgba(62,247,177,.12);}
+    .h-title{
+      font-size: clamp(34px, 4vw, 56px);
+      line-height:1.02; margin:0 0 14px;
+      letter-spacing:-.8px; font-weight:1000;
+    }
+    .grad{
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .h-sub{margin:0 0 22px; color:var(--muted); font-size:16.5px; max-width:62ch; font-weight:650;}
+    .product-card{
+      background: var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+      overflow:hidden;
+      position:relative;
+    }
+    .product-card:before{
+      content:""; position:absolute; inset:-2px;
+      background:
+        radial-gradient(650px 220px at 20% 0%, rgba(109,94,252,.35), transparent 60%),
+        radial-gradient(700px 260px at 90% 40%, rgba(53,211,255,.22), transparent 55%);
+      opacity:.9; pointer-events:none;
+    }
+    .product-card > *{position:relative}
+    .media{
+      border-radius: 16px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      overflow:hidden;
+      position:relative;
+      height: 280px;
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom: 14px;
+    }
+    .media .mock{
+      width: 70%;
+      height: 60%;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(109,94,252,.95), rgba(53,211,255,.7));
+      box-shadow: 0 20px 50px rgba(109,94,252,.25);
+      display:flex; align-items:center; justify-content:center;
+      color:#06101b; font-weight:1000;
+      text-align:center; padding:12px;
+    }
+    :root[data-theme="light"] .media .mock{ color:#fff; opacity:.95; }
+    .price-row{
+      display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      margin-top:8px;
+    }
+    .price{
+      font-size: 28px; font-weight:1100; letter-spacing:-.4px;
+    }
+    .strike{color:var(--muted); text-decoration: line-through; margin-left:10px; font-weight:800; font-size:14px;}
+    .small{color:var(--muted); font-weight:650; font-size:13.5px}
+    .form{display:flex; flex-direction:column; gap:12px; margin-top:14px;}
+    .field{display:flex; flex-direction:column; gap:8px;}
+    .label{font-size:13px; color:var(--muted); font-weight:850; letter-spacing:.2px;}
+    input, select{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      outline:none;
+      font-weight:800;
+    }
+    input::placeholder{color: rgba(233,238,252,.45);}
+    :root[data-theme="light"] input::placeholder{color: rgba(11,16,32,.35);}
+    input:focus{box-shadow:0 0 0 4px var(--ring); border-color: rgba(109,94,252,.55);}
+    .fineprint{color:var(--muted); font-size:12.5px; font-weight:650;}
+    section{padding:26px 0}
+    .section-title{font-size:22px; margin:0 0 10px; letter-spacing:-.3px; font-weight:1000;}
+    .section-sub{margin:0 0 18px; color:var(--muted); max-width:70ch; font-weight:650;}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+    @media (max-width:900px){.grid2{grid-template-columns:1fr;}}
+    .card{
+      background: var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+    }
+    .feature-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+    @media (max-width:980px){.feature-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:560px){.feature-grid{grid-template-columns:1fr}}
+    .feature{
+      padding:14px;
+      border-radius:16px;
+      background: rgba(255,255,255,.03);
+      border:1px solid var(--border);
+    }
+    .kicker{display:flex; gap:10px; align-items:center; margin-bottom:8px; font-weight:1000}
+    .icon{
+      width:34px; height:34px; border-radius:13px;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      display:grid; place-items:center;
+      color:var(--primary2);
+      font-weight:1100;
+    }
+    details{
+      background: rgba(255,255,255,.03);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:14px 14px;
+      margin-bottom:10px;
+    }
+    details summary{
+      cursor:pointer;
+      font-weight:1000;
+      list-style:none;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    details summary::-webkit-details-marker{display:none;}
+    .faq p{margin:10px 0 0; color:var(--muted); font-weight:650;}
+    .test-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+    @media (max-width:980px){.test-grid{grid-template-columns:1fr}}
+    .quote{padding:16px; background: rgba(255,255,255,.03); border:1px solid var(--border); border-radius:16px;}
+    .stars{color:#ffd166; font-weight:1100; letter-spacing:1px; margin-bottom:10px;}
+    .quote .text{margin:0 0 12px; color:var(--muted); font-weight:650; font-size:14px;}
+    .who{font-weight:1000; color:rgba(233,238,252,.92);}
+    :root[data-theme="light"] .who{color: rgba(11,16,32,.92);}
+    footer{padding:28px 0 40px; color:var(--muted); font-weight:650; font-size:13.5px}
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <span>Home Decor Drop</span>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:center;">
+        <div class="pill"><span class="dot"></span>Premium look • Real-life comfort</div>
+        <button id="themeToggle" class="btn" type="button" aria-label="Toggle theme">
+          <span id="themeText">Dark</span> <span aria-hidden="true">🌓</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="container hero">
+      <div class="hero-grid">
+        <div>
+          <div class="h-eyebrow">
+            <span class="pill">Best for: living room • bedroom • entryway</span>
+            <span class="pill">Ships fast • Limited batch</span>
+          </div>
+
+          <h1 class="h-title">
+            Elevate your space with a <span class="grad">premium home decor</span> finish.
+          </h1>
+
+          <p class="h-sub">
+            One piece. Big impact. Designed to make your room look curated—not cluttered.
+            This landing page is built to turn “nice” into “buy now.”
+          </p>
+
+          <div class="feature-grid" style="margin-top:18px;">
+            <div class="feature">
+              <div class="kicker"><span class="icon">✓</span>Instant “wow” effect</div>
+              <div class="small">High-visual impact from day one.</div>
+            </div>
+            <div class="feature">
+              <div class="kicker"><span class="icon">✦</span>Premium feel</div>
+              <div class="small">Texture, color depth, and a clean silhouette.</div>
+            </div>
+            <div class="feature">
+              <div class="kicker"><span class="icon">⚡</span>Ready-to-place</div>
+              <div class="small">No complicated setup—just style.</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="product-card" aria-label="Buy box">
+          <div class="media" aria-label="Product image placeholder">
+            <div class="mock">
+              Your Product Image
+              <div style="font-size:12px; font-weight:900; opacity:.9; margin-top:6px;">
+                Replace with your photo
+              </div>
+            </div>
+          </div>
+
+          <div class="price-row">
+            <div>
+              <div class="price">₹2,499</div>
+              <div class="small">One-time purchase</div>
+              <div class="strike">₹3,199</div>
+            </div>
+            <div class="small" style="text-align:right">
+              <div style="font-weight:1000; color:#3ef7b1;">Save 22%</div>
+              <div>Limited batch this week</div>
+            </div>
+          </div>
+
+          <form class="form" onsubmit="event.preventDefault(); submitOrder();">
+            <div class="field">
+              <div class="label">Choose your variant</div>
+              <select id="variant" required>
+                <option value="" disabled selected>Select option</option>
+                <option>Classic (Black)</option>
+                <option>Soft (Beige)</option>
+                <option>Bright (Teal)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <div class="label">Your phone number (for delivery updates)</div>
+              <input id="phone" type="tel" placeholder="+91 9XXXXXXXXX" required />
+            </div>
+
+            <button class="btn btn-primary" type="submit">
+              Buy Now <span aria-hidden="true">→</span>
+            </button>
+
+            <div class="fineprint" id="note">
+              Demo form. Connect this to WhatsApp/Shopify/Stripe/CRM in your setup.
+            </div>
+          </form>
+        </aside>
+      </div>
+    </div>
+
+    <section class="container">
+      <div class="grid2">
+        <div class="card">
+          <div class="section-title">Why you’ll love it the moment it arrives</div>
+          <p class="section-sub" style="margin-bottom:0;">
+            This is not a “random decor” page. It’s built around decision-making: benefits, proof, and a clear next step.
+          </p>
+          <div class="divider" style="height:1px; background:var(--border); margin:18px 0;"></div>
+          <ul style="margin:0; padding-left:18px; color:var(--muted); font-weight:650;">
+            <li>Looks premium in natural & evening light.</li>
+            <li>Works with modern, minimal, and warm interiors.</li>
+            <li>Perfect as a gift—because it feels intentional.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="section-title">What you get in the box</div>
+          <div class="feature-grid" style="grid-template-columns:1fr; margin-top:10px;">
+            <div class="feature">
+              <div class="kicker"><span class="icon">📦</span>1x Main product</div>
+              <div class="small">Carefully packed to arrive safe.</div>
+            </div>
+            <div class="feature">
+              <div class="kicker"><span class="icon">🧼</span>Care + styling guide</div>
+              <div class="small">So it stays looking new.</div>
+            </div>
+            <div class="feature">
+              <div class="kicker"><span class="icon">🔁</span>Support</div>
+              <div class="small">Quick help if anything’s off.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <h2 class="section-title">Social proof (swap with your reviews)</h2>
+      <p class="section-sub">Use real testimonials to boost conversion—this section does the trust work.</p>
+
+      <div class="test-grid">
+        <div class="quote">
+          <div class="stars">★★★★★</div>
+          <p class="text">“It looks expensive. The color is perfect and it instantly upgraded my room.”</p>
+          <div class="who">— Aisha, Bangalore</div>
+        </div>
+        <div class="quote">
+          <div class="stars">★★★★★</div>
+          <p class="text">“Fast delivery and the finish is premium. The page made ordering super easy.”</p>
+          <div class="who">— Ravi, Pune</div>
+        </div>
+        <div class="quote">
+          <div class="stars">★★★★★</div>
+          <p class="text">“Bought as a gift—everyone asked where it’s from. Worth it.”</p>
+          <div class="who">— Neha, Delhi</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container faq">
+      <h2 class="section-title">FAQ</h2>
+      <div style="margin-top:10px;">
+        <details open>
+          <summary>
+            Does it match both modern and traditional interiors?
+            <span class="pill" style="padding:6px 10px;font-size:12px;">Quick answer</span>
+          </summary>
+          <p>Yes—this design is made to look intentional across multiple decor styles.</p>
+        </details>
+
+        <details>
+          <summary>
+            How is shipping handled?
+            <span class="pill" style="padding:6px 10px;font-size:12px;">Quick answer</span>
+          </summary>
+          <p>We pack carefully and ship quickly. Delivery updates are sent to your phone.</p>
+        </details>
+
+        <details>
+          <summary>
+            What if I need help after delivery?
+            <span class="pill" style="padding:6px 10px;font-size:12px;">Quick answer</span>
+          </summary>
+          <p>Support is included—reach out and we’ll help you resolve it.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="card">
+        <div class="grid2" style="align-items:center;">
+          <div>
+            <div class="section-title" style="margin-bottom:8px;">Ready to make your space look finished?</div>
+            <div class="section-sub" style="margin-bottom:0;">Pick a variant, place your order, and upgrade the vibe.</div>
+          </div>
+          <div style="display:flex; gap:12px; justify-content:flex-end; flex-wrap:wrap;">
+            <a class="btn btn-primary" href="#"
+               onclick="document.querySelector('#variant').focus(); return false;">
+              Choose your variant →
+            </a>
+            <a class="btn" href="#"
+               onclick="alert('Connect this to WhatsApp link in your setup.'); return false;">
+              Ask on WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="container">
+      <div style="display:flex; gap:12px; justify-content:space-between; flex-wrap:wrap; align-items:center;">
+        <div>© <span id="year"></span> Home Decor Drop • All rights reserved.</div>
+        <div>Light/Dark theme • Single-product landing</div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Theme toggle
+    (function(){
+      const root = document.documentElement;
+      const btn = document.getElementById('themeToggle');
+      const themeText = document.getElementById('themeText');
+
+      const saved = localStorage.getItem('theme');
+      const initial = saved === 'light' || saved === 'dark' ? saved : 'dark';
+      root.setAttribute('data-theme', initial);
+      themeText.textContent = initial === 'dark' ? 'Dark' : 'Light';
+
+      btn.addEventListener('click', () => {
+        const current = root.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        themeText.textContent = next === 'dark' ? 'Dark' : 'Light';
+      });
+    })();
+
+    // Demo order submit
+    function submitOrder(){
+      const variant = document.getElementById('variant').value;
+      const phone = document.getElementById('phone').value.trim();
+      const note = document.getElementById('note');
+
+      note.innerHTML = "Order request received (Demo). Variant: <b>" + escapeHtml(variant) + "</b> • Phone: <b>" + escapeHtml(phone) + "</b>.";
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#039;");
+    }
+  </script>
+</body>
+</html>

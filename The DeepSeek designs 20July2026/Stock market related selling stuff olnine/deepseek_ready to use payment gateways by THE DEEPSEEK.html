@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickPay | Instant Indian Payments</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #f5f0ff;
+            --card: #ffffff;
+            --primary: #6c3bff;
+            --primary-dark: #5a2de0;
+            --success: #00c853;
+            --danger: #ff3d5a;
+            --text: #1a1035;
+            --text-dim: #6b6580;
+            --border: #e8e3f5;
+            --gold: #ff9500;
+            --shadow: 0 20px 60px rgba(108,59,255,0.12);
+            --shadow-lg: 0 30px 80px rgba(108,59,255,0.18);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 20% 20%, rgba(108,59,255,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(255,149,0,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0,200,83,0.04) 0%, transparent 50%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Main Container - Fits Screen */
+        .main-container {
+            width: 100%;
+            max-width: 1050px;
+            height: 95vh;
+            max-height: 750px;
+            display: flex;
+            gap: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        /* Product Panel */
+        .product-panel {
+            flex: 0 0 400px;
+            background: var(--card);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-panel::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 5px;
+            background: linear-gradient(90deg, var(--primary), #8b5cf6, var(--gold));
+        }
+
+        .product-header .tag {
+            display: inline-block;
+            background: rgba(0,200,83,0.1); color: var(--success);
+            padding: 0.3rem 0.9rem; border-radius: 20px;
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 1rem;
+        }
+
+        .product-header h1 {
+            font-size: 1.7rem; font-weight: 800; color: var(--text);
+            line-height: 1.2; margin-bottom: 0.5rem; letter-spacing: -0.5px;
+        }
+
+        .product-header .desc {
+            color: var(--text-dim); font-size: 0.9rem; line-height: 1.5;
+        }
+
+        .product-visual {
+            text-align: center; padding: 1.5rem 0;
+            font-size: 6rem; position: relative;
+        }
+
+        .product-visual::after {
+            content: ''; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 4px; background: var(--border); border-radius: 2px;
+        }
+
+        .price-section {
+            text-align: center;
+        }
+
+        .price-row {
+            display: flex; align-items: baseline; justify-content: center; gap: 0.5rem; margin-bottom: 0.3rem;
+        }
+
+        .price {
+            font-size: 3rem; font-weight: 900; color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .price-decimals {
+            font-size: 1.2rem; font-weight: 700; color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .original-price {
+            font-size: 1rem; color: #bbb; text-decoration: line-through;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .savings {
+            display: inline-block; background: rgba(0,200,83,0.1); color: var(--success);
+            padding: 0.2rem 0.7rem; border-radius: 12px; font-size: 0.75rem;
+            font-weight: 700; margin-top: 0.3rem;
+        }
+
+        .features-list {
+            list-style: none; display: flex; flex-direction: column; gap: 0.6rem;
+        }
+
+        .features-list li {
+            display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem;
+            color: var(--text-dim); font-weight: 500;
+        }
+
+        .features-list li::before {
+            content: '✓'; color: var(--success); font-weight: 800; font-size: 1rem;
+        }
+
+        /* Payment Panel */
+        .payment-panel {
+            flex: 1;
+            background: var(--card);
+            border-radius: 28px;
+            box-shadow: var(--shadow-lg);
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .payment-panel h2 {
+            font-size: 1.4rem; font-weight: 700; color: var(--text);
+            margin-bottom: 0.2rem; letter-spacing: -0.3px;
+        }
+
+        .payment-panel .subtitle {
+            color: var(--text-dim); font-size: 0.8rem; margin-bottom: 1.5rem;
+        }
+
+        .form-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+        }
+
+        .form-group { margin-bottom: 0.8rem; }
+        .form-group.full { grid-column: 1 / -1; }
+
+        .form-group label {
+            display: block; font-size: 0.7rem; font-weight: 600; color: var(--text-dim);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%; padding: 0.8rem 1rem;
+            background: #faf8ff; border: 1.5px solid var(--border);
+            border-radius: 14px; font-family: 'Inter', sans-serif; font-size: 0.9rem;
+            color: var(--text); transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none; border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(108,59,255,0.08);
+        }
+
+        /* Payment Method Selector */
+        .payment-methods {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 1.2rem 0;
+        }
+
+        .pay-radio { display: none; }
+
+        .pay-label {
+            display: flex; align-items: center; gap: 0.6rem; padding: 0.8rem 1rem;
+            background: #faf8ff; border: 1.5px solid var(--border);
+            border-radius: 14px; cursor: pointer; transition: all 0.25s;
+            font-weight: 600; font-size: 0.85rem; color: var(--text);
+        }
+
+        .pay-label:hover { border-color: #c4b8e8; background: #f5f0ff; }
+
+        .pay-radio:checked + .pay-label {
+            border-color: var(--primary); background: rgba(108,59,255,0.05);
+            box-shadow: 0 0 0 4px rgba(108,59,255,0.06);
+        }
+
+        .pay-label .icon { font-size: 1.3rem; flex-shrink: 0; }
+
+        /* UPI ID Input (shown conditionally) */
+        .upi-field { display: none; margin-top: 0.5rem; }
+        #payUpi:checked ~ .upi-field,
+        #payCard:checked ~ .upi-field,
+        #payNet:checked ~ .upi-field,
+        #payIntl:checked ~ .upi-field { display: block; }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.5rem;
+        }
+
+        .btn {
+            width: 100%; padding: 1rem; border-radius: 16px; font-family: 'Inter', sans-serif;
+            font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s;
+            text-decoration: none; text-align: center; letter-spacing: 0.3px;
+            border: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary); color: #fff;
+            box-shadow: 0 10px 30px rgba(108,59,255,0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(108,59,255,0.4);
+        }
+
+        .btn-upi {
+            background: #fff; color: var(--text); border: 2px solid var(--border);
+        }
+
+        .btn-upi:hover {
+            border-color: var(--primary); background: #faf8ff; transform: translateY(-2px);
+        }
+
+        .btn-whatsapp {
+            background: #25D366; color: #fff;
+            box-shadow: 0 10px 30px rgba(37,211,102,0.3);
+        }
+
+        .btn-whatsapp:hover {
+            background: #20ba5a; transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(37,211,102,0.4);
+        }
+
+        .btn-razorpay {
+            background: #02042B; color: #61dafb;
+            box-shadow: 0 10px 30px rgba(2,4,43,0.3);
+        }
+
+        .btn-razorpay:hover {
+            background: #0a0d3d; transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(2,4,43,0.4);
+        }
+
+        .divider-text {
+            text-align: center; color: var(--text-dim); font-size: 0.75rem;
+            position: relative; margin: 0.3rem 0;
+        }
+
+        .divider-text::before, .divider-text::after {
+            content: ''; position: absolute; top: 50%; width: 35%; height: 1px;
+            background: var(--border);
+        }
+
+        .divider-text::before { left: 0; }
+        .divider-text::after { right: 0; }
+
+        .trust-badges {
+            display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;
+            margin-top: 0.8rem;
+        }
+
+        .trust-badge {
+            font-size: 0.65rem; color: var(--text-dim); display: flex;
+            align-items: center; gap: 0.3rem; font-weight: 500;
+        }
+
+        .trust-badge .dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            body { height: auto; overflow-y: auto; padding: 1rem; }
+            .main-container { flex-direction: column; height: auto; max-height: none; }
+            .product-panel { flex: none; }
+            .payment-panel { flex: none; }
+            .form-grid { grid-template-columns: 1fr; }
+            .payment-methods { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <!-- LEFT: Product Summary -->
+        <div class="product-panel">
+            <div>
+                <div class="product-header">
+                    <span class="tag">⚡ Limited Offer</span>
+                    <h1>Stock Market Mastery Bundle</h1>
+                    <p class="desc">Complete trading toolkit — Indicators, eBooks, Courses & Scanner. Everything you need to trade profitably.</p>
+                </div>
+
+                <div class="product-visual">📊</div>
+
+                <ul class="features-list">
+                    <li>5 Premium Trading Indicators (MT4/MT5)</li>
+                    <li>Price Action Video Course (12 Hours)</li>
+                    <li>Live NSE/BSE Stock Screener</li>
+                    <li>Trade Journal Excel Template</li>
+                    <li>Lifetime Updates & Support</li>
+                </ul>
+            </div>
+
+            <div class="price-section">
+                <div class="price-row">
+                    <span class="original-price">₹9,999</span>
+                </div>
+                <div class="price-row">
+                    <span class="price">₹1,499</span>
+                    <span class="price-decimals">.00</span>
+                </div>
+                <span class="savings">You save ₹8,500 (85% OFF)</span>
+            </div>
+        </div>
+
+        <!-- RIGHT: Payment Panel -->
+        <div class="payment-panel">
+            <div>
+                <h2>💳 Complete Your Order</h2>
+                <p class="subtitle">Fill details & choose any payment method below</p>
+
+                <!-- Customer Details Form -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="custName" placeholder="Rahul Sharma" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="custEmail" placeholder="rahul@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone *</label>
+                        <input type="tel" id="custPhone" placeholder="+91 9876543210" required>
+                    </div>
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" id="custCity" placeholder="Mumbai">
+                    </div>
+                </div>
+
+                <!-- Payment Method Selection -->
+                <p style="font-weight: 700; color: var(--text); font-size: 0.85rem; margin: 1rem 0 0.5rem;">Select Payment Method</p>
+                <div class="payment-methods">
+                    <input type="radio" name="payment" class="pay-radio" id="payUpi" checked>
+                    <label for="payUpi" class="pay-label">
+                        <span class="icon">📱</span> UPI Apps
+                    </label>
+
+                    <input type="radio" name="payment" class="pay-radio" id="payCard">
+                    <label for="payCard" class="pay-label">
+                        <span class="icon">💳</span> Card / NetBanking
+                    </label>
+
+                    <input type="radio" name="payment" class="pay-radio" id="payNet">
+                    <label for="payNet" class="pay-label">
+                        <span class="icon">🏦</span> Direct Bank Transfer
+                    </label>
+
+                    <input type="radio" name="payment" class="pay-radio" id="payIntl">
+                    <label for="payIntl" class="pay-label">
+                        <span class="icon">🌍</span> International
+                    </label>
+                </div>
+
+                <!-- Conditional UPI Field -->
+                <div class="upi-field">
+                    <div class="form-group">
+                        <label>Your UPI ID (for verification)</label>
+                        <input type="text" id="upiId" placeholder="yourname@upi">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTION BUTTONS - REAL PAYMENT INTEGRATIONS -->
+            <div class="action-buttons">
+                
+                <!-- RAZORPAY PAYMENT LINK -->
+                <!-- REPLACE the href with your Razorpay Payment Link -->
+                <a href="https://rzp.io/l/your-payment-link" 
+                   target="_blank" 
+                   class="btn btn-razorpay"
+                   onclick="setCheckoutData()">
+                   💎 Pay via Razorpay (Card/UPI/NetBanking)
+                </a>
+
+                <!-- DIRECT UPI INTENT -->
+                <!-- REPLACE 'yourupiid@upi' with your actual UPI ID -->
+                <a href="upi://pay?pa=yourupiid@upi&pn=TradeStack&am=1499.00&cu=INR&tn=StockMarketBundle" 
+                   class="btn btn-upi"
+                   id="upiDirectBtn">
+                   📱 Pay ₹1,499 via UPI (GPay/PhonePe/Paytm)
+                </a>
+
+                <!-- WHATSAPP ORDER -->
+                <a href="https://wa.me/919876543210?text=Hi%20TradeStack%2C%20I%20want%20to%20buy%20the%20Stock%20Market%20Mastery%20Bundle%20for%20%E2%82%B91499.%20Please%20share%20payment%20details." 
+                   target="_blank" 
+                   class="btn btn-whatsapp"
+                   onclick="setCheckoutData()">
+                   💬 Order via WhatsApp (Get Payment Link)
+                </a>
+
+                <!-- DIRECT FORM ACTION TO PAYMENT GATEWAY -->
+                <!-- This form posts directly to Razorpay/Instamojo if you have API keys -->
+                <form action="https://api.razorpay.com/v1/checkout/embedded" method="POST" target="_blank" id="razorpayForm" style="display:none;">
+                    <input type="hidden" name="key_id" value="YOUR_RAZORPAY_KEY_ID">
+                    <input type="hidden" name="amount" value="149900">
+                    <input type="hidden" name="currency" value="INR">
+                    <input type="hidden" name="name" value="TradeStack">
+                    <input type="hidden" name="description" value="Stock Market Mastery Bundle">
+                    <input type="hidden" name="prefill[name]" id="rpName">
+                    <input type="hidden" name="prefill[email]" id="rpEmail">
+                    <input type="hidden" name="prefill[contact]" id="rpPhone">
+                </form>
+            </div>
+
+            <!-- Trust Badges -->
+            <div class="trust-badges">
+                <span class="trust-badge"><span class="dot"></span> SSL Encrypted</span>
+                <span class="trust-badge"><span class="dot"></span> Instant Delivery</span>
+                <span class="trust-badge"><span class="dot"></span> 12,000+ Customers</span>
+                <span class="trust-badge"><span class="dot"></span> 4.8 ★ Rating</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tiny helper to pre-fill payment gateway data -->
+    <script>
+        function setCheckoutData() {
+            const name = document.getElementById('custName').value || 'Customer';
+            const email = document.getElementById('custEmail').value || 'customer@email.com';
+            const phone = document.getElementById('custPhone').value || '9999999999';
+            
+            document.getElementById('rpName').value = name;
+            document.getElementById('rpEmail').value = email;
+            document.getElementById('rpPhone').value = phone;
+            
+            // Update UPI direct link with custom amount
+            const upiId = document.getElementById('upiId').value || 'yourupiid@upi';
+            const upiBtn = document.getElementById('upiDirectBtn');
+            upiBtn.href = `upi://pay?pa=${upiId}&pn=TradeStack&am=1499.00&cu=INR&tn=StockMarketBundle`;
+        }
+    </script>
+
+</body>
+</html>

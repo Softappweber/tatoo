@@ -1,0 +1,1223 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NovaSaaS — Premium Software</title>
+  <style>
+    /* ====== Base ====== */
+    :root{
+      --bg0:#05060a;
+      --bg1:#070915;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.09);
+      --stroke:rgba(255,255,255,.12);
+      --stroke2:rgba(255,255,255,.18);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.70);
+      --muted2:rgba(255,255,255,.55);
+      --shadow: 0 18px 55px rgba(0,0,0,.55);
+      --shadow2: 0 12px 30px rgba(0,0,0,.40);
+
+      --brand1:#7c3aed;   /* violet */
+      --brand2:#22d3ee;   /* cyan */
+      --brand3:#06b6d4;   /* teal */
+      --good:#34d399;
+
+      --radius:18px;
+      --radius2:26px;
+
+      --max:1140px;
+      --gap:18px;
+
+      --focus: 0 0 0 4px rgba(34,211,238,.18);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(124,58,237,.35), transparent 60%),
+        radial-gradient(900px 480px at 90% 10%, rgba(34,211,238,.26), transparent 55%),
+        radial-gradient(700px 420px at 40% 95%, rgba(6,182,212,.18), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1) 60%, #04040a);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    button{ font:inherit; }
+    img{ max-width:100%; display:block; }
+
+    /* ====== Decorative grain ====== */
+    .grain{
+      pointer-events:none;
+      position:fixed;
+      inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay;
+      opacity:.10;
+      z-index:0;
+    }
+
+    /* ====== Layout ====== */
+    .wrap{ position:relative; z-index:1; }
+    .container{ width: min(var(--max), calc(100% - 40px)); margin:0 auto; }
+
+    /* ====== Top bar ====== */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(180deg, rgba(5,6,10,.82), rgba(5,6,10,.55));
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 0;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:780;
+      letter-spacing:.2px;
+    }
+    .logo{
+      width:36px; height:36px; border-radius:12px;
+      background:
+        radial-gradient(14px 14px at 30% 30%, rgba(255,255,255,.55), transparent 55%),
+        linear-gradient(135deg, rgba(124,58,237,1), rgba(34,211,238,1));
+      box-shadow: 0 12px 35px rgba(124,58,237,.25);
+      border:1px solid rgba(255,255,255,.16);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:-30%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+      transform: rotate(20deg) translateX(-30%);
+      animation: shine 6.5s ease-in-out infinite;
+    }
+    @keyframes shine{
+      0%,35%{ transform: rotate(20deg) translateX(-45%); opacity:0; }
+      45%{ opacity:1; }
+      70%,100%{ transform: rotate(20deg) translateX(45%); opacity:0; }
+    }
+
+    .links{
+      display:flex; align-items:center; gap:18px;
+      color:var(--muted);
+      font-weight:600;
+      font-size:14px;
+    }
+    .links a{
+      padding:10px 10px;
+      border-radius:12px;
+      transition: background .2s ease, color .2s ease, transform .2s ease;
+    }
+    .links a:hover{
+      color:var(--text);
+      background: rgba(255,255,255,.06);
+      transform: translateY(-1px);
+    }
+
+    /* ====== Buttons ====== */
+    .btn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:11px 14px;
+      border-radius:14px;
+      cursor:pointer;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+      display:inline-flex; align-items:center; gap:10px;
+      font-weight:760;
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.085);
+      box-shadow: var(--shadow2);
+    }
+    .btn:focus{ outline:none; box-shadow: var(--focus); }
+
+    .btn-primary{
+      border:1px solid rgba(255,255,255,.16);
+      background:
+        radial-gradient(120px 80px at 20% 20%, rgba(255,255,255,.18), transparent 60%),
+        linear-gradient(135deg, rgba(124,58,237,1), rgba(34,211,238,1));
+      box-shadow:
+        0 18px 55px rgba(124,58,237,.22),
+        0 18px 55px rgba(34,211,238,.12);
+    }
+    .btn-primary:hover{
+      background:
+        radial-gradient(120px 80px at 20% 20%, rgba(255,255,255,.24), transparent 60%),
+        linear-gradient(135deg, rgba(124,58,237,1), rgba(34,211,238,1));
+      border-color: rgba(255,255,255,.25);
+    }
+
+    .btn-ghost{
+      background: transparent;
+      border:1px solid rgba(255,255,255,.14);
+      color:var(--muted);
+    }
+
+    /* ====== Mobile nav ====== */
+    .menuBtn{
+      display:none;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      cursor:pointer;
+      color:var(--text);
+      font-weight:800;
+    }
+
+    /* ====== Hero ====== */
+    .hero{
+      padding:64px 0 30px;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:34px;
+      align-items:center;
+    }
+    .badgeRow{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin-bottom:16px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding:9px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      font-weight:700;
+      font-size:13px;
+    }
+    .dot{
+      width:9px; height:9px; border-radius:99px;
+      background: linear-gradient(135deg, var(--brand1), var(--brand2));
+      box-shadow: 0 0 0 4px rgba(124,58,237,.12);
+    }
+
+    h1{
+      font-size: clamp(34px, 4.2vw, 54px);
+      line-height:1.05;
+      margin:0 0 14px;
+      letter-spacing:-.6px;
+    }
+    .gradText{
+      background: linear-gradient(90deg, rgba(124,58,237,1), rgba(34,211,238,1), rgba(6,182,212,1));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .subhead{
+      font-size:16px;
+      line-height:1.7;
+      color:var(--muted);
+      margin:0 0 24px;
+      max-width:56ch;
+    }
+
+    .ctaRow{
+      display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+      margin-bottom:18px;
+    }
+
+    .trust{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:14px;
+      color:var(--muted2);
+      font-weight:650;
+      font-size:13px;
+    }
+    .trust .chip{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      padding:10px 12px;
+      border-radius:14px;
+      display:flex; gap:10px; align-items:center;
+    }
+    .check{
+      width:18px; height:18px; border-radius:7px;
+      background: rgba(52,211,153,.14);
+      border:1px solid rgba(52,211,153,.25);
+      display:grid; place-items:center;
+      color: rgba(52,211,153,1);
+      font-weight:900;
+      font-size:12px;
+    }
+
+    /* ====== Right hero card ====== */
+    .heroCard{
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(500px 200px at 30% 0%, rgba(124,58,237,.20), transparent 60%),
+        radial-gradient(420px 180px at 95% 35%, rgba(34,211,238,.16), transparent 55%),
+        rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .heroCard:before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: linear-gradient(135deg, rgba(124,58,237,.35), rgba(34,211,238,.18), transparent 55%);
+      opacity:.65;
+      pointer-events:none;
+      mask: linear-gradient(#000, transparent 55%);
+    }
+    .cardTop{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:16px 16px 0;
+      gap:12px;
+      position:relative; z-index:1;
+    }
+    .pill{
+      display:flex; gap:8px; align-items:center;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding:8px 10px;
+      border-radius:999px;
+      color:var(--muted);
+      font-weight:750;
+      font-size:13px;
+    }
+    .spark{
+      width:10px; height:10px; border-radius:99px;
+      background: linear-gradient(135deg, var(--brand2), var(--brand1));
+      box-shadow: 0 0 0 4px rgba(34,211,238,.12);
+    }
+    .cardBody{
+      padding:14px 16px 18px;
+      position:relative; z-index:1;
+    }
+    .kpiGrid{
+      display:grid; grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    .kpi{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      border-radius:16px;
+      padding:14px 14px;
+      min-height:88px;
+    }
+    .kpi .label{
+      color:var(--muted2);
+      font-weight:650;
+      font-size:13px;
+      margin-bottom:8px;
+    }
+    .kpi .value{
+      font-weight:920;
+      letter-spacing:-.4px;
+      font-size:20px;
+    }
+    .trend{
+      margin-top:10px;
+      font-weight:800;
+      color: rgba(52,211,153,1);
+      font-size:13px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .trend b{ font-size:13px; }
+    .arrowUp{
+      width:18px; height:18px; border-radius:9px;
+      background: rgba(52,211,153,.14);
+      border:1px solid rgba(52,211,153,.24);
+      display:grid; place-items:center;
+      font-size:12px;
+      color: rgba(52,211,153,1);
+    }
+
+    .graph{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      border-radius:18px;
+      padding:14px 14px;
+    }
+    .graphHeader{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; margin-bottom:10px;
+    }
+    .graphTitle{
+      font-weight:850;
+      color:var(--muted);
+      font-size:13px;
+      letter-spacing:.25px;
+    }
+    .seg{
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+      color:var(--muted2);
+      font-size:12px; font-weight:750;
+    }
+    .seg span{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      padding:7px 10px;
+      border-radius:999px;
+      cursor:pointer;
+      transition: all .18s ease;
+      user-select:none;
+    }
+    .seg span.active{
+      border-color: rgba(255,255,255,.20);
+      color: var(--text);
+      background: rgba(255,255,255,.08);
+    }
+
+    .bars{
+      width:100%;
+      height:140px;
+      display:flex;
+      align-items:flex-end;
+      gap:10px;
+      padding:4px 2px 0;
+    }
+    .bar{
+      flex:1;
+      border-radius:12px 12px 8px 8px;
+      background:
+        linear-gradient(180deg, rgba(34,211,238,.75), rgba(124,58,237,.65));
+      border:1px solid rgba(255,255,255,.14);
+      position:relative;
+      overflow:hidden;
+      transform-origin: bottom;
+      animation: pop .6s ease both;
+    }
+    .bar:after{
+      content:"";
+      position:absolute; inset:-30% -30% auto -30%;
+      height:70%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.26), transparent);
+      transform: translateX(-30%) rotate(12deg);
+      opacity:.55;
+    }
+    @keyframes pop{
+      from{ transform: scaleY(.7); opacity:.6; }
+      to{ transform: scaleY(1); opacity:1; }
+    }
+
+    /* ====== Sections ====== */
+    .section{
+      padding:46px 0;
+    }
+    .sectionTitle{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:14px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+    .sectionTitle h2{
+      margin:0;
+      font-size:22px;
+      letter-spacing:-.3px;
+    }
+    .sectionTitle p{
+      margin:0;
+      color:var(--muted);
+      font-weight:650;
+      line-height:1.6;
+      max-width:64ch;
+    }
+
+    /* Feature cards */
+    .featureGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    .card{
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      padding:16px;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+      position:relative;
+      overflow:hidden;
+      min-height:150px;
+    }
+    .card:hover{
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,.20);
+      background: rgba(255,255,255,.055);
+    }
+    .card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(220px 80px at 20% 0%, rgba(124,58,237,.20), transparent 60%),
+                  radial-gradient(220px 80px at 90% 30%, rgba(34,211,238,.16), transparent 60%);
+      opacity:.55;
+      pointer-events:none;
+    }
+    .card > *{ position:relative; z-index:1; }
+
+    .icon{
+      width:44px; height:44px; border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      display:grid; place-items:center;
+      margin-bottom:12px;
+    }
+    .icon svg{ width:22px; height:22px; }
+    .card h3{
+      margin:0 0 8px;
+      font-size:16px;
+      letter-spacing:-.2px;
+    }
+    .card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+      font-weight:620;
+      font-size:14px;
+    }
+
+    /* Pricing */
+    .pricingGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    .priceCard{
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding:18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      min-height:320px;
+    }
+    .priceCard:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(380px 140px at 25% 0%, rgba(124,58,237,.20), transparent 60%),
+                  radial-gradient(380px 140px at 90% 35%, rgba(34,211,238,.14), transparent 55%);
+      opacity:.55;
+      pointer-events:none;
+    }
+    .priceCard > *{ position:relative; z-index:1; }
+
+    .tag{
+      align-self:flex-start;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:13px;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .tag .star{
+      width:18px; height:18px; border-radius:9px;
+      display:grid; place-items:center;
+      background: rgba(124,58,237,.18);
+      border:1px solid rgba(124,58,237,.28);
+      color: rgba(124,58,237,1);
+    }
+
+    .price{
+      font-weight:950;
+      letter-spacing:-.8px;
+      font-size:38px;
+      margin-top:4px;
+    }
+    .per{
+      color:var(--muted2);
+      font-weight:750;
+      font-size:14px;
+      margin-left:6px;
+      letter-spacing:.2px;
+    }
+    .priceDesc{
+      color:var(--muted);
+      font-weight:650;
+      line-height:1.7;
+      margin-top:-6px;
+      font-size:14px;
+    }
+
+    .list{
+      list-style:none; padding:0; margin:0;
+      display:flex; flex-direction:column; gap:10px;
+      color:var(--muted);
+      font-weight:650;
+      font-size:14px;
+    }
+    .list li{
+      display:flex; align-items:flex-start; gap:10px;
+    }
+    .list .tick{
+      width:18px; height:18px; border-radius:7px;
+      background: rgba(52,211,153,.12);
+      border:1px solid rgba(52,211,153,.22);
+      color: rgba(52,211,153,1);
+      display:grid; place-items:center;
+      flex:0 0 auto;
+      margin-top:1px;
+      font-weight:900;
+      font-size:12px;
+    }
+
+    .priceCard.recommended{
+      border-color: rgba(255,255,255,.22);
+      background:
+        radial-gradient(600px 220px at 30% 0%, rgba(124,58,237,.26), transparent 60%),
+        radial-gradient(520px 200px at 95% 40%, rgba(34,211,238,.18), transparent 55%),
+        rgba(255,255,255,.05);
+    }
+    .priceCard.recommended .btn-primary{
+      width:100%;
+      justify-content:center;
+    }
+    .priceCard .btn{
+      width:100%;
+      justify-content:center;
+    }
+
+    /* Testimonials */
+    .testGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:14px;
+    }
+    .quote{
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding:16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      min-height:190px;
+    }
+    .quote p{
+      margin:0 0 14px;
+      color:var(--muted);
+      line-height:1.75;
+      font-weight:630;
+      font-size:14px;
+    }
+    .person{
+      display:flex; align-items:center; gap:12px;
+    }
+    .avatar{
+      width:42px; height:42px; border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(14px 14px at 30% 30%, rgba(255,255,255,.45), transparent 55%),
+        linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,211,238,.80));
+      box-shadow: 0 12px 35px rgba(124,58,237,.18);
+    }
+    .person .name{
+      font-weight:900; letter-spacing:-.2px;
+      font-size:14px;
+      margin:0;
+    }
+    .person .role{
+      margin:0;
+      color:var(--muted2);
+      font-weight:720;
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    /* CTA bottom */
+    .bigCta{
+      padding:46px 0 64px;
+    }
+    .ctaPanel{
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(820px 300px at 15% 0%, rgba(124,58,237,.24), transparent 60%),
+        radial-gradient(820px 300px at 90% 30%, rgba(34,211,238,.18), transparent 58%),
+        rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      padding:22px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      align-items:center;
+      overflow:hidden;
+      position:relative;
+    }
+    .ctaPanel:after{
+      content:"";
+      position:absolute; inset:-80px -80px auto auto;
+      width:240px; height:240px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.20), transparent 55%);
+      transform: rotate(20deg);
+      opacity:.6;
+      pointer-events:none;
+    }
+    .ctaPanel > *{ position:relative; z-index:1; }
+    .ctaPanel h2{
+      margin:0 0 8px;
+      font-size:24px;
+      letter-spacing:-.35px;
+    }
+    .ctaPanel p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+      font-weight:640;
+      font-size:14px;
+      max-width:65ch;
+    }
+    .ctaForm{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .input{
+      flex: 1 1 220px;
+      min-width:210px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color:var(--text);
+      padding:12px 12px;
+      outline:none;
+      font-weight:700;
+    }
+    .input::placeholder{ color: rgba(255,255,255,.45); font-weight:650; }
+    .input:focus{ box-shadow: var(--focus); border-color: rgba(34,211,238,.30); }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.65);
+      border:1px solid rgba(255,255,255,.16);
+      color:var(--text);
+      padding:12px 14px;
+      border-radius:16px;
+      box-shadow: var(--shadow2);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .25s ease, transform .25s ease;
+      z-index:200;
+      max-width: calc(100% - 24px);
+    }
+    .toast.show{
+      opacity:1;
+      transform: translateX(-50%) translateY(-6px);
+    }
+    .toast .tTitle{ font-weight:950; letter-spacing:-.2px; margin-bottom:3px; }
+    .toast .tMsg{ color:var(--muted); font-weight:650; font-size:13px; line-height:1.5; }
+
+    /* ====== Footer ====== */
+    footer{
+      padding:22px 0 32px;
+      color:var(--muted2);
+      font-weight:650;
+      font-size:13px;
+    }
+    .footRow{
+      display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
+      border-top:1px solid rgba(255,255,255,.08);
+      padding-top:18px;
+    }
+    .footLinks{ display:flex; gap:14px; flex-wrap:wrap; }
+    .footLinks a{
+      color:var(--muted2);
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid transparent;
+      transition: all .2s ease;
+    }
+    .footLinks a:hover{
+      color:var(--text);
+      border-color: rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+
+    /* ====== Responsive ====== */
+    @media (max-width: 980px){
+      .heroGrid{ grid-template-columns: 1fr; }
+      .hero{ padding-top:44px; }
+      .featureGrid{ grid-template-columns: 1fr 1fr; }
+      .pricingGrid{ grid-template-columns: 1fr; }
+      .testGrid{ grid-template-columns: 1fr; }
+      .ctaPanel{ grid-template-columns: 1fr; }
+      .ctaForm{ justify-content:flex-start; }
+    }
+    @media (max-width: 760px){
+      .links{ display:none; }
+      .menuBtn{ display:inline-flex; align-items:center; justify-content:center; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grain"></div>
+  <div class="wrap">
+    <header>
+      <div class="container">
+        <div class="nav">
+          <a class="brand" href="#top" aria-label="NovaSaaS Home">
+            <span class="logo" aria-hidden="true"></span>
+            <span>NovaSaaS</span>
+          </a>
+
+          <nav class="links" aria-label="Primary navigation">
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#proof">Proof</a>
+            <a href="#contact">Get Started</a>
+          </nav>
+
+          <button class="menuBtn" id="menuBtn" type="button" aria-label="Open menu">Menu</button>
+
+          <div style="display:flex; gap:10px; align-items:center;">
+            <a class="btn btn-ghost" href="#pricing">Compare</a>
+            <a class="btn btn-primary" href="#contact">
+              <span>Start Free</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+
+        <div id="mobilePanel" style="display:none; padding:0 0 14px;">
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <a class="btn" style="justify-content:center;" href="#features">Features</a>
+            <a class="btn" style="justify-content:center;" href="#pricing">Pricing</a>
+            <a class="btn" style="justify-content:center;" href="#proof">Proof</a>
+            <a class="btn btn-primary" style="justify-content:center;" href="#contact">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container">
+          <div class="heroGrid">
+            <div>
+              <div class="badgeRow">
+                <div class="badge"><span class="dot"></span> Built for teams that ship fast</div>
+                <div class="badge"><span class="dot" style="background:linear-gradient(135deg, #34d399, #22d3ee)"></span> Enterprise-ready security</div>
+              </div>
+
+              <h1>
+                Premium SaaS for <span class="gradText">productivity</span>, built to scale.
+              </h1>
+
+              <p class="subhead">
+                NovaSaaS आपके वर्कफ़्लो को automated बनाता है—setup से लेकर execution तक—एक sleek डैशबोर्ड में,
+                तेज़, reliable, और pro-grade insights के साथ।
+              </p>
+
+              <div class="ctaRow">
+                <a class="btn btn-primary" href="#contact">
+                  <span>Get your demo</span>
+                  <span aria-hidden="true">→</span>
+                </a>
+                <a class="btn" href="#features">
+                  <span>Explore Features</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+
+              <div class="trust" role="list" aria-label="Trust highlights">
+                <div class="chip" role="listitem"><span class="check">✓</span> SSO-ready</div>
+                <div class="chip" role="listitem"><span class="check">✓</span> Audit trails</div>
+                <div class="chip" role="listitem"><span class="check">✓</span> Uptime-focused</div>
+              </div>
+            </div>
+
+            <aside class="heroCard" aria-label="Product preview">
+              <div class="cardTop">
+                <div class="pill"><span class="spark"></span> Live Performance</div>
+                <div class="pill" style="color:var(--muted2); font-weight:820;">v2.4 • Dark UI</div>
+              </div>
+
+              <div class="cardBody">
+                <div class="kpiGrid">
+                  <div class="kpi">
+                    <div class="label">Active users</div>
+                    <div class="value" id="kpiUsers">24,680</div>
+                    <div class="trend"><span class="arrowUp">↑</span><b id="kpiUsersDelta">+18%</b> this month</div>
+                  </div>
+                  <div class="kpi">
+                    <div class="label">Automation runs</div>
+                    <div class="value" id="kpiRuns">310,204</div>
+                    <div class="trend"><span class="arrowUp">↑</span><b id="kpiRunsDelta">+26%</b> faster</div>
+                  </div>
+                </div>
+
+                <div class="graph">
+                  <div class="graphHeader">
+                    <div class="graphTitle">Growth snapshot</div>
+                    <div class="seg" role="tablist" aria-label="Time range">
+                      <span class="active" data-range="7d" role="tab" aria-selected="true">7D</span>
+                      <span data-range="30d" role="tab" aria-selected="false">30D</span>
+                      <span data-range="90d" role="tab" aria-selected="false">90D</span>
+                    </div>
+                  </div>
+                  <div class="bars" id="bars" aria-hidden="true"></div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="container">
+          <div class="sectionTitle">
+            <div>
+              <h2>Premium Features</h2>
+              <p>एक ही जगह: planning, execution, reporting—सब कुछ डार्क, sleek और fast अनुभव में।</p>
+            </div>
+          </div>
+
+          <div class="featureGrid">
+            <div class="card">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8z"/>
+                  <path d="M8 9h8M8 13h6"/>
+                </svg>
+              </div>
+              <h3>Smart Automation</h3>
+              <p>Rules + workflows जो खुद चलता रहे—आपके लिए time बचाए और output बढ़ाए।</p>
+            </div>
+
+            <div class="card">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7z"/>
+                </svg>
+              </div>
+              <h3>High-Impact Insights</h3>
+              <p>Real-time dashboards और actionable metrics—ताकि decisions जल्दी हों।</p>
+            </div>
+
+            <div class="card">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <path d="M9 12l2 2 4-5"/>
+                </svg>
+              </div>
+              <h3>Security by Design</h3>
+              <p>Audit trails, roles, और hardened workflows—enterprise-grade confidence के साथ।</p>
+            </div>
+
+            <div class="card">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 7h10v10H7V7z"/>
+                  <path d="M4 4h3v3H4V4zM17 4h3v3h-3V4zM4 17h3v3H4v-3zM17 17h3v3h-3v-3z"/>
+                </svg>
+              </div>
+              <h3>Fast Setup</h3>
+              <p>Clean onboarding, guided steps, और templates—आप जल्दी value तक पहुंचें।</p>
+            </div>
+
+            <div class="card">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6z"/>
+                  <path d="M8 10h8M8 14h5"/>
+                </svg>
+              </div>
+              <h3>Team Collaboration</h3>
+              <p>Comments, approvals, और versioned changes—हर चीज़ traceable रहे।</p>
+            </div>
+
+            <div class="card">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2v20M2 12h20"/>
+                </svg>
+              </div>
+              <h3>Scales Seamlessly</h3>
+              <p>Growing teams के लिए performance tuning, rate limits, और stable operations।</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="pricing">
+        <div class="container">
+          <div class="sectionTitle">
+            <div>
+              <h2>Pricing</h2>
+              <p>प्रीमियम value—transparent plans, और upgrade-ready paths।</p>
+            </div>
+          </div>
+
+          <div class="pricingGrid">
+            <div class="priceCard">
+              <div class="tag"><span class="star">✦</span> Starter</div>
+              <div>
+                <div class="price">$19<span class="per">/mo</span></div>
+                <div class="priceDesc">Solo & small teams के लिए essentials.</div>
+              </div>
+              <ul class="list">
+                <li><span class="tick">✓</span> 3 Workspaces</li>
+                <li><span class="tick">✓</span> Basic automation rules</li>
+                <li><span class="tick">✓</span> Standard reporting</li>
+                <li><span class="tick">✓</span> Email support</li>
+              </ul>
+              <a class="btn" href="#contact" style="margin-top:auto;">Start Starter</a>
+            </div>
+
+            <div class="priceCard recommended">
+              <div class="tag"><span class="star">★</span> Pro</div>
+              <div>
+                <div class="price">$49<span class="per">/mo</span></div>
+                <div class="priceDesc">सबसे popular—fast growth के लिए built.</div>
+              </div>
+              <ul class="list">
+                <li><span class="tick">✓</span> Unlimited automations</li>
+                <li><span class="tick">✓</span> Advanced analytics</li>
+                <li><span class="tick">✓</span> Role-based access</li>
+                <li><span class="tick">✓</span> Priority support</li>
+              </ul>
+              <a class="btn btn-primary" href="#contact" style="margin-top:auto;">Get Pro</a>
+            </div>
+
+            <div class="priceCard">
+              <div class="tag"><span class="star">⚡</span> Enterprise</div>
+              <div>
+                <div class="price">$129<span class="per">/mo</span></div>
+                <div class="priceDesc">Security, SSO, audit—सब unlocked.</div>
+              </div>
+              <ul class="list">
+                <li><span class="tick">✓</span> SSO + audit trails</li>
+                <li><span class="tick">✓</span> Custom roles & policies</li>
+                <li><span class="tick">✓</span> SLA-backed support</li>
+                <li><span class="tick">✓</span> Dedicated onboarding</li>
+              </ul>
+              <a class="btn" href="#contact" style="margin-top:auto;">Talk to Sales</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="proof">
+        <div class="container">
+          <div class="sectionTitle">
+            <div>
+              <h2>Why Teams Choose NovaSaaS</h2>
+              <p>Premium outcomes—कम time में ज्यादा output।</p>
+            </div>
+          </div>
+
+          <div class="testGrid">
+            <div class="quote">
+              <p>“हमारे workflows 2x faster हो गए। Dashboard insights इतनी clear हैं कि decisions बिना friction के हो जाते हैं।”</p>
+              <div class="person">
+                <div class="avatar" aria-hidden="true"></div>
+                <div>
+                  <p class="name">Riya Sharma</p>
+                  <p class="role">Head of Ops</p>
+                </div>
+              </div>
+            </div>
+            <div class="quote">
+              <p>“Setup super smooth था। Team onboarding में घंटों की बचत हुई और automation तुरंत start हो गया।”</p>
+              <div class="person">
+                <div class="avatar" aria-hidden="true" style="filter:hue-rotate(30deg) saturate(1.2);"></div>
+                <div>
+                  <p class="name">Arjun Verma</p>
+                  <p class="role">Product Manager</p>
+                </div>
+              </div>
+            </div>
+            <div class="quote">
+              <p>“Security और audit trail features ने enterprise review में हमारा काम आसान कर दिया। बिल्कुल premium feel।”</p>
+              <div class="person">
+                <div class="avatar" aria-hidden="true" style="filter:hue-rotate(-25deg) saturate(1.1);"></div>
+                <div>
+                  <p class="name">Neha Iyer</p>
+                  <p class="role">Security Lead</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bigCta" id="contact">
+        <div class="container">
+          <div class="ctaPanel">
+            <div>
+              <h2>Ready to launch your next premium workflow?</h2>
+              <p>
+                अपने email पर demo link + setup checklist पाएं। एक बार connect करें—बाकी सब smooth हो जाएगा।
+              </p>
+            </div>
+
+            <form class="ctaForm" id="leadForm">
+              <input class="input" id="email" type="email" placeholder="Enter your work email" required />
+              <button class="btn btn-primary" type="submit">
+                <span>Request Demo</span>
+                <span aria-hidden="true">→</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="container">
+          <div class="footRow">
+            <div>© <span id="year"></span> NovaSaaS. All rights reserved.</div>
+            <div class="footLinks">
+              <a href="#features">Features</a>
+              <a href="#pricing">Pricing</a>
+              <a href="#contact">Contact</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">
+      <div class="tTitle" id="toastTitle">Submitted</div>
+      <div class="tMsg" id="toastMsg">Thanks! We'll reach you soon.</div>
+    </div>
+  </div>
+
+  <script>
+    // ====== Mobile menu ======
+    const menuBtn = document.getElementById('menuBtn');
+    const mobilePanel = document.getElementById('mobilePanel');
+    let mobileOpen = false;
+    if (menuBtn && mobilePanel){
+      menuBtn.addEventListener('click', () => {
+        mobileOpen = !mobileOpen;
+        mobilePanel.style.display = mobileOpen ? 'block' : 'none';
+      });
+    }
+
+    // ====== Footer year ======
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ====== Fake interactive chart ======
+    const barsEl = document.getElementById('bars');
+    const seg = document.querySelectorAll('.seg span');
+
+    const data = {
+      '7d':   [18, 24, 21, 30, 27, 36, 33],
+      '30d':  [12, 18, 16, 22, 26, 24, 30, 34, 31, 38, 42, 39],
+      '90d':  [6, 9, 8, 11, 13, 15, 14, 18, 20, 19, 23, 26, 25, 29, 32]
+    };
+
+    function renderBars(range){
+      const arr = data[range] || data['7d'];
+      barsEl.innerHTML = '';
+      // Height scaling
+      const max = Math.max(...arr);
+      arr.forEach((v, i) => {
+        const b = document.createElement('div');
+        b.className = 'bar';
+        const h = Math.round((v / max) * 100);
+        b.style.height = `calc(${h}% + 8px)`;
+        b.style.animationDelay = `${i * 40}ms`;
+        barsEl.appendChild(b);
+      });
+    }
+
+    function setKpis(range){
+      // Keep it deterministic but "range aware"
+      const map = {
+        '7d':  { users: '24,680', deltaU: '+18%', runs: '310,204', deltaR: '+26%' },
+        '30d': { users: '28,940', deltaU: '+24%', runs: '388,510', deltaR: '+31%' },
+        '90d': { users: '37,120', deltaU: '+34%', runs: '516,940', deltaR: '+42%' }
+      };
+      const m = map[range] || map['7d'];
+      document.getElementById('kpiUsers').textContent = m.users;
+      document.getElementById('kpiUsersDelta').textContent = m.deltaU;
+      document.getElementById('kpiRuns').textContent = m.runs;
+      document.getElementById('kpiRunsDelta').textContent = m.deltaR;
+    }
+
+    seg.forEach(s => {
+      s.addEventListener('click', () => {
+        seg.forEach(x => { x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
+        s.classList.add('active');
+        s.setAttribute('aria-selected','true');
+        const range = s.dataset.range;
+        renderBars(range);
+        setKpis(range);
+      });
+    });
+
+    // Initial render
+    renderBars('7d');
+    setKpis('7d');
+
+    // ====== Lead form (demo) ======
+    const form = document.getElementById('leadForm');
+    const toast = document.getElementById('toast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMsg = document.getElementById('toastMsg');
+
+    let toastTimer = null;
+
+    function showToast(title, msg){
+      toastTitle.textContent = title;
+      toastMsg.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      showToast('Request received', `Demo link will be sent to ${email}.`);
+      form.reset();
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if (!id || id === '#') return;
+        const el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior:'smooth', block:'start' });
+        if (mobileOpen){
+          mobileOpen = false;
+          mobilePanel.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

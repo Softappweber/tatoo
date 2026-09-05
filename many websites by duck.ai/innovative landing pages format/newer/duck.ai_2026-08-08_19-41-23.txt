@@ -1,0 +1,2755 @@
+﻿This conversation was generated with Duck.ai (https://duck.ai) using OpenAI's GPT-5.4 nano Model. AI chats may display inaccurate or offensive information (see https://duckduckgo.com/duckai/privacy-terms for more info).
+
+====================
+
+User prompt 1 of 4 - 8/8/2026, 7:11:44 PM:
+create a single page website for, which is best you can make as per its beauty is concerned.fast
+
+GPT-5.4 nano:
+Sure — tell me the purpose of the site (what it’s for) and I’ll tailor it.  
+
+Meanwhile, here’s a beautiful single-page website template you can use immediately (paste into `index.html` and open in a browser):
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elegant Single Page</title>
+  <style>
+    :root{
+      --bg1:#070A12;
+      --bg2:#0B1630;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.10);
+      --text:#EAF0FF;
+      --muted:rgba(234,240,255,.72);
+      --stroke:rgba(255,255,255,.14);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --accent1:#7C3AED; /* violet */
+      --accent2:#22D3EE; /* cyan */
+      --accent3:#34D399; /* green */
+      --radius: 18px;
+      --max: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 15% 10%, rgba(124,58,237,.35), transparent 55%),
+        radial-gradient(900px 600px at 85% 25%, rgba(34,211,238,.28), transparent 52%),
+        radial-gradient(900px 700px at 60% 90%, rgba(52,211,153,.18), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* Decorative noise */
+    body:before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay;
+      opacity:.10;
+    }
+
+    .wrap{max-width:var(--max); margin:0 auto; padding: 0 22px;}
+    nav{
+      position:sticky; top:0;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(180deg, rgba(7,10,18,.72), rgba(7,10,18,.35));
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      z-index:10;
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 14px 0;
+      gap: 16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:.2px;
+    }
+    .logo{
+      width:36px; height:36px; border-radius: 12px;
+      background:
+        radial-gradient(14px 14px at 30% 30%, rgba(255,255,255,.45), transparent 60%),
+        linear-gradient(135deg, var(--accent1), var(--accent2));
+      box-shadow: 0 10px 30px rgba(124,58,237,.25);
+      border:1px solid rgba(255,255,255,.16);
+    }
+    .links{display:flex; gap:18px; align-items:center; flex-wrap:wrap;}
+    .links a{
+      text-decoration:none;
+      color:var(--muted);
+      font-weight:600;
+      font-size: 14px;
+      padding: 10px 10px;
+      border-radius: 12px;
+      transition: .2s ease;
+      border:1px solid transparent;
+    }
+    .links a:hover{
+      color:var(--text);
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.12);
+    }
+
+    .cta{
+      text-decoration:none;
+      font-weight:800;
+      font-size: 14px;
+      padding: 11px 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,211,238,.85));
+      color:#061018;
+      box-shadow: 0 16px 44px rgba(34,211,238,.15), 0 16px 44px rgba(124,58,237,.18);
+      border:1px solid rgba(255,255,255,.16);
+      transition:.2s ease;
+      white-space:nowrap;
+    }
+    .cta:hover{transform: translateY(-1px); filter:saturate(1.08);}
+
+    /* Hero */
+    .hero{
+      padding: 46px 0 28px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 26px;
+      align-items:center;
+    }
+    @media (max-width: 940px){
+      .hero{grid-template-columns:1fr; padding-top: 28px;}
+    }
+
+    .kicker{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--muted);
+      font-weight:700;
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+    .dot{
+      width:10px; height:10px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent2), var(--accent1));
+      box-shadow: 0 0 0 6px rgba(34,211,238,.12);
+    }
+    h1{
+      margin:0 0 12px;
+      font-size: clamp(34px, 4.2vw, 56px);
+      line-height:1.03;
+      letter-spacing:-.6px;
+    }
+    .grad-text{
+      background: linear-gradient(90deg, rgba(124,58,237,1), rgba(34,211,238,1), rgba(52,211,153,1));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .lead{
+      margin:0 0 18px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height:1.7;
+      max-width: 58ch;
+    }
+
+    .actions{
+      display:flex; gap: 12px; flex-wrap:wrap;
+      align-items:center;
+      margin-top: 8px;
+    }
+    .btn{
+      border-radius: 16px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      text-decoration:none;
+      font-weight:800;
+      font-size: 14px;
+      transition: .2s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.09);
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,211,238,.85));
+      color:#061018;
+      border-color: rgba(255,255,255,.18);
+    }
+    .icon{
+      width: 18px; height: 18px;
+      display:inline-block;
+    }
+
+    /* Right card */
+    .hero-card{
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero-card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(400px 260px at 20% 0%, rgba(124,58,237,.35), transparent 60%),
+        radial-gradient(380px 280px at 90% 30%, rgba(34,211,238,.22), transparent 55%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .card-inner{position:relative; padding: 18px;}
+    .mini{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      font-weight:800;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .meter{
+      width: 92px; height: 92px; border-radius: 24px;
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.14);
+      display:grid; place-items:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .meter:before{
+      content:"";
+      position:absolute; inset:-40px;
+      background: conic-gradient(from 180deg, rgba(124,58,237,1), rgba(34,211,238,1), rgba(52,211,153,1), rgba(124,58,237,1));
+      opacity:.55;
+      animation: spin 7s linear infinite;
+    }
+    .meter strong{
+      position:relative;
+      width: 64px; height:64px;
+      display:grid; place-items:center;
+      border-radius: 18px;
+      background: rgba(7,10,18,.65);
+      border:1px solid rgba(255,255,255,.14);
+      font-size: 18px;
+    }
+    @keyframes spin {to{transform: rotate(360deg)}}
+
+    .list{
+      display:grid; gap: 10px;
+      margin-top: 10px;
+    }
+    .li{
+      padding: 12px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
+      display:flex; gap: 12px; align-items:flex-start;
+    }
+    .check{
+      width: 22px; height: 22px;
+      border-radius: 8px;
+      background: rgba(34,211,238,.16);
+      border:1px solid rgba(34,211,238,.35);
+      display:grid; place-items:center;
+      color: rgba(234,240,255,.95);
+      font-weight:900;
+      flex: 0 0 auto;
+    }
+    .li b{display:block; font-size: 14px; margin-bottom: 2px;}
+    .li span{color: var(--muted); font-size: 13px; line-height:1.5;}
+
+    /* Sections */
+    section{padding: 24px 0;}
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between; gap: 14px;
+      margin-bottom: 14px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size: 22px;
+      letter-spacing:-.2px;
+    }
+    .section-title p{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 980px){
+      .grid3{grid-template-columns:1fr; }
+    }
+    .feature{
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
+      padding: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.18);
+    }
+    .feature .top{
+      display:flex; align-items:center; justify-content:space-between; gap: 12px;
+      margin-bottom: 10px;
+    }
+    .pill{
+      display:inline-flex;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      color: var(--muted);
+      font-weight:800;
+      font-size: 12px;
+      white-space:nowrap;
+    }
+    .feature h3{margin:0 0 6px; font-size: 16px;}
+    .feature p{margin:0; color: var(--muted); line-height:1.6; font-size: 14px;}
+
+    .callout{
+      border-radius: var(--radius);
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.14);
+      display:flex; align-items:center; justify-content:space-between; gap: 16px;
+      flex-wrap:wrap;
+    }
+    .callout .text h2{margin:0 0 6px; font-size: 20px;}
+    .callout .text p{margin:0; color: var(--muted); line-height:1.6; font-size: 14px; max-width: 62ch;}
+
+    footer{
+      padding: 26px 0 40px;
+      color: rgba(234,240,255,.55);
+      font-size: 13px;
+    }
+    .foot{
+      display:flex; justify-content:space-between; align-items:center; gap: 12px;
+      flex-wrap:wrap;
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 16px;
+    }
+    .social{
+      display:flex; gap: 10px; align-items:center; flex-wrap:wrap;
+    }
+    .s{
+      text-decoration:none;
+      color: rgba(234,240,255,.7);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 10px 12px;
+      border-radius: 14px;
+      transition:.2s ease;
+      font-weight:800;
+      font-size: 13px;
+    }
+    .s:hover{transform: translateY(-1px); color: var(--text); border-color: rgba(255,255,255,.22);}
+
+    /* Smooth scrolling */
+    html{scroll-behavior:smooth}
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="wrap nav-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:14px;color:rgba(234,240,255,.9);line-height:1;">YourBrand</div>
+          <div style="font-size:12px;color:rgba(234,240,255,.55);font-weight:700;line-height:1.1;">Single-page website</div>
+        </div>
+      </div>
+
+      <div class="links">
+        <a href="#features">Features</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+        <a class="cta" href="#contact">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <header class="hero">
+      <div>
+        <div class="kicker"><span class="dot"></span> Fast • Modern • Clean</div>
+        <h1>
+          Build a <span class="grad-text">beautiful</span> one‑page site in minutes.
+        </h1>
+        <p class="lead">
+          A sleek hero, glowing cards, and a polished layout that looks great on mobile and desktop.
+          Replace the text and colors with your own brand.
+        </p>
+
+        <div class="actions">
+          <a class="btn primary" href="#contact">
+            <span class="icon" aria-hidden="true">⚡</span> Start now
+          </a>
+          <a class="btn" href="#features">
+            <span class="icon" aria-hidden="true">✨</span> See features
+          </a>
+        </div>
+      </div>
+
+      <aside class="hero-card">
+        <div class="card-inner">
+          <div class="mini">
+            <div class="badge">Glow UI Kit</div>
+            <div class="meter"><strong>95%</strong></div>
+          </div>
+
+          <div class="list">
+            <div class="li">
+              <div class="check">✓</div>
+              <div>
+                <b>Fast load</b>
+                <span>Lightweight CSS + simple structure.</span>
+              </div>
+            </div>
+            <div class="li">
+              <div class="check">✓</div>
+              <div>
+                <b>Mobile friendly</b>
+                <span>Responsive grid and readable typography.</span>
+              </div>
+            </div>
+            <div class="li">
+              <div class="check">✓</div>
+              <div>
+                <b>Premium style</b>
+                <span>Gradients, glass cards, and subtle motion.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </header>
+
+    <section id="features">
+      <div class="section-title">
+        <h2>Features</h2>
+        <p>Everything you need for a standout landing page.</p>
+      </div>
+
+      <div class="grid3">
+        <div class="feature">
+          <div class="top">
+            <div class="pill">Section 01</div>
+            <div class="pill" style="border-color:rgba(124,58,237,.35); background: rgba(124,58,237,.12);">Design</div>
+          </div>
+          <h3>Glass + glow cards</h3>
+          <p>Clean contrast, modern spacing, and a premium feel without heavy libraries.</p>
+        </div>
+
+        <div class="feature">
+          <div class="top">
+            <div class="pill">Section 02</div>
+            <div class="pill" style="border-color:rgba(34,211,238,.35); background: rgba(34,211,238,.12);">Speed</div>
+          </div>
+          <h3>Simple & snappy</h3>
+          <p>Structured HTML with fast CSS effects and smooth scrolling.</p>
+        </div>
+
+        <div class="feature">
+          <div class="top">
+            <div class="pill">Section 03</div>
+            <div class="pill" style="border-color:rgba(52,211,153,.35); background: rgba(52,211,153,.10);">UX</div>
+          </div>
+          <h3>Clear call to action</h3>
+          <p>Prominent buttons and navigation so visitors know what to do next.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="section-title">
+        <h2>Gallery</h2>
+        <p>Swap these with your real images later.</p>
+      </div>
+
+      <div class="grid3">
+        <div class="feature">
+          <h3>Hero Image</h3>
+          <p style="margin-bottom:12px;">
+            Use your product/service picture here.
+          </p>
+          <div style="height:140px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:
+            radial-gradient(120px 70px at 25% 30%, rgba(124,58,237,.35), transparent 60%),
+            radial-gradient(120px 70px at 70% 60%, rgba(34,211,238,.25), transparent 60%),
+            rgba(255,255,255,.04);"></div>
+        </div>
+
+        <div class="feature">
+          <h3>Feature Cards</h3>
+          <p style="margin-bottom:12px;">
+            Add screenshots or mini dashboards.
+          </p>
+          <div style="height:140px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:
+            radial-gradient(120px 70px at 30% 25%, rgba(34,211,238,.30), transparent 60%),
+            radial-gradient(120px 70px at 75% 65%, rgba(52,211,153,.18), transparent 60%),
+            rgba(255,255,255,.04);"></div>
+        </div>
+
+        <div class="feature">
+          <h3>Before / After</h3>
+          <p style="margin-bottom:12px;">
+            Perfect for conversions and testimonials.
+          </p>
+          <div style="height:140px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:
+            radial-gradient(120px 70px at 25% 40%, rgba(124,58,237,.26), transparent 60%),
+            radial-gradient(120px 70px at 75% 50%, rgba(34,211,238,.18), transparent 60%),
+            rgba(255,255,255,.04);"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="section-title">
+        <h2>Pricing</h2>
+        <p>Replace with your plans.</p>
+      </div>
+
+      <div class="grid3">
+        <div class="feature">
+          <div class="top">
+            <div class="pill">Starter</div>
+            <div class="pill" style="background: rgba(255,255,255,.06);">Free</div>
+          </div>
+          <h3>$0 / month</h3>
+          <p>Basic landing page with essential sections.</p>
+        </div>
+
+        <div class="feature" style="border-color: rgba(34,211,238,.35); background: rgba(34,211,238,.07);">
+          <div class="top">
+            <div class="pill">Pro</div>
+            <div class="pill" style="border-color:rgba(34,211,238,.40); background: rgba(34,211,238,.14);">Popular</div>
+          </div>
+          <h3>$19 / month</h3>
+          <p>Premium layout, more sections, better conversion focus.</p>
+        </div>
+
+        <div class="feature">
+          <div class="top">
+            <div class="pill">Business</div>
+            <div class="pill" style="background: rgba(255,255,255,.06);">Custom</div>
+          </div>
+          <h3>Let’s talk</h3>
+          <p>For teams who want custom styling and pages.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="callout">
+        <div class="text">
+          <h2>Contact</h2>
+          <p>Use this button to link to WhatsApp, email, or a form. (No backend included.)</p>
+        </div>
+        <div class="actions" style="margin:0;">
+          <a class="btn primary" href="mailto:hello@example.com">
+            <span class="icon" aria-hidden="true">✉️</span> Email us
+          </a>
+          <a class="btn" href="#">
+            <span class="icon" aria-hidden="true">📅</span> Book a call
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="foot">
+        <div>© <span id="y"></span> YourBrand. All rights reserved.</div>
+        <div class="social">
+          <a class="s" href="#">Twitter</a>
+          <a class="s" href="#">Instagram</a>
+          <a class="s" href="#">LinkedIn</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+```
+
+Reply with:
+1) What is the website for? (business/portfolio/product/event/etc.)  
+2) Name + tagline  
+3) Preferred color theme (violet/cyan/green or any hex codes)  
+
+…and I’ll customize this page to match your brand.
+
+--------------------
+
+User prompt 2 of 4 - 8/8/2026, 7:17:20 PM:
+what a bullshit and AI-shit-regular website, no eye catching color match, 
+
+GPT-5.4 nano:
+Got it—your current one looks like a generic template. Tell me these 3 things and I’ll tailor a truly eye‑catching design (still single-page, fast-loading):
+
+1) What’s the website for (portfolio, business, event, app, shop)?
+2) Brand name + tagline (or just name).
+3) Style vibe (pick one):  
+   - Neon cyber (dark + bright glow)  
+   - Luxury gold (dark + gold accents)  
+   - Clean minimal (white/cream + bold accent)  
+   - Retro gradient (70s/80s colors)  
+   - “Aggressive” sales (huge contrast, big buttons)
+
+If you want me to decide right now, say: “surprise me” and answer just #1 (purpose).
+
+--------------------
+
+User prompt 3 of 4 - 8/8/2026, 7:19:01 PM:
+1. landing page
+
+2.innovative products
+
+3. almost all three as options to slect and one with all.
+
+can you give downlodable file?
+
+GPT-5.4 nano:
+Yes. Below is a downloadable single-page website you can copy into files.
+
+## 1) Create files
+Make a folder named `innovative-landing/` and add these 3 files:
+
+### `index.html`
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Innovative Products</title>
+  <meta name="description" content="Innovative Products — fast, eye-catching landing page." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- HERO BACKDROP ORBS -->
+  <div class="orbs" aria-hidden="true">
+    <span class="orb o1"></span>
+    <span class="orb o2"></span>
+    <span class="orb o3"></span>
+    <span class="orb o4"></span>
+  </div>
+
+  <!-- NAV -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>
+          <span class="brand-name">Innovative Products</span>
+          <span class="brand-tag">Landing Page</span>
+        </span>
+      </a>
+
+      <nav class="nav">
+        <a href="#features">Features</a>
+        <a href="#proof">Results</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact" class="nav-cta">Get started</a>
+      </nav>
+
+      <button class="menu" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-left">
+          <div class="badge-row">
+            <span class="badge glow">● Launch-ready</span>
+            <span class="badge gold">⚡ Fast + responsive</span>
+            <span class="badge cyan">✨ No templates</span>
+          </div>
+
+          <h1>
+            Make your product look
+            <span class="type-glow" data-text="expensive">expensive</span>
+            — and convert.
+          </h1>
+
+          <p class="sub">
+            A single-page landing that mixes <b>neon cyber</b>, <b>luxury gold</b>, and <b>aggressive contrast</b>.
+            Drop your text, swap your images, hit publish.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="#contact">
+              <span class="btn-ic" aria-hidden="true">🚀</span>
+              Start free
+              <span class="btn-arr" aria-hidden="true">→</span>
+            </a>
+
+            <a class="btn ghost" href="#features">
+              <span class="btn-ic" aria-hidden="true">👀</span>
+              See what you get
+            </a>
+          </div>
+
+          <div class="hero-metrics" id="metrics">
+            <div class="metric">
+              <div class="metric-top">
+                <span class="num" data-count="98">0</span><span class="pct">%</span>
+              </div>
+              <div class="metric-bot">Lighthouse vibe</div>
+            </div>
+            <div class="metric">
+              <div class="metric-top">
+                <span class="num" data-count="2">0</span><span class="pct">s</span>
+              </div>
+              <div class="metric-bot">First paint</div>
+            </div>
+            <div class="metric">
+              <div class="metric-top">
+                <span class="num" data-count="3">0</span><span class="pct">x</span>
+              </div>
+              <div class="metric-bot">Conversion lift</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="showcase">
+            <div class="showcase-top">
+              <span class="chip neon">NEON</span>
+              <span class="chip gold">GOLD</span>
+              <span class="chip cyan">CYAN</span>
+              <span class="chip hot">HOT</span>
+            </div>
+
+            <div class="device">
+              <div class="device-screen">
+                <div class="screen-glow"></div>
+
+                <div class="screen-card">
+                  <div class="screen-title">Product Impact</div>
+                  <div class="bars" aria-hidden="true">
+                    <span style="--h:78%"></span>
+                    <span style="--h:54%"></span>
+                    <span style="--h:88%"></span>
+                    <span style="--h:66%"></span>
+                    <span style="--h:92%"></span>
+                  </div>
+                  <div class="screen-row">
+                    <div class="tag">Live</div>
+                    <div class="tag soft">Optimized</div>
+                  </div>
+                </div>
+
+                <div class="screen-bubble b1"></div>
+                <div class="screen-bubble b2"></div>
+                <div class="screen-bubble b3"></div>
+              </div>
+
+              <div class="device-stand"></div>
+            </div>
+          </div>
+
+          <div class="note">
+            <span class="note-ic" aria-hidden="true">★</span>
+            Replace screenshots + copy. Keep the glow. Keep the punch.
+          </div>
+        </div>
+      </div>
+
+      <!-- COLOR MODE (selector per your request) -->
+      <div class="container modebar" id="colorMode">
+        <div class="mode-left">
+          <div class="mode-title">Pick a style:</div>
+          <div class="mode-sub">Neon cyber / Luxury gold / Clean minimal / “All”</div>
+        </div>
+
+        <div class="mode-buttons" role="tablist" aria-label="Color themes">
+          <button class="mode-btn" data-theme="neon" role="tab" aria-selected="true">Neon Cyber</button>
+          <button class="mode-btn" data-theme="gold" role="tab" aria-selected="false">Luxury Gold</button>
+          <button class="mode-btn" data-theme="clean" role="tab" aria-selected="false">Clean Minimal</button>
+          <button class="mode-btn" data-theme="all" role="tab" aria-selected="false">ALL (Hybrid)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2>Features that sell (not “AI template” vibes)</h2>
+          <p>Hard-hitting visuals, clean structure, and aggressive call-to-action placement.</p>
+        </div>
+
+        <div class="grid3">
+          <article class="card">
+            <div class="card-ic">⚡</div>
+            <h3>Instant impact hero</h3>
+            <p>Big typography, glow accents, and a product “device” showcase that grabs attention.</p>
+          </article>
+          <article class="card">
+            <div class="card-ic">🎯</div>
+            <h3>Conversion-ready layout</h3>
+            <p>CTA buttons stay visible in context. Social proof and pricing are right where users look.</p>
+          </article>
+          <article class="card">
+            <div class="card-ic">🧊</div>
+            <h3>Glass + contrast</h3>
+            <p>Modern glass panels with high contrast for readability on both mobile and desktop.</p>
+          </article>
+        </div>
+
+        <div class="split">
+          <div class="split-left">
+            <div class="mini-title">What you can customize</div>
+            <h3 class="split-h">
+              Swap text, icons, images — keep the glow system.
+            </h3>
+            <ul class="checklist">
+              <li><span>Gradient palette</span> controlled by theme switch.</li>
+              <li><span>Buttons</span> with sharp hover response.</li>
+              <li><span>Cards</span> with neon outlines and depth.</li>
+              <li><span>Mobile menu</span> included.</li>
+            </ul>
+            <div class="split-actions">
+              <a class="btn primary" href="#contact">Customize now →</a>
+              <a class="btn ghost" href="#pricing">View pricing</a>
+            </div>
+          </div>
+
+          <div class="split-right">
+            <div class="stack">
+              <div class="stack-item">
+                <div class="stack-top">
+                  <div class="stack-dot neon"></div>
+                  <div><b>Speed</b><span class="muted"> Snappy UI</span></div>
+                  <span class="stack-pill">Fast</span>
+                </div>
+                <p>Lightweight CSS/HTML with animated accents (no heavy libraries).</p>
+              </div>
+
+              <div class="stack-item">
+                <div class="stack-top">
+                  <div class="stack-dot gold"></div>
+                  <div><b>Style</b><span class="muted"> Premium finish</span></div>
+                  <span class="stack-pill">Lux</span>
+                </div>
+                <p>Gold + neon highlights with glass cards for a “high-end product” feel.</p>
+              </div>
+
+              <div class="stack-item">
+                <div class="stack-top">
+                  <div class="stack-dot cyan"></div>
+                  <div><b>Clarity</b><span class="muted"> Crisp layout</span></div>
+                  <span class="stack-pill">Clean</span>
+                </div>
+                <p>Readable typography and strong spacing so your message lands instantly.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROOF / RESULTS -->
+    <section class="section" id="proof">
+      <div class="container">
+        <div class="section-head">
+          <h2>Results section (copy blocks included)</h2>
+          <p>Replace these with your testimonials, stats, and logos.</p>
+        </div>
+
+        <div class="proof-grid">
+          <div class="proof-card">
+            <div class="proof-top">
+              <span class="rating" aria-hidden="true">★★★★★</span>
+              <span class="proof-tag">Top pick</span>
+            </div>
+            <p class="quote">
+              “This landing page looks premium and performs. People actually click the CTA.”
+            </p>
+            <div class="proof-person">
+              <div class="avatar" aria-hidden="true"></div>
+              <div>
+                <b>Alex</b>
+                <div class="muted">Product Lead</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="proof-card alt">
+            <div class="proof-top">
+              <span class="proof-tag">Numbers</span>
+              <span class="rating" aria-hidden="true">⚡</span>
+            </div>
+            <div class="bigstats">
+              <div class="bigstat"><span class="k" data-k="38">0</span><span class="unit">%</span><div class="muted">CTR</div></div>
+              <div class="bigstat"><span class="k" data-k="24">0</span><span class="unit">%</span><div class="muted">Signup</div></div>
+              <div class="bigstat"><span class="k" data-k="2.1">0</span><span class="unit">x</span><div class="muted">Lead quality</div></div>
+            </div>
+          </div>
+
+          <div class="proof-card">
+            <div class="proof-top">
+              <span class="proof-tag">Logos</span>
+              <span class="rating" aria-hidden="true">✦</span>
+            </div>
+            <div class="logos" aria-label="Client logos">
+              <span class="logo-pill">NOVA</span>
+              <span class="logo-pill">VOLT</span>
+              <span class="logo-pill">AURUM</span>
+              <span class="logo-pill">PIXEL</span>
+              <span class="logo-pill">ATLAS</span>
+            </div>
+            <p class="muted small">
+              Add your real company names or screenshots.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-head">
+          <h2>Pricing that feels confident</h2>
+          <p>Three options. One “Best value” highlighted with aggressive contrast.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="price">
+            <div class="price-head">
+              <div class="price-title">Starter</div>
+              <div class="price-sub muted">For new launches</div>
+            </div>
+            <div class="price-num">
+              <span class="currency">$</span>0<span class="per">/mo</span>
+            </div>
+            <ul class="price-list">
+              <li>Hero + features</li>
+              <li>Mobile menu</li>
+              <li>Theme switch</li>
+            </ul>
+            <a class="btn ghost full" href="#contact">Choose Starter</a>
+          </article>
+
+          <article class="price featured" aria-label="Best value plan">
+            <div class="best">Best value</div>
+            <div class="price-head">
+              <div class="price-title">Pro</div>
+              <div class="price-sub muted">For serious conversion</div>
+            </div>
+            <div class="price-num">
+              <span class="currency">$</span>19<span class="per">/mo</span>
+            </div>
+            <ul class="price-list">
+              <li>Everything in Starter</li>
+              <li>Proof + pricing blocks</li>
+              <li>Premium styling system</li>
+            </ul>
+            <a class="btn primary full" href="#contact">Get Pro →</a>
+          </article>
+
+          <article class="price">
+            <div class="price-head">
+              <div class="price-title">Business</div>
+              <div class="price-sub muted">For teams</div>
+            </div>
+            <div class="price-num">
+              <span class="currency">$</span>49<span class="per">/mo</span>
+            </div>
+            <ul class="price-list">
+              <li>Everything in Pro</li>
+              <li>Extra sections (easy)</li>
+              <li>Brand customization help (text)</li>
+            </ul>
+            <a class="btn ghost full" href="#contact">Contact sales</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact" id="contact">
+      <div class="container">
+        <div class="contact-grid">
+          <div>
+            <div class="section-head" style="margin-bottom:16px;">
+              <h2>Get started in minutes</h2>
+              <p>Replace the text. Replace the CTA link. Publish.</p>
+            </div>
+
+            <div class="contact-box">
+              <div class="contact-row">
+                <div class="field">
+                  <label>Name</label>
+                  <input type="text" placeholder="Your name" />
+                </div>
+                <div class="field">
+                  <label>Email</label>
+                  <input type="email" placeholder="you@example.com" />
+                </div>
+              </div>
+              <div class="field">
+                <label>What are you launching?</label>
+                <input type="text" placeholder="Innovative product / app / service..." />
+              </div>
+
+              <div class="contact-row">
+                <a class="btn primary" href="#" onclick="return false;">
+                  <span class="btn-ic" aria-hidden="true">✅</span>
+                  Request demo
+                  <span class="btn-arr" aria-hidden="true">→</span>
+                </a>
+                <a class="btn ghost" href="#pricing">See pricing</a>
+              </div>
+
+              <p class="muted small">
+                (This page is front-end only. Hook the CTA to your email/CRM later.)
+              </p>
+            </div>
+          </div>
+
+          <aside class="contact-side">
+            <div class="side-card">
+              <div class="side-top">
+                <div class="side-ic" aria-hidden="true">📌</div>
+                <div>
+                  <b>Fast checklist</b>
+                  <div class="muted">Do this before publishing</div>
+                </div>
+              </div>
+              <ul class="checklist compact">
+                <li><span>Hero headline</span> your value prop.</li>
+                <li><span>Replace badges</span> with your real differentiators.</li>
+                <li><span>Swap cards</span> with product screenshots.</li>
+                <li><span>Update CTAs</span> (links only).</li>
+              </ul>
+              <div class="side-cta">
+                <a class="btn ghost full" href="#features">Back to features</a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="muted small">© <span id="year"></span> Innovative Products</div>
+      <div class="footer-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+```
+
+### `styles.css`
+```css
+:root{
+  --bg0:#06060a;
+  --bg1:#0a0a14;
+  --text:#f4f6ff;
+
+  /* default = neon */
+  --accentA:#7C3AED;  /* violet */
+  --accentB:#22D3EE;  /* cyan */
+  --accentC:#34D399;  /* green */
+  --gold:#D4AF37;
+
+  --card: rgba(255,255,255,.06);
+  --card2: rgba(255,255,255,.10);
+  --stroke: rgba(255,255,255,.14);
+  --shadow: 0 24px 80px rgba(0,0,0,.55);
+
+  --radius: 18px;
+  --radius2: 26px;
+
+  --focus: rgba(34,211,238,.35);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--text);
+  font-family: "Manrope", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(900px 600px at 15% 10%, rgba(124,58,237,.25), transparent 55%),
+              radial-gradient(880px 540px at 86% 16%, rgba(34,211,238,.22), transparent 58%),
+              radial-gradient(900px 650px at 60% 95%, rgba(52,211,153,.14), transparent 55%),
+              linear-gradient(180deg, var(--bg0), var(--bg1));
+  overflow-x:hidden;
+}
+
+a{color:inherit}
+b{font-weight:800}
+.muted{color:rgba(244,246,255,.72)}
+.small{font-size:12.5px}
+
+.container{width:min(1120px, 92vw); margin:0 auto}
+
+.orbs{position:fixed; inset:0; pointer-events:none; z-index:-1; filter:saturate(1.15)}
+.orb{position:absolute; width:380px; height:380px; border-radius:50%; transform: translateZ(0); opacity:.7; mix-blend-mode:screen; filter: blur(14px)}
+.o1{left:-120px; top:-100px; background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.85), transparent 55%)}
+.o2{right:-140px; top:-40px; background: radial-gradient(circle at 30% 30%, rgba(34,211,238,.75), transparent 55%)}
+.o3{left:20%; bottom:-160px; background: radial-gradient(circle at 30% 30%, rgba(52,211,153,.55), transparent 55%)}
+.o4{right:18%; bottom:10%; width:260px; height:260px; background: radial-gradient(circle at 30% 30%, rgba(212,175,55,.55), transparent 55%)}
+
+/* TOPBAR */
+.topbar{
+  position:sticky; top:0; z-index:40;
+  background: linear-gradient(180deg, rgba(6,6,10,.76), rgba(6,6,10,.35));
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+.topbar-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 14px 0;
+  gap: 14px;
+}
+.brand{display:flex; align-items:center; gap:12px; text-decoration:none}
+.brand-mark{
+  width:42px; height:42px; border-radius:14px;
+  background:
+    radial-gradient(14px 14px at 30% 28%, rgba(255,255,255,.55), transparent 60%),
+    linear-gradient(135deg, var(--accentA), var(--accentB));
+  border: 1px solid rgba(255,255,255,.16);
+  box-shadow: 0 16px 40px rgba(34,211,238,.12), 0 20px 70px rgba(124,58,237,.14);
+}
+.brand-name{display:block; font-family:"Space Grotesk", system-ui; font-weight:800; letter-spacing:-.3px}
+.brand-tag{display:block; font-size:12px; color:rgba(244,246,255,.66); font-weight:700; margin-top:2px}
+
+.nav{display:flex; align-items:center; gap:16px}
+.nav a{
+  text-decoration:none;
+  padding:10px 12px;
+  border-radius:12px;
+  font-weight:800;
+  font-size:13.5px;
+  color: rgba(244,246,255,.74);
+  border:1px solid transparent;
+}
+.nav a:hover{
+  color:var(--text);
+  border-color: rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+}
+.nav-cta{
+  color:#071018 !important;
+  background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,211,238,.90));
+  border-color: rgba(255,255,255,.18) !important;
+  box-shadow: 0 18px 60px rgba(34,211,238,.12);
+}
+
+.menu{display:none; background:transparent; border:0; width:44px; height:44px; border-radius:14px; border:1px solid rgba(255,255,255,.14)}
+.menu span{display:block; height:2px; background:rgba(244,246,255,.84); margin:7px 10px; border-radius:99px}
+@media (max-width: 860px){
+  .nav{display:none}
+  .menu{display:block}
+  .topbar-inner{padding: 12px 0}
+}
+
+/* HERO */
+.hero{padding: 34px 0 10px}
+.hero-grid{
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 28px;
+  align-items:center;
+  padding: 22px 0 8px;
+}
+@media (max-width: 980px){
+  .hero-grid{grid-template-columns:1fr; gap: 18px}
+}
+
+.badge-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 14px}
+.badge{
+  display:inline-flex; align-items:center; gap:10px;
+  padding: 9px 12px;
+  border-radius: 999px;
+  font-weight:900; font-size:12.5px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+}
+.badge.glow{box-shadow: 0 0 0 6px rgba(124,58,237,.12), 0 12px 60px rgba(124,58,237,.18)}
+.badge.gold{border-color: rgba(212,175,55,.35); background: rgba(212,175,55,.10)}
+.badge.cyan{border-color: rgba(34,211,238,.35); background: rgba(34,211,238,.10)}
+
+h1{
+  margin:0;
+  font-family:"Space Grotesk", system-ui;
+  font-weight:900;
+  font-size: clamp(38px, 4.7vw, 62px);
+  line-height:1.02;
+  letter-spacing:-1px;
+}
+.type-glow{
+  position:relative;
+  display:inline-block;
+  background: linear-gradient(90deg, var(--accentA), var(--accentB), var(--gold));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow: 0 0 24px rgba(34,211,238,.22);
+}
+.sub{
+  margin: 14px 0 0;
+  max-width: 58ch;
+  color: rgba(244,246,255,.74);
+  font-size: 16px;
+  line-height:1.7;
+  font-weight:600;
+}
+
+.hero-actions{display:flex; gap: 12px; flex-wrap:wrap; margin-top: 18px}
+.btn{
+  text-decoration:none;
+  display:inline-flex; align-items:center; justify-content:center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-weight:900;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+  white-space:nowrap;
+}
+.btn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,.22);
+  background: rgba(255,255,255,.09);
+}
+.btn:focus{outline: none; box-shadow: 0 0 0 4px var(--focus)}
+.btn.primary{
+  color:#071018;
+  border-color: rgba(255,255,255,.20);
+  background: linear-gradient(135deg, rgba(124,58,237,.98), rgba(34,211,238,.92));
+  box-shadow: 0 20px 80px rgba(34,211,238,.12), 0 30px 100px rgba(124,58,237,.16);
+}
+.btn.ghost{color: rgba(244,246,255,.92)}
+.btn-arr{opacity:.9}
+.btn-ic{filter: saturate(1.1)}
+
+.hero-metrics{
+  margin-top: 18px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 560px){
+  .hero-metrics{grid-template-columns:1fr; }
+}
+.metric{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  padding: 14px 14px;
+}
+.metric-top{
+  font-family:"Space Grotesk", system-ui;
+  font-weight:900;
+  font-size: 26px;
+  letter-spacing:-.7px;
+}
+.pct{color: rgba(244,246,255,.86); font-size: 16px; margin-left:3px}
+.metric-bot{margin-top:6px; color: rgba(244,246,255,.7); font-weight:800; font-size:12.5px}
+
+.showcase{
+  border-radius: var(--radius2);
+  border: 1px solid rgba(255,255,255,.14);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  box-shadow: var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+.showcase:before{
+  content:"";
+  position:absolute; inset:-2px;
+  background:
+    radial-gradient(420px 260px at 20% 0%, rgba(124,58,237,.35), transparent 60%),
+    radial-gradient(420px 280px at 90% 30%, rgba(34,211,238,.22), transparent 60%),
+    radial-gradient(380px 320px at 60% 95%, rgba(212,175,55,.16), transparent 55%);
+  opacity:.95;
+  pointer-events:none;
+}
+.showcase-top{
+  position:relative;
+  display:flex; gap:10px; flex-wrap:wrap;
+  padding: 14px 14px 0;
+}
+.chip{
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-weight:1000;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.15);
+}
+.chip.neon{border-color: rgba(124,58,237,.38); color: rgba(210,206,255,.98)}
+.chip.gold{border-color: rgba(212,175,55,.40); color: rgba(255,230,150,.96)}
+.chip.cyan{border-color: rgba(34,211,238,.40); color: rgba(182,252,255,.96)}
+.chip.hot{
+  border-color: rgba(52,211,153,.35);
+  color: rgba(188,255,224,.96);
+}
+
+.device{position:relative; padding: 18px 14px 22px}
+.device-screen{
+  position:relative;
+  height: 340px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.14);
+  background:
+    radial-gradient(280px 220px at 25% 22%, rgba(124,58,237,.32), transparent 65%),
+    radial-gradient(260px 220px at 78% 35%, rgba(34,211,238,.24), transparent 60%),
+    radial-gradient(320px 250px at 55% 95%, rgba(212,175,55,.14), transparent 60%),
+    rgba(0,0,0,.18);
+  overflow:hidden;
+}
+.screen-glow{
+  position:absolute; inset:-40px;
+  background: conic-gradient(from 220deg,
+    rgba(124,58,237,.0),
+    rgba(124,58,237,.55),
+    rgba(34,211,238,.55),
+    rgba(212,175,55,.45),
+    rgba(52,211,153,.40),
+    rgba(124,58,237,.0));
+  opacity:.25;
+  filter: blur(18px);
+  animation: spin 10s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.screen-card{
+  position:absolute;
+  left: 18px; right: 18px; top: 18px;
+  border-radius: 18px;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(10px);
+}
+.screen-title{font-family:"Space Grotesk", system-ui; font-weight:900; letter-spacing:-.3px; margin-bottom:10px}
+.bars{display:flex; gap:8px; align-items:flex-end; height: 150px; margin: 10px 0 12px}
+.bars span{
+  width: 16%;
+  height: var(--h);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(34,211,238,.95), rgba(124,58,237,.70));
+  box-shadow: 0 18px 60px rgba(34,211,238,.10);
+  border: 1px solid rgba(255,255,255,.14);
+}
+.screen-row{display:flex; gap:10px}
+.tag{
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-weight:1000;
+  font-size: 12px;
+  border: 1px solid rgba(34,211,238,.35);
+  background: rgba(34,211,238,.10);
+  color: rgba(197,253,255,.98);
+}
+.tag.soft{
+  border-color: rgba(124,58,237,.35);
+  background: rgba(124,58,237,.10);
+  color: rgba(227,215,255,.98);
+}
+
+.screen-bubble{
+  position:absolute;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 24px 80px rgba(0,0,0,.35);
+  animation: floaty 5.5s ease-in-out infinite;
+}
+.b1{width:120px;height:60px;left:18px;bottom:18px; animation-delay: .2s}
+.b2{width:90px;height:90px;right:22px;bottom:40px; animation-delay: 1s}
+.b3{width:150px;height:80px;right:10px;top:170px; animation-delay: 2s}
+@keyframes floaty{
+  0%,100%{transform: translateY(0)}
+  50%{transform: translateY(-10px)}
+}
+
+.device-stand{
+  width: 70%;
+  height: 10px;
+  margin: 14px auto 0;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.note{
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  color: rgba(244,246,255,.76);
+  font-weight:800;
+  display:flex; gap:10px; align-items:center; justify-content:flex-start;
+}
+.note-ic{filter: saturate(1.2)}
+
+/* MODEBAR */
+.modebar{
+  margin-top: 18px;
+  display:flex; align-items:center; justify-content:space-between; gap: 12px;
+  padding: 14px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  backdrop-filter: blur(12px);
+}
+@media (max-width: 920px){
+  .modebar{flex-direction:column; align-items:flex-start}
+}
+.mode-title{font-weight:1000; letter-spacing:-.2px; margin-bottom: 2px}
+.mode-sub{font-size:13px; color:rgba(244,246,255,.7); font-weight:700}
+.mode-buttons{display:flex; gap:10px; flex-wrap:wrap}
+.mode-btn{
+  border-radius: 14px;
+  padding: 10px 12px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  color: rgba(244,246,255,.76);
+  font-weight:1000;
+  cursor:pointer;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+.mode-btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.08)}
+.mode-btn[aria-selected="true"]{
+  border-color: rgba(34,211,238,.35);
+  background: linear-gradient(135deg, rgba(124,58,237,.35), rgba(34,211,238,.20));
+  color: rgba(240,255,255,.95);
+  box-shadow: 0 22px 80px rgba(34,211,238,.08);
+}
+
+/* SECTIONS */
+.section{padding: 54px 0}
+.section-head{margin-bottom: 18px}
+.section-head h2{
+  margin:0;
+  font-family:"Space Grotesk", system-ui;
+  letter-spacing:-.5px;
+  font-weight:900;
+  font-size: clamp(26px, 3vw, 38px);
+}
+.section-head p{margin: 10px 0 0; color: rgba(244,246,255,.72); font-weight:700; line-height:1.7}
+
+.grid3{display:grid; grid-template-columns: repeat(3,1fr); gap: 14px}
+@media (max-width: 900px){ .grid3{grid-template-columns:1fr} }
+
+.card{
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  padding: 16px;
+  box-shadow: 0 16px 60px rgba(0,0,0,.25);
+}
+.card-ic{
+  width:44px; height:44px; border-radius:16px;
+  display:grid; place-items:center;
+  border: 1px solid rgba(255,255,255,.14);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  box-shadow: 0 18px 60px rgba(34,211,238,.08);
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+.card h3{margin:0 0 8px; font-weight:1000; letter-spacing:-.2px}
+.card p{margin:0; color: rgba(244,246,255,.72); line-height:1.7; font-weight:700; font-size: 14.5px}
+
+/* split */
+.split{display:grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px}
+@media (max-width: 980px){ .split{grid-template-columns:1fr} }
+.mini-title{
+  display:inline-flex; gap:10px; align-items:center;
+  padding: 9px 12px;
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  font-weight:1000;
+  font-size: 12.5px;
+  margin-bottom: 12px;
+}
+.split-h{
+  font-family:"Space Grotesk", system-ui;
+  font-size: 26px;
+  margin:0 0 10px;
+  letter-spacing:-.5px;
+  line-height:1.2;
+}
+.checklist{
+  list-style:none; padding:0; margin: 14px 0 0;
+  display:grid; gap: 10px;
+}
+.checklist li{
+  padding: 12px 12px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  color: rgba(244,246,255,.76);
+  font-weight:700;
+  line-height:1.6;
+}
+.checklist span{color: rgba(244,246,255,.98)}
+.split-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px}
+
+.stack{display:grid; gap: 12px}
+.stack-item{
+  border-radius: var(--radius);
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  padding: 14px;
+}
+.stack-top{display:flex; align-items:center; justify-content:space-between; gap: 10px; margin-bottom: 8px}
+.stack-dot{width:12px;height:12px;border-radius:50%; box-shadow:0 0 0 6px rgba(255,255,255,.04)}
+.stack-dot.neon{background: var(--accentA); box-shadow:0 0 0 6px rgba(124,58,237,.16)}
+.stack-dot.gold{background: var(--gold); box-shadow:0 0 0 6px rgba(212,175,55,.14)}
+.stack-dot.cyan{background: var(--accentB); box-shadow:0 0 0 6px rgba(34,211,238,.14)}
+.stack-pill{
+  font-weight:1000;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.04);
+  color: rgba(244,246,255,.86);
+}
+
+/* PROOF */
+.proof-grid{display:grid; grid-template-columns: 1.05fr 1fr 1fr; gap: 14px}
+@media (max-width: 980px){.proof-grid{grid-template-columns:1fr}}
+.proof-card{
+  border-radius: var(--radius);
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  padding: 16px;
+}
+.proof-card.alt{
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border-color: rgba(34,211,238,.20);
+}
+.proof-top{display:flex; align-items:center; justify-content:space-between; gap: 10px; margin-bottom: 10px}
+.rating{letter-spacing:2px; color: rgba(212,175,55,.95); font-size: 14px}
+.proof-tag{
+  padding: 9px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.04);
+  font-weight:1000;
+  font-size: 12.5px;
+}
+.quote{
+  margin:0;
+  font-weight:900;
+  line-height:1.6;
+  font-size: 16px;
+}
+.proof-person{display:flex; align-items:center; gap: 12px; margin-top: 12px}
+.avatar{
+  width:42px;height:42px;border-radius:16px;
+  background: radial-gradient(14px 14px at 30% 28%, rgba(255,255,255,.55), transparent 60%),
+              linear-gradient(135deg, rgba(124,58,237,.85), rgba(34,211,238,.85));
+  border:1px solid rgba(255,255,255,.16);
+}
+
+.bigstats{display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px}
+.bigstat{
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  padding: 12px;
+}
+.k{
+  font-family:"Space Grotesk", system-ui;
+  font-weight:1000;
+  font-size: 30px;
+  letter-spacing:-.7px;
+}
+.unit{margin-left:4px; color: rgba(244,246,255,.82); font-weight:900}
+.logos{display:flex; flex-wrap:wrap; gap:10px; margin: 12px 0 8px}
+.logo-pill{
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.04);
+  font-weight:1000;
+  color: rgba(244,246,255,.86);
+}
+
+/* PRICING */
+.pricing-grid{display:grid; grid-template-columns: repeat(3,1fr); gap: 14px}
+@media (max-width: 980px){.pricing-grid{grid-template-columns:1fr}}
+.price{
+  border-radius: var(--radius2);
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  padding: 16px;
+  position:relative;
+  overflow:hidden;
+}
+.price.featured{
+  background:
+    radial-gradient(420px 260px at 20% 0%, rgba(124,58,237,.25), transparent 60%),
+    radial-gradient(380px 240px at 90% 30%, rgba(34,211,238,.18), transparent 60%),
+    rgba(255,255,255,.05);
+  border-color: rgba(34,211,238,.30);
+  box-shadow: 0 26px 110px rgba(34,211,238,.10);
+}
+.best{
+  position:absolute; top: 14px; right: 14px;
+  padding: 9px 12px;
+  border-radius: 999px;
+  font-weight:1000;
+  font-size: 12.5px;
+  border:1px solid rgba(212,175,55,.40);
+  background: rgba(212,175,55,.10);
+  color: rgba(255,232,170,.98);
+}
+.price-title{font-family:"Space Grotesk", system-ui; font-weight:1000; letter-spacing:-.4px; font-size: 20px}
+.price-sub{margin-top:6px}
+.price-head{margin-bottom: 12px}
+.price-num{
+  font-family:"Space Grotesk", system-ui;
+  font-weight:1000;
+  font-size: 44px;
+  letter-spacing:-1.3px;
+  margin: 8px 0 12px;
+}
+.currency{font-size: 22px; margin-right:4px; opacity:.85}
+.per{font-size: 16px; opacity:.75; margin-left:6px}
+.price-list{list-style:none; padding:0; margin: 0 0 14px; display:grid; gap: 10px}
+.price-list li{
+  padding: 12px 12px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  color: rgba(244,246,255,.76);
+  font-weight:800;
+}
+.full{width:100%}
+
+/* CONTACT */
+.contact{padding-top: 56px}
+.contact-grid{
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 14px;
+}
+@media (max-width: 980px){.contact-grid{grid-template-columns:1fr}}
+.contact-box{
+  border-radius: var(--radius2);
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  padding: 16px;
+}
+.contact-row{display:grid; grid-template-columns: 1fr 1fr; gap: 12px}
+@media (max-width: 640px){.contact-row{grid-template-columns:1fr}}
+.field{margin-bottom: 12px}
+label{display:block; font-weight:1000; font-size: 13px; margin-bottom: 8px; color: rgba(244,246,255,.78)}
+input{
+  width:100%;
+  padding: 12px 12px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.20);
+  color: var(--text);
+  font-weight:800;
+  outline:none;
+}
+input:focus{box-shadow: 0 0 0 4px var(--focus); border-color: rgba(34,211,238,.35)}
+.contact-side .side-card{
+  border-radius: var(--radius2);
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  padding: 16px;
+  height:100%;
+  box-shadow: 0 26px 110px rgba(0,0,0,.30);
+}
+.side-top{display:flex; align-items:center; gap: 12px; margin-bottom: 12px}
+.side-ic{
+  width:46px; height:46px; border-radius:18px;
+  display:grid; place-items:center;
+  border:1px solid rgba(255,255,255,.14);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+}
+.checklist.compact li{padding: 10px 12px}
+.side-cta{margin-top: 12px}
+
+/* FOOTER */
+.footer{padding: 26px 0 42px; border-top: 1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.08)}
+.footer-inner{display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap:wrap}
+.footer-links{display:flex; gap: 12px; flex-wrap:wrap}
+.footer-links a{
+  text-decoration:none;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  color: rgba(244,246,255,.76);
+  font-weight:900;
+  font-size: 13px;
+}
+.footer-links a:hover{color:var(--text); border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.07)}
+
+/* THEME SWITCHING */
+[data-theme="neon"]{
+  --accentA:#7C3AED;
+  --accentB:#22D3EE;
+  --accentC:#34D399;
+}
+[data-theme="gold"]{
+  --accentA:#D4AF37;
+  --accentB:#B38A2E;
+  --accentC:#34D399;
+}
+[data-theme="clean"]{
+  --accentA:#4F46E5;
+  --accentB:#0EA5E9;
+  --accentC:#22C55E;
+}
+[data-theme="all"]{
+  --accentA:#7C3AED;
+  --accentB:#22D3EE;
+  --accentC:#34D399;
+}
+
+/* Respect theme by swapping background intensity */
+[data-theme="gold"] .badge.glow,
+[data-theme="gold"] .type-glow{filter:saturate(1.2)}
+[data-theme="clean"] .orbs .orb{opacity:.45; filter: blur(18px)}
+```
+
+### `script.js`
+```javascript
+// Mobile menu
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.querySelector('.nav');
+if (menuBtn) {
+  menuBtn.addEventListener('click', () => {
+    const open = menuBtn.getAttribute('aria-expanded') === 'true';
+    menuBtn.setAttribute('aria-expanded', String(!open));
+    // simple approach: toggle a class by inline style
+    if (!open) {
+      nav.style.display = 'flex';
+      nav.style.flexDirection = 'column';
+      nav.style.position = 'absolute';
+      nav.style.right = '4vw';
+      nav.style.top = '68px';
+      nav.style.padding = '12px';
+      nav.style.background = 'rgba(6,6,10,.75)';
+      nav.style.border = '1px solid rgba(255,255,255,.14)';
+      nav.style.backdropFilter = 'blur(14px)';
+      nav.style.zIndex = '50';
+    } else {
+      nav.style.display = '';
+      nav.style.removeProperty('flex-direction');
+      nav.style.removeProperty('position');
+      nav.style.removeProperty('right');
+      nav.style.removeProperty('top');
+      nav.style.removeProperty('padding');
+      nav.style.removeProperty('background');
+      nav.style.removeProperty('border');
+      nav.style.removeProperty('backdrop-filter');
+      nav.style.removeProperty('z-index');
+    }
+  });
+}
+
+// Theme switch
+const root = document.documentElement;
+const buttons = document.querySelectorAll('.mode-btn');
+
+function setTheme(t) {
+  root.setAttribute('data-theme', t);
+  buttons.forEach(b => {
+    const selected = b.dataset.theme === t;
+    b.setAttribute('aria-selected', selected ? 'true' : 'false');
+  });
+}
+
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => setTheme(btn.dataset.theme));
+});
+
+// Set initial theme
+setTheme('neon');
+
+// Count up animation
+function animateCount(el, target, duration = 900) {
+  const start = 0;
+  const startTime = performance.now();
+  const isFloat = String(target).includes('.');
+  function frame(now){
+    const t = Math.min(1, (now - startTime) / duration);
+    const eased = 1 - Math.pow(1 - t, 3);
+    const val = start + (target - start) * eased;
+    el.textContent = isFloat ? val.toFixed(1) : Math.round(val).toString();
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+const metrics = document.querySelectorAll('#metrics .num');
+metrics.forEach(el => {
+  const target = Number(el.dataset.count || 0);
+  animateCount(el, target, 900);
+});
+
+const bigs = document.querySelectorAll('.k[data-k]');
+bigs.forEach(el => {
+  const target = Number(el.dataset.k);
+  animateCount(el, target, 1100);
+});
+
+// Footer year
+document.getElementById('year').textContent = new Date().getFullYear();
+```
+
+## 2) “Downloadable file” note
+I can’t attach a ZIP directly in this chat, but if you copy/paste the 3 files above into a folder, it’s functionally the same as downloading.
+
+If you tell me your product name + 1 tagline, I’ll replace the placeholder copy and make the page match your niche.
+
+--------------------
+
+User prompt 4 of 4 - 8/8/2026, 7:24:26 PM:
+अरे मदरचोद, लैंडिंग पेज में मेनू आइटम्स होते हैं कि भोसड़ीके, तो एक लैंडिंग पेज बनाओ यानि एकदम बकवास है ये क्या हमेशा होता है न वैसे ही अभी कोई भी आदमी देखके बोलेगा कि एए ने बनाए होए हैं, मदरचोद, ठीक से बना, लैंडिंग पेज बना
+
+GPT-5.4 nano:
+समझ गया—तुम्हें “landing page” चाहिए जिसमें **menu items न हों** और जो **template/AI-जैसा नहीं लगे**। नीचे मैं एक **एकदम single-file** landing page दे रहा हूँ (बस `index.html` बनाकर चला दो). इसमें **header/nav नहीं है**, सिर्फ hero + sections + CTA है, और **visual punch** अलग स्टाइल में है (brutalist + neon halftone + glitch-lite).
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Innovative Products</title>
+  <style>
+    :root{
+      --bg:#07060a;
+      --ink:#eef0ff;
+      --muted:rgba(238,240,255,.72);
+
+      --a:#00D4FF;   /* cyan */
+      --b:#8B5CF6;   /* violet */
+      --c:#FBBF24;   /* gold */
+      --d:#34D399;   /* green */
+
+      --glass: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.14);
+      --shadow: 0 24px 90px rgba(0,0,0,.55);
+
+      --r: 22px;
+      --max: 1100px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans";
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 650px at 10% -10%, rgba(139,92,246,.35), transparent 55%),
+        radial-gradient(900px 600px at 85% 0%, rgba(0,212,255,.28), transparent 55%),
+        radial-gradient(900px 700px at 60% 110%, rgba(52,211,153,.16), transparent 60%),
+        linear-gradient(180deg, #06050a 0%, #080715 55%, #07060a 100%);
+      overflow-x:hidden;
+    }
+
+    /* Halftone + noise overlay (non-template look) */
+    .fx{
+      position:fixed; inset:0; pointer-events:none; z-index:0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(251,191,36,.18), transparent 35%),
+        radial-gradient(circle at 80% 35%, rgba(0,212,255,.16), transparent 40%),
+        radial-gradient(circle at 55% 80%, rgba(139,92,246,.14), transparent 42%);
+      opacity:.9;
+      mix-blend-mode:screen;
+    }
+    .halftone{
+      position:fixed; inset:-20%;
+      pointer-events:none; z-index:0;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      background-size: 260px 260px;
+      opacity:.10;
+      transform: rotate(-8deg);
+    }
+
+    .wrap{ position:relative; z-index:1; }
+    .container{ width:min(var(--max), 92vw); margin:0 auto; }
+
+    /* Hero layout: no nav/menu */
+    .hero{
+      padding: 56px 0 24px;
+    }
+
+    .hero-top{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 18px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){
+      .hero-top{ grid-template-columns:1fr; }
+    }
+
+    .hero-card{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .hero-card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        conic-gradient(from 180deg,
+          rgba(0,212,255,.0),
+          rgba(0,212,255,.55),
+          rgba(139,92,246,.55),
+          rgba(251,191,36,.35),
+          rgba(52,211,153,.25),
+          rgba(0,212,255,.0));
+      opacity:.26;
+      filter: blur(22px);
+      animation: pulse 6.5s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{ transform: translateY(0) scale(1); opacity:.22; }
+      50%{ transform: translateY(-10px) scale(1.02); opacity:.34; }
+    }
+
+    .hero-left{
+      padding: 26px;
+    }
+
+    .kicker-row{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-bottom: 14px;
+      align-items:center;
+    }
+
+    .tag{
+      padding: 9px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      font-weight:900;
+      font-size: 12.5px;
+      color: rgba(238,240,255,.85);
+      letter-spacing: .2px;
+      display:flex; align-items:center; gap:10px;
+      user-select:none;
+    }
+    .tag i{
+      width:10px; height:10px; border-radius: 50%;
+      background: var(--a);
+      box-shadow: 0 0 0 6px rgba(0,212,255,.12);
+      display:inline-block;
+    }
+    .tag.gold i{ background: var(--c); box-shadow: 0 0 0 6px rgba(251,191,36,.12); }
+    .tag.violet i{ background: var(--b); box-shadow: 0 0 0 6px rgba(139,92,246,.14); }
+    .tag.green i{ background: var(--d); box-shadow: 0 0 0 6px rgba(52,211,153,.14); }
+
+    h1{
+      margin: 0;
+      font-size: clamp(38px, 4.6vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -1.3px;
+      font-weight: 1000;
+      position:relative;
+    }
+
+    /* “Not template” headline effect */
+    .glitch{
+      display:inline-block;
+      position:relative;
+      padding: 0 .06em;
+      background: linear-gradient(90deg, rgba(0,212,255,1), rgba(139,92,246,1), rgba(251,191,36,1));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      text-shadow:
+        0 0 26px rgba(0,212,255,.18),
+        0 0 46px rgba(139,92,246,.12);
+    }
+    .glitch::before,
+    .glitch::after{
+      content: attr(data-text);
+      position:absolute; left:0; top:0;
+      opacity:.35;
+      filter: blur(.2px);
+      pointer-events:none;
+    }
+    .glitch::before{ transform: translate(1.5px, 0); color: rgba(0,212,255,.9); }
+    .glitch::after{ transform: translate(-1.5px, 0); color: rgba(251,191,36,.85); }
+
+    .lead{
+      margin: 14px 0 18px;
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: 16.5px;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .cta-row{
+      display:flex; flex-wrap:wrap; gap:12px; align-items:center;
+      margin-top: 18px;
+    }
+
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      text-decoration:none;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-weight:1000;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--ink);
+      box-shadow: 0 18px 60px rgba(0,0,0,.25);
+      transition: transform .14s ease, background .14s ease, border-color .14s ease;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.22); }
+    .btn.primary{
+      border-color: rgba(0,212,255,.30);
+      background: linear-gradient(135deg, rgba(0,212,255,.95), rgba(139,92,246,.90));
+      color:#051016;
+      box-shadow: 0 26px 90px rgba(0,212,255,.12);
+    }
+    .btn .arrow{ opacity:.9; }
+
+    .micro{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-top: 14px;
+      color: rgba(238,240,255,.62);
+      font-weight:800;
+      font-size: 12.8px;
+    }
+    .micro span{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.14);
+      padding: 8px 10px;
+      border-radius: 999px;
+    }
+    .micro b{ color: rgba(238,240,255,.9); }
+
+    /* Right: “product impact” panel */
+    .hero-right{
+      padding: 18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .mini-panel{
+      position:relative;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+      padding: 16px;
+    }
+
+    .mini-panel::after{
+      content:"";
+      position:absolute; inset:-1px;
+      background:
+        radial-gradient(400px 200px at 10% 0%, rgba(0,212,255,.22), transparent 60%),
+        radial-gradient(420px 240px at 90% 30%, rgba(139,92,246,.18), transparent 55%),
+        radial-gradient(420px 240px at 70% 110%, rgba(251,191,36,.14), transparent 55%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .mini-panel > *{ position:relative; z-index:1; }
+
+    .panel-title{
+      display:flex; justify-content:space-between; align-items:center;
+      gap:10px; margin-bottom: 10px;
+    }
+    .panel-title h3{
+      margin:0;
+      font-size: 14px;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+      color: rgba(238,240,255,.78);
+      font-weight:1000;
+    }
+    .pill{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      font-weight:1000;
+      font-size: 12px;
+      color: rgba(238,240,255,.85);
+      user-select:none;
+    }
+
+    .meter{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+      margin-top: 8px;
+    }
+    .mcard{
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      padding: 12px;
+    }
+    .mnum{
+      font-size: 28px;
+      font-weight: 1000;
+      letter-spacing: -1px;
+      margin:0;
+    }
+    .mlab{
+      margin-top: 6px;
+      color: rgba(238,240,255,.65);
+      font-weight:900;
+      font-size: 12.5px;
+      line-height:1.4;
+    }
+
+    .bars{
+      display:grid; gap:10px;
+      margin-top: 14px;
+    }
+    .bar{
+      display:grid;
+      grid-template-columns: 92px 1fr 52px;
+      gap:10px;
+      align-items:center;
+    }
+    .bar label{
+      color: rgba(238,240,255,.76);
+      font-weight:1000;
+      font-size: 12.5px;
+      user-select:none;
+    }
+    .track{
+      height: 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+    }
+    .fill{
+      height:100%;
+      width: var(--w);
+      background: linear-gradient(90deg, var(--a), var(--b), var(--c));
+      box-shadow: 0 0 18px rgba(0,212,255,.18);
+      border-right: 1px solid rgba(255,255,255,.18);
+    }
+    .val{
+      text-align:right;
+      color: rgba(238,240,255,.80);
+      font-weight:1000;
+      font-size: 12.5px;
+    }
+
+    /* Sections */
+    .section{
+      padding: 22px 0 10px;
+    }
+    .section-head{
+      display:flex; justify-content:space-between; align-items:flex-end; gap:12px;
+      margin: 18px 0 12px;
+      flex-wrap:wrap;
+    }
+    .section-head h2{
+      margin:0;
+      font-size: clamp(24px, 2.4vw, 34px);
+      letter-spacing:-.8px;
+      font-weight:1000;
+    }
+    .section-head p{
+      margin:0;
+      color: rgba(238,240,255,.68);
+      font-weight:800;
+      line-height:1.6;
+      max-width: 60ch;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 980px){ .grid{ grid-template-columns:1fr; } }
+
+    .feature{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 16px;
+      box-shadow: 0 18px 70px rgba(0,0,0,.25);
+      position:relative;
+      overflow:hidden;
+    }
+    .feature::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(600px 200px at 20% 0%, rgba(0,212,255,.18), transparent 60%),
+                  radial-gradient(600px 260px at 90% 30%, rgba(139,92,246,.18), transparent 58%);
+      opacity:.55;
+      pointer-events:none;
+    }
+    .feature > *{ position:relative; z-index:1; }
+    .icon{
+      width: 46px; height: 46px;
+      border-radius: 16px;
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      font-size: 18px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.25);
+      user-select:none;
+    }
+    .feature h3{
+      margin: 12px 0 8px;
+      font-size: 16px;
+      font-weight:1000;
+      letter-spacing:-.2px;
+    }
+    .feature p{
+      margin:0;
+      color: rgba(238,240,255,.70);
+      font-weight:800;
+      line-height:1.7;
+      font-size: 14.5px;
+    }
+
+    /* Pricing */
+    .pricing{
+      display:grid;
+      grid-template-columns: 1.1fr 1fr 1fr;
+      gap: 14px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){ .pricing{ grid-template-columns:1fr; } }
+
+    .plan{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 18px;
+      position:relative;
+      overflow:hidden;
+      box-shadow: 0 18px 70px rgba(0,0,0,.25);
+    }
+    .plan.featured{
+      border-color: rgba(0,212,255,.35);
+      background: linear-gradient(180deg, rgba(0,212,255,.10), rgba(255,255,255,.04));
+    }
+    .plan .label{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      margin-bottom: 10px;
+    }
+    .plan .label b{
+      font-weight:1000;
+      letter-spacing:.2px;
+    }
+    .badge{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color: rgba(238,240,255,.85);
+      font-weight:1000;
+      font-size: 12.2px;
+      user-select:none;
+    }
+    .price{
+      font-family: ui-sans-serif, system-ui;
+      font-weight: 1000;
+      font-size: 44px;
+      letter-spacing: -1.2px;
+      margin: 6px 0 8px;
+    }
+    .per{ font-size: 13px; color: rgba(238,240,255,.66); font-weight:900; margin-left:6px; }
+    .plan ul{
+      list-style:none; padding:0; margin: 12px 0 16px;
+      display:grid; gap:10px;
+    }
+    .plan li{
+      padding: 10px 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      color: rgba(238,240,255,.74);
+      font-weight:900;
+      font-size: 13.5px;
+      line-height:1.45;
+    }
+
+    /* Contact (no menu) */
+    .contact{
+      padding: 28px 0 70px;
+    }
+    .contact-wrap{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .contact-wrap{ grid-template-columns:1fr; } }
+
+    .form{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 18px;
+      box-shadow: 0 18px 70px rgba(0,0,0,.25);
+    }
+    .form h3{ margin: 0 0 6px; font-weight:1000; letter-spacing:-.3px; }
+    .form p{ margin: 0 0 14px; color: rgba(238,240,255,.68); font-weight:800; line-height:1.7; }
+
+    .row2{ display:grid; grid-template-columns:1fr 1fr; gap: 12px; }
+    @media (max-width: 620px){ .row2{ grid-template-columns:1fr; } }
+
+    label{
+      display:block; margin: 10px 0 8px;
+      color: rgba(238,240,255,.78);
+      font-weight:1000;
+      font-size: 13px;
+    }
+    input, textarea{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.20);
+      color: var(--ink);
+      font-weight:900;
+      outline:none;
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+    input:focus, textarea:focus{
+      box-shadow: 0 0 0 4px rgba(0,212,255,.18);
+      border-color: rgba(0,212,255,.35);
+    }
+
+    .side{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 18px;
+      box-shadow: 0 18px 70px rgba(0,0,0,.25);
+    }
+    .side h3{ margin:0 0 10px; font-weight:1000; letter-spacing:-.2px; }
+    .steps{ display:grid; gap:10px; }
+    .step{
+      padding: 12px 12px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      color: rgba(238,240,255,.76);
+      font-weight:900;
+      line-height:1.6;
+      display:flex; gap:12px; align-items:flex-start;
+    }
+    .step .n{
+      width:26px; height:26px;
+      border-radius: 10px;
+      display:grid; place-items:center;
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.14);
+      color: rgba(238,240,255,.88);
+      flex:0 0 auto;
+    }
+
+    footer{
+      padding: 18px 0 26px;
+      color: rgba(238,240,255,.55);
+      font-weight:800;
+      font-size: 13px;
+    }
+    .foot-row{
+      display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      align-items:center;
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="fx" aria-hidden="true"></div>
+  <div class="halftone" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header class="hero">
+      <div class="container hero-top">
+        <section class="hero-card hero-left" aria-label="Hero">
+          <div class="kicker-row">
+            <span class="tag"><i></i> innovative products</span>
+            <span class="tag violet"><i></i> neon + gold energy</span>
+            <span class="tag green"><i></i> launch-ready landing</span>
+          </div>
+
+          <h1>
+            Make your product look
+            <span class="glitch" data-text="unstoppable">unstoppable</span>
+          </h1>
+
+          <p class="lead">
+            No menu spam. No template layout. Just a high-contrast landing that hits fast:
+            bold headline, punchy feature blocks, and a CTA that feels urgent.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn primary" href="#contact">
+              Get early access <span class="arrow">→</span>
+            </a>
+            <a class="btn" href="#pricing">
+              See plans <span class="arrow">↘</span>
+            </a>
+          </div>
+
+          <div class="micro" aria-label="Trust notes">
+            <span>⚡ <b>Fast</b> load</span>
+            <span>🧊 <b>Readable</b> glass UI</span>
+            <span>🎯 <b>Focused</b> conversion</span>
+          </div>
+        </section>
+
+        <aside class="hero-card hero-right" aria-label="Impact panel">
+          <div class="mini-panel">
+            <div class="panel-title">
+              <h3>Impact panel</h3>
+              <span class="pill">LIVE</span>
+            </div>
+
+            <div class="meter">
+              <div class="mcard">
+                <p class="mnum" id="n1">0%</p>
+                <div class="mlab">CTA click intent</div>
+              </div>
+              <div class="mcard">
+                <p class="mnum" id="n2">0</p>
+                <div class="mlab">Seconds to “wow”</div>
+              </div>
+            </div>
+
+            <div class="bars" aria-hidden="true">
+              <div class="bar">
+                <label>Clarity</label>
+                <div class="track"><div class="fill" style="--w:86%"></div></div>
+                <div class="val">86</div>
+              </div>
+              <div class="bar">
+                <label>Energy</label>
+                <div class="track"><div class="fill" style="--w:93%"></div></div>
+                <div class="val">93</div>
+              </div>
+              <div class="bar">
+                <label>Trust</label>
+                <div class="track"><div class="fill" style="--w:78%"></div></div>
+                <div class="val">78</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-panel">
+            <div class="panel-title">
+              <h3>Switch tone (demo)</h3>
+              <span class="pill" id="tone">NEON</span>
+            </div>
+            <div class="cta-row" style="margin-top:10px;">
+              <button class="btn" type="button" onclick="setTone('neon')">Neon</button>
+              <button class="btn" type="button" onclick="setTone('gold')">Gold</button>
+              <button class="btn" type="button" onclick="setTone('clean')">Clean</button>
+              <button class="btn" type="button" onclick="setTone('all')">All</button>
+            </div>
+            <p style="margin:12px 0 0; color:rgba(238,240,255,.68); font-weight:900; line-height:1.6; font-size:13.8px;">
+              This changes the accents only—layout stays brutal + clean.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="section" id="features">
+        <div class="section-head">
+          <h2>Built to look expensive (without looking AI)</h2>
+          <p>Hard edges, strong glow, readable contrast, and blocks that don’t feel like a slideshow.</p>
+        </div>
+
+        <div class="grid">
+          <article class="feature">
+            <div class="icon">⚡</div>
+            <h3>Hero that grabs instantly</h3>
+            <p>Large type + glitch-lite gradient headline. The page feels “designed”, not “copied”.</p>
+          </article>
+
+          <article class="feature">
+            <div class="icon">🎯</div>
+            <h3>Conversion structure</h3>
+            <p>CTA above the fold, proof-ish panel, then pricing, then contact—no distractions.</p>
+          </article>
+
+          <article class="feature">
+            <div class="icon">🧊</div>
+            <h3>Glass + contrast balance</h3>
+            <p>Readable text on dark UI with subtle strokes and depth so it doesn’t blur out.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="proof">
+        <div class="section-head">
+          <h2>Results blocks (replace with real numbers)</h2>
+          <p>Copy-ready blocks so you can swap testimonials/logos later.</p>
+        </div>
+
+        <div class="grid">
+          <article class="feature">
+            <div class="icon">★</div>
+            <h3>“Premium feel” feedback</h3>
+            <p>“People didn’t ask about the design—they asked about the product.”</p>
+          </article>
+
+          <article class="feature">
+            <div class="icon">↗</div>
+            <h3>Better CTA attention</h3>
+            <p>Stronger hierarchy: headline → buttons → pricing → contact.</p>
+          </article>
+
+          <article class="feature">
+            <div class="icon">⏱</div>
+            <h3>Fast page vibe</h3>
+            <p>Lightweight CSS/HTML. No heavy frameworks needed.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="pricing">
+        <div class="section-head">
+          <h2>Pricing that doesn’t look fake</h2>
+          <p>Pick one. Highlight the best value. CTA stays consistent.</p>
+        </div>
+
+        <div class="pricing">
+          <article class="plan">
+            <div class="label">
+              <b>Starter</b>
+              <span class="badge">simple launch</span>
+            </div>
+            <div class="price">$0<span class="per">/mo</span></div>
+            <ul>
+              <li>Landing layout + glow system</li>
+              <li>Theme accents (neon/gold/clean)</li>
+              <li>Editable copy blocks</li>
+            </ul>
+            <a class="btn" href="#contact">Choose Starter →</a>
+          </article>
+
+          <article class="plan featured">
+            <div class="label">
+              <b>Pro</b>
+              <span class="badge">best value</span>
+            </div>
+            <div class="price">$19<span class="per">/mo</span></div>
+            <ul>
+              <li>Everything in Starter</li>
+              <li>Stronger UI depth + sections</li>
+              <li>CTA-focused structure</li>
+            </ul>
+            <a class="btn primary" href="#contact">Get Pro →</a>
+          </article>
+
+          <article class="plan">
+            <div class="label">
+              <b>Business</b>
+              <span class="badge">teams</span>
+            </div>
+            <div class="price">$49<span class="per">/mo</span></div>
+            <ul>
+              <li>Everything in Pro</li>
+              <li>More blocks for testimonials</li>
+              <li>Custom copy styling help</li>
+            </ul>
+            <a class="btn" href="#contact">Contact sales →</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <div class="contact-wrap">
+          <div class="form">
+            <h3>Get early access</h3>
+            <p>Front-end only form UI. Hook it to your backend later.</p>
+
+            <form onsubmit="event.preventDefault(); fakeSubmit();">
+              <div class="row2">
+                <div>
+                  <label>Your name</label>
+                  <input type="text" placeholder="Amit" required />
+                </div>
+                <div>
+                  <label>Email</label>
+                  <input type="email" placeholder="amit@example.com" required />
+                </div>
+              </div>
+
+              <label>What are you launching?</label>
+              <input type="text" placeholder="Innovative product..." required />
+
+              <label>Short message</label>
+              <textarea placeholder="Tell us what makes it different..." required></textarea>
+
+              <div class="cta-row">
+                <button class="btn primary" type="submit">Request demo →</button>
+                <button class="btn" type="button" onclick="fillDemo()">Use demo data</button>
+              </div>
+              <p id="submitMsg" style="margin:12px 0 0; color:rgba(238,240,255,.65); font-weight:900;"></p>
+            </form>
+          </div>
+
+          <aside class="side">
+            <h3>Simple process</h3>
+            <div class="steps">
+              <div class="step"><div class="n">1</div><div>Drop your copy + product images.</div></div>
+              <div class="step"><div class="n">2</div><div>Pick a tone: neon / gold / clean / all.</div></div>
+              <div class="step"><div class="n">3</div><div>Publish. Keep CTA consistent.</div></div>
+            </div>
+
+            <div style="margin-top:14px; color:rgba(238,240,255,.68); font-weight:900; line-height:1.7; font-size:13.8px;">
+              Tip: replace the headline and the 3 feature descriptions. That alone makes it feel 100% yours.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <footer>
+        <div class="foot-row">
+          <div>© <span id="year"></span> Innovative Products</div>
+          <div>Landing page • No menu • High-contrast UI</div>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const year = document.getElementById('year');
+    year.textContent = new Date().getFullYear();
+
+    // Animate numbers
+    function animate(el, from, to, dur=900){
+      const start = performance.now();
+      function tick(now){
+        const t = Math.min(1,(now-start)/dur);
+        const ease = 1 - Math.pow(1-t,3);
+        const v = from + (to-from)*ease;
+        el.textContent = (to % 1 === 0) ? String(Math.round(v)) : v.toFixed(1);
+        if(t<1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    animate(document.getElementById('n1'), 0, 98, 900);
+    animate(document.getElementById('n2'), 0, 2, 900);
+
+    // Tone switching (accent colors only)
+    const root = document.documentElement;
+    const tone = document.getElementById('tone');
+
+    const tones = {
+      neon: { a:'#00D4FF', b:'#8B5CF6', c:'#FBBF24' },
+      gold: { a:'#F59E0B', b:'#FBBF24', c:'#8B5CF6' },
+      clean:{ a:'#60A5FA', b:'#34D399', c:'#FBBF24' },
+      all:  { a:'#00D4FF', b:'#8B5CF6', c:'#FBBF24' }
+    };
+
+    function setTone(t){
+      const v = tones[t] || tones.neon;
+      root.style.setProperty('--a', v.a);
+      root.style.setProperty('--b', v.b);
+      root.style.setProperty('--c', v.c);
+      tone.textContent = t.toUpperCase();
+    }
+    window.setTone = setTone;
+
+    function fakeSubmit(){
+      const msg = document.getElementById('submitMsg');
+      msg.textContent = "✅ Request received (demo). Replace with your backend later.";
+    }
+    function fillDemo(){
+      const form = document.querySelector('form');
+      const inputs = form.querySelectorAll('input, textarea');
+      inputs[0].value = "Amit";
+      inputs[1].value = "amit@example.com";
+      inputs[2].value = "Innovative products for teams";
+      inputs[3].value = "We want a landing that looks custom, not template.";
+      document.getElementById('submitMsg').textContent = "Demo data filled.";
+    }
+    window.fillDemo = fillDemo;
+  </script>
+</body>
+</html>
+```
+
+### कैसे चलाना है
+1) नया फोल्डर बनाओ  
+2) ऊपर वाला कोड `index.html` में paste करो  
+3) file browser में open कर दो (या live server)
+
+अगर तुम “अलग-अलग options” वाला theme switch बिल्कुल नहीं चाहते, बस बोल देना—मैं theme toggle भी हटा दूँ और सिर्फ एक दम best-looking palette fix कर दूँ। Also: तुम्हारी website किस niche के लिए है (AI app, gadget, SaaS, mobile app, ecommerce)? मैं headline + features उसी के हिसाब से बदल दूँगा।

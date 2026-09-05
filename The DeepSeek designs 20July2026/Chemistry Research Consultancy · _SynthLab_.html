@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynthLab · Chemistry Research</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #f5f7fa;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        :root {
+            --primary: #0c4a6e;
+            --secondary: #0891b2;
+            --accent: #2563eb;
+            --gold: #d97706;
+            --light: #f5f7fa;
+            --glass: rgba(255,255,255,0.7);
+            --border: rgba(0,0,0,0.04);
+        }
+        .page-header {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            padding: 0 3rem;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.02);
+        }
+        .nav-container {
+            max-width: 1280px; margin: 0 auto; width: 100%;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        .brand span { color: var(--gold); font-style: italic; }
+        .nav-menu {
+            display: flex; gap: 0.3rem; list-style: none; flex-wrap: wrap;
+        }
+        .nav-menu a {
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(26,26,46,0.5);
+            text-decoration: none;
+            border-radius: 60px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .nav-menu a:hover { color: var(--primary); background: rgba(0,0,0,0.03); }
+        .nav-menu a.active { color: var(--primary); background: rgba(12,74,110,0.06); border: 1px solid rgba(12,74,110,0.05); }
+        .nav-cta { background: var(--primary) !important; color: #fff !important; }
+        .nav-cta:hover { opacity: 0.85; }
+
+        .page-section {
+            display: none;
+            flex: 1 0 auto;
+            max-width: 1280px;
+            margin: 6rem auto 2rem;
+            padding: 0 3rem;
+            width: 100%;
+        }
+        .page-section.active { display: block; animation: fadeUp 0.6s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Unique sidebar layout for research */
+        .research-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: start;
+        }
+        .research-sidebar {
+            background: #fff;
+            border-radius: 2rem;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.02);
+            position: sticky;
+            top: 100px;
+        }
+        .research-sidebar .icon { font-size: 3.5rem; display: block; margin-bottom: 0.5rem; }
+        .research-sidebar h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--primary); }
+        .research-sidebar p { color: rgba(26,26,46,0.5); margin: 0.5rem 0 1rem; font-size: 0.95rem; }
+        .research-sidebar .meta { font-size: 0.85rem; color: var(--secondary); }
+        .research-main { display: grid; gap: 1.5rem; }
+        .research-card {
+            background: #fff;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+        }
+        .research-card:hover { transform: translateY(-4px); box-shadow: 0 10px 40px rgba(0,0,0,0.04); }
+        .research-card h4 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--primary); margin-bottom: 0.3rem; }
+        .research-card p { color: rgba(26,26,46,0.5); font-size: 0.95rem; }
+        .research-card .tag { display: inline-block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600; margin-top: 0.5rem; }
+
+        .hero-simple {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        .hero-simple h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: clamp(2.8rem, 5vw, 4rem);
+            color: var(--primary);
+        }
+        .hero-simple h1 .highlight { color: var(--gold); font-style: italic; }
+        .hero-simple p { color: rgba(26,26,46,0.5); font-size: 1.15rem; max-width: 600px; margin: 1rem auto 2rem; }
+
+        .btn-primary {
+            padding: 0.9rem 2.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        .btn-primary:hover { background: #0a3a56; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(12,74,110,0.15); }
+        .btn-secondary {
+            padding: 0.9rem 2.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid rgba(12,74,110,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            margin-left: 0.8rem;
+        }
+        .btn-secondary:hover { border-color: var(--primary); background: rgba(12,74,110,0.02); }
+
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--gold); font-weight: 600; }
+        .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--primary); margin-top: 0.3rem; }
+        .section-header p { color: rgba(26,26,46,0.4); max-width: 500px; margin: 0.5rem auto 0; }
+
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem;
+        }
+        .card {
+            background: #fff;
+            border-radius: 1.5rem;
+            padding: 2rem 1.8rem;
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+        }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 10px 40px rgba(0,0,0,0.04); }
+        .card .icon { font-size: 2.5rem; margin-bottom: 0.8rem; display: block; }
+        .card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--primary); }
+        .card p { color: rgba(26,26,46,0.5); font-size: 0.95rem; }
+        .card-link {
+            background: none; border: none; color: var(--secondary); font-weight: 500; font-size: 0.9rem;
+            cursor: pointer; transition: all 0.3s ease; font-family: 'Inter', sans-serif;
+        }
+        .card-link:hover { color: var(--primary); transform: translateX(4px); }
+
+        .page-footer {
+            margin-top: 3rem;
+            background: var(--primary);
+            color: rgba(255,255,255,0.4);
+            padding: 2rem 3rem;
+            width: 100%;
+        }
+        .footer-container {
+            max-width: 1280px; margin: 0 auto;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem;
+        }
+        .footer-brand { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.4rem; color: #fff; cursor: pointer; }
+        .footer-brand span { color: var(--gold); font-style: italic; }
+        .footer-menu { display: flex; flex-wrap: wrap; gap: 0.4rem 2rem; list-style: none; }
+        .footer-menu a { color: rgba(255,255,255,0.3); text-decoration: none; font-size: 0.85rem; transition: color 0.3s ease; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
+        .footer-menu a:hover { color: #fff; }
+        .footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.15); }
+
+        @media (max-width: 968px) {
+            .research-layout { grid-template-columns: 1fr; }
+            .research-sidebar { position: static; }
+            .page-header { padding: 0 1.5rem; }
+            .page-section { padding: 0 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .hero-simple h1 { font-size: 2.2rem; }
+            .card-grid { grid-template-columns: 1fr; }
+            .btn-secondary { margin-left: 0; }
+            .nav-menu a { padding: 0.3rem 0.8rem; font-size: 0.75rem; }
+            .brand { font-size: 1.4rem; }
+            .section-header h2 { font-size: 2rem; }
+            .research-sidebar { padding: 1.5rem; }
+            .research-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div class="nav-container">
+            <span class="brand" onclick="showPage('home')">Synth<span>Lab</span></span>
+            <ul class="nav-menu">
+                <li><a onclick="showPage('home')" data-page="home" class="active">Home</a></li>
+                <li><a onclick="showPage('research')" data-page="research">Research</a></li>
+                <li><a onclick="showPage('services')" data-page="services">Services</a></li>
+                <li><a onclick="showPage('about')" data-page="about">About</a></li>
+                <li><a onclick="showPage('contact')" data-page="contact" class="nav-cta">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Home -->
+    <section id="home" class="page-section active">
+        <div class="hero-simple">
+            <h1>Advancing <span class="highlight">Chemistry</span><br>Through Research</h1>
+            <p>Independent consultancy delivering cutting-edge chemical research and analysis for industry and academia.</p>
+            <button class="btn-primary" onclick="showPage('research')">Explore Research</button>
+            <button class="btn-secondary" onclick="showPage('contact')">Collaborate</button>
+        </div>
+        <div class="research-layout" style="margin-top:2rem;">
+            <div class="research-sidebar">
+                <span class="icon">🧪</span>
+                <h3>Dr. Elena Voss</h3>
+                <p>Principal Consultant · PhD Organic Chemistry · 15+ years experience</p>
+                <div class="meta">✦ Published in Nature · ACS · RSC</div>
+            </div>
+            <div class="research-main">
+                <div class="research-card">
+                    <h4>Catalysis & Synthesis</h4>
+                    <p>Developing novel catalytic pathways for pharmaceutical and industrial applications.</p>
+                    <span class="tag">Active Research</span>
+                </div>
+                <div class="research-card">
+                    <h4>Analytical Method Development</h4>
+                    <p>Custom HPLC, GC-MS, and NMR protocols for complex sample analysis.</p>
+                    <span class="tag">Consulting</span>
+                </div>
+                <div class="research-card">
+                    <h4>Chemical Data Science</h4>
+                    <p>Machine learning applications for reaction prediction and molecular design.</p>
+                    <span class="tag">Innovation</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research -->
+    <section id="research" class="page-section">
+        <div class="section-header">
+            <div class="label">Ongoing Work</div>
+            <h2>Research Areas</h2>
+            <p>Exploring the frontiers of chemical science.</p>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <span class="icon">🔬</span>
+                <h3>Green Chemistry</h3>
+                <p>Sustainable synthetic methods with reduced environmental impact.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+            <div class="card">
+                <span class="icon">💊</span>
+                <h3>Pharmaceutical Research</h3>
+                <p>Drug discovery and development consulting for biotech startups.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+            <div class="card">
+                <span class="icon">🧫</span>
+                <h3>Materials Science</h3>
+                <p>Novel polymer and nanomaterials for advanced applications.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+            <div class="card">
+                <span class="icon">📊</span>
+                <h3>Data Analytics</h3>
+                <p>Chemoinformatics and computational chemistry services.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="page-section">
+        <div class="section-header">
+            <div class="label">Consulting</div>
+            <h2>Services</h2>
+            <p>Tailored solutions for your chemical research needs.</p>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <span class="icon">📋</span>
+                <h3>Project Design</h3>
+                <p>From concept to execution, we design robust research protocols.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+            <div class="card">
+                <span class="icon">📈</span>
+                <h3>Data Interpretation</h3>
+                <p>Extract meaningful insights from complex chemical data.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+            <div class="card">
+                <span class="icon">✍️</span>
+                <h3>Grant Writing</h3>
+                <p>Expert proposals for funding agencies and research grants.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="page-section">
+        <div class="section-header">
+            <div class="label">The Team</div>
+            <h2>About SynthLab</h2>
+            <p>Excellence in chemical research and consultancy.</p>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <span class="icon">🎓</span>
+                <h3>PhD Level Expertise</h3>
+                <p>Deep technical knowledge across organic, inorganic, and physical chemistry.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+            <div class="card">
+                <span class="icon">🌍</span>
+                <h3>Global Network</h3>
+                <p>Collaborations with leading research institutions worldwide.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+            <div class="card">
+                <span class="icon">📚</span>
+                <h3>Publications</h3>
+                <p>Over 50 peer-reviewed articles in high-impact journals.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="page-section">
+        <div class="section-header">
+            <div class="label">Connect</div>
+            <h2>Contact SynthLab</h2>
+            <p>Let's advance chemistry together.</p>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <span class="icon">✉</span>
+                <h3>Email</h3>
+                <p>elena@synthlab.com</p>
+                <a class="card-link" href="mailto:elena@synthlab.com">Send →</a>
+            </div>
+            <div class="card">
+                <span class="icon">✆</span>
+                <h3>Phone</h3>
+                <p>+1 (555) 123-4567</p>
+                <a class="card-link" href="tel:+15551234567">Call →</a>
+            </div>
+            <div class="card">
+                <span class="icon">🧪</span>
+                <h3>Lab Visit</h3>
+                <p>By appointment only</p>
+                <button class="card-link" onclick="alert('Schedule a visit!')">Schedule →</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="page-footer">
+        <div class="footer-container">
+            <div class="footer-brand" onclick="showPage('home')">Synth<span>Lab</span></div>
+            <ul class="footer-menu">
+                <li><a onclick="showPage('home')">Home</a></li>
+                <li><a onclick="showPage('research')">Research</a></li>
+                <li><a onclick="showPage('services')">Services</a></li>
+                <li><a onclick="showPage('about')">About</a></li>
+                <li><a onclick="showPage('contact')">Contact</a></li>
+            </ul>
+            <div class="footer-copy">© 2026 · SynthLab Research</div>
+        </div>
+    </footer>
+
+    <script>
+        function showPage(id) {
+            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-menu a').forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('data-page') === id) a.classList.add('active');
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        document.addEventListener('DOMContentLoaded', () => showPage('home'));
+    </script>
+</body>
+</html>

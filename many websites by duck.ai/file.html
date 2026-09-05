@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Software Shop</title>
+  <style>
+    :root{
+      --bg0: #0b1220;
+      --bg1: #111a2f;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.66);
+      --border: rgba(255,255,255,.14);
+      --accent: #6ea8fe;
+      --accent2: #7c3aed;
+
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 14px;
+
+      --focus: 0 0 0 4px rgba(110,168,254,.25);
+    }
+
+    /* Themes */
+    [data-theme="blue-dark"]{
+      --bg0:#060b16; --bg1:#0c1630;
+      --accent:#6ea8fe; --accent2:#7c3aed;
+      --card: rgba(255,255,255,.06);
+    }
+    [data-theme="white-red"]{
+      --bg0:#ffffff; --bg1:#ffeef0;
+      --text: rgba(20,20,20,.92);
+      --muted: rgba(20,20,20,.62);
+      --border: rgba(20,20,20,.12);
+      --card: rgba(255,255,255,.7);
+      --card2: rgba(255,255,255,.86);
+      --accent:#e11d48; --accent2:#fb7185;
+      --shadow: 0 18px 50px rgba(225,29,72,.12);
+      --focus: 0 0 0 4px rgba(225,29,72,.18);
+    }
+    [data-theme="dark-green"]{
+      --bg0:#050f0b; --bg1:#0b2318;
+      --accent:#34d399; --accent2:#22c55e;
+      --card: rgba(255,255,255,.06);
+      --focus: 0 0 0 4px rgba(52,211,153,.22);
+    }
+    [data-theme="ocean"]{
+      --bg0:#04131f; --bg1:#0b2a3c;
+      --accent:#22d3ee; --accent2:#3b82f6;
+      --card: rgba(255,255,255,.06);
+      --focus: 0 0 0 4px rgba(34,211,238,.22);
+    }
+    [data-theme="cloudy"]{
+      --bg0:#0f172a; --bg1:#1e293b;
+      --accent:#93c5fd; --accent2:#c4b5fd;
+      --card: rgba(255,255,255,.06);
+      --focus: 0 0 0 4px rgba(147,197,253,.22);
+    }
+
+    /* Base layout */
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(124,58,237,.35), transparent 60%),
+        radial-gradient(900px 500px at 85% 0%, rgba(34,211,238,.25), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow:hidden;
+    }
+
+    /* Subtle floating “cloud” */
+    .fx{
+      position:fixed; inset:-20%;
+      background:
+        radial-gradient(400px 220px at 30% 20%, rgba(255,255,255,.08), transparent 60%),
+        radial-gradient(520px 260px at 70% 30%, rgba(255,255,255,.06), transparent 62%),
+        radial-gradient(420px 260px at 55% 75%, rgba(255,255,255,.05), transparent 65%);
+      filter: blur(18px);
+      pointer-events:none;
+      animation: drift 10s ease-in-out infinite alternate;
+      opacity:.9;
+    }
+    @keyframes drift{
+      from{ transform: translate3d(-1%, -1%, 0) scale(1); }
+      to{ transform: translate3d(1%, 1%, 0) scale(1.02); }
+    }
+
+    .app{
+      height:100%;
+      display:grid;
+      grid-template-columns: 280px 1fr;
+    }
+
+    /* Sidebar */
+    .sidebar{
+      padding:18px;
+      border-right: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      backdrop-filter: blur(12px);
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      padding:10px 10px 16px;
+    }
+    .logo{
+      width:38px; height:38px; border-radius:12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.22);
+    }
+    .brand h1{
+      margin:0; font-size:14px; letter-spacing:.3px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .brand p{
+      margin:2px 0 0;
+      font-weight:700;
+      font-size:16px;
+      color: var(--text);
+    }
+
+    .nav{
+      display:flex; flex-direction:column;
+      gap:8px;
+      margin-top:8px;
+    }
+    .nav button{
+      appearance:none;
+      width:100%;
+      text-align:left;
+      padding:12px 12px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      cursor:pointer;
+      transition: .2s ease;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+    }
+    .nav button:hover{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.12);
+      transform: translateY(-1px);
+    }
+    .nav button:focus{ outline:none; box-shadow: var(--focus); }
+
+    .nav button.active{
+      background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .chip{
+      font-size:12px;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,.12);
+      padding:4px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.02);
+      white-space:nowrap;
+    }
+    [data-theme="white-red"] .chip{
+      border-color: rgba(20,20,20,.12);
+      background: rgba(20,20,20,.03);
+    }
+
+    /* Theme picker */
+    .panel{
+      margin-top:16px;
+      padding:14px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+    .panel .label{
+      color: var(--muted);
+      font-size:12px;
+      margin-bottom:10px;
+      letter-spacing:.2px;
+      text-transform: uppercase;
+    }
+
+    .themes{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+
+    .themeBtn{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding:10px 10px;
+      border-radius: 14px;
+      cursor:pointer;
+      transition:.18s ease;
+      text-align:left;
+      display:flex; flex-direction:column; gap:6px;
+      min-height:48px;
+    }
+    [data-theme="white-red"] .themeBtn{
+      border-color: rgba(20,20,20,.12);
+      background: rgba(20,20,20,.03);
+    }
+
+    .themeBtn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.07);
+    }
+    [data-theme="white-red"] .themeBtn:hover{
+      border-color: rgba(225,29,72,.35);
+      background: rgba(225,29,72,.08);
+    }
+
+    .swatch{
+      width:100%;
+      height:10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity:.9;
+    }
+    .themeBtn b{
+      font-size:12px; line-height:1.1;
+      font-weight:800;
+      color: var(--text);
+    }
+
+    .themeBtn.active{
+      outline:none;
+      box-shadow: var(--focus);
+      border-color: rgba(255,255,255,.28);
+    }
+
+    /* Main content */
+    .main{
+      padding:18px;
+      overflow:auto;
+    }
+
+    .topbar{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:14px;
+      margin-bottom:14px;
+    }
+    .hero{
+      padding:16px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      min-height:100px;
+    }
+    .hero h2{
+      margin:0;
+      font-size:20px;
+      letter-spacing:.2px;
+    }
+    .hero p{
+      margin:8px 0 0;
+      color: var(--muted);
+      max-width: 62ch;
+      line-height:1.5;
+      font-size:14px;
+    }
+
+    .payCard{
+      width: 320px;
+      max-width: 40vw;
+      padding:16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+    .payCard .price{
+      font-weight:900; font-size:22px;
+      margin:4px 0 2px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
+    .payCard .small{
+      color: var(--muted);
+      font-size:13px;
+      line-height:1.45;
+      margin:0 0 12px;
+    }
+
+    .btn{
+      width:100%;
+      padding:12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+      color: var(--text);
+      cursor:pointer;
+      font-weight:800;
+      letter-spacing:.2px;
+      transition:.2s ease;
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      text-decoration:none;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.28); }
+    .btn:focus{ outline:none; box-shadow: var(--focus); }
+
+    .btn .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 6px rgba(255,255,255,.05);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      margin-top:14px;
+    }
+    .section{
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .section h3{
+      margin:0 0 6px;
+      font-size:14px;
+      letter-spacing:.25px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .section .big{
+      font-size:18px;
+      font-weight:900;
+      margin:0;
+    }
+    .section ul{
+      margin:10px 0 0;
+      padding-left:18px;
+      color: var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .page{
+      display:none;
+    }
+    .page.active{
+      display:block;
+    }
+
+    @media (max-width: 980px){
+      body{ overflow:auto; }
+      .app{ grid-template-columns: 1fr; }
+      .sidebar{ border-right:none; border-bottom: 1px solid var(--border); }
+      .payCard{ width: 100%; max-width: none; }
+      .grid{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="fx" aria-hidden="true"></div>
+
+  <div class="app" id="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Software</h1>
+          <p>Shop Console</p>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Sidebar navigation">
+        <button class="navBtn active" data-page="home">
+          <span>Home</span><span class="chip">Start</span>
+        </button>
+        <button class="navBtn" data-page="products">
+          <span>Products</span><span class="chip">Catalog</span>
+        </button>
+        <button class="navBtn" data-page="pricing">
+          <span>Pricing</span><span class="chip">Plans</span>
+        </button>
+        <button class="navBtn" data-page="features">
+          <span>Features</span><span class="chip">Highlights</span>
+        </button>
+        <button class="navBtn" data-page="faq">
+          <span>FAQ</span><span class="chip">Help</span>
+        </button>
+        <button class="navBtn" data-page="contact">
+          <span>Contact</span><span class="chip">Reach us</span>
+        </button>
+      </nav>
+
+      <div class="panel">
+        <div class="label">Theme</div>
+        <div class="themes">
+          <button class="themeBtn active" data-theme="blue-dark" type="button">
+            <span class="swatch" aria-hidden="true"></span>
+            <b>Blue Dark</b>
+          </button>
+          <button class="themeBtn" data-theme="white-red" type="button">
+            <span class="swatch" aria-hidden="true" style="background:linear-gradient(90deg,#e11d48,#fb7185);"></span>
+            <b>White Red</b>
+          </button>
+          <button class="themeBtn" data-theme="dark-green" type="button">
+            <span class="swatch" aria-hidden="true" style="background:linear-gradient(90deg,#34d399,#22c55e);"></span>
+            <b>Dark Gren & Black</b>
+          </button>
+          <button class="themeBtn" data-theme="ocean" type="button">
+            <span class="swatch" aria-hidden="true" style="background:linear-gradient(90deg,#22d3ee,#3b82f6);"></span>
+            <b>Ocean</b>
+          </button>
+          <button class="themeBtn" data-theme="cloudy" type="button" style="grid-column:1 / span 2;">
+            <span class="swatch" aria-hidden="true" style="background:linear-gradient(90deg,#93c5fd,#c4b5fd);"></span>
+            <b>Cloudy</b>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <div class="topbar">
+        <div class="hero">
+          <h2 id="pageTitle">Home</h2>
+          <p id="pageSubtitle">
+            A clean, modern single-page storefront UI. Click the menu on the left to switch pages.
+          </p>
+        </div>
+
+        <div class="payCard">
+          <div class="label" style="margin-bottom:6px;">Checkout</div>
+          <div class="price">Get Access</div>
+          <p class="small">Secure payment page (opens in the same tab layout area).</p>
+          <a class="btn" href="https://softappweber.github.io/sushantcoder" target="_self" rel="noopener">
+            <span class="dot" aria-hidden="true"></span>
+            Pay Now
+          </a>
+        </div>
+      </div>
+
+      <!-- Pages -->
+      <section class="page active" data-page="home">
+        <div class="grid">
+          <div class="section">
+            <h3>Why this software</h3>
+            <p class="big">Fast setup, clean results</p>
+            <ul>
+              <li>Modern UI with theme support</li>
+              <li>Simple navigation for quick browsing</li>
+              <li>One-click checkout link</li>
+            </ul>
+          </div>
+          <div class="section">
+            <h3>What you get</h3>
+            <p class="big">Everything to start</p>
+            <ul>
+              <li>Core features overview</li>
+              <li>Pricing + FAQ</li>
+              <li>Contact section</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" data-page="products">
+        <div class="grid">
+          <div class="section">
+            <h3>Product 1</h3>
+            <p class="big">Pro Workspace</p>
+            <ul>
+              <li>Organize tools and workflows</li>
+              <li>Fast navigation and layout</li>
+              <li>Designed for day-to-day use</li>
+            </ul>
+          </div>
+          <div class="section">
+            <h3>Product 2</h3>
+            <p class="big">Team Booster</p>
+            <ul>
+              <li>Collaboration-ready pages</li>
+              <li>Unified theme + branding</li>
+              <li>Easy product switching</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" data-page="pricing">
+        <div class="grid">
+          <div class="section">
+            <h3>Starter</h3>
+            <p class="big">$9 / month</p>
+            <ul>
+              <li>Basic modules</li>
+              <li>Theme customization</li>
+              <li>Email support</li>
+            </ul>
+          </div>
+          <div class="section">
+            <h3>Pro</h3>
+            <p class="big">$19 / month</p>
+            <ul>
+              <li>All core features</li>
+              <li>Priority support</li>
+              <li>Upgrade flexibility</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" data-page="features">
+        <div class="grid">
+          <div class="section">
+            <h3>Interface</h3>
+            <p class="big">Sidebar + Right Panel</p>
+            <ul>
+              <li>Clickable menu items</li>
+              <li>Right-side page content</li>
+              <li>Single file for easy hosting</li>
+            </ul>
+          </div>
+          <div class="section">
+            <h3>Design</h3>
+            <p class="big">Gradient themes</p>
+            <ul>
+              <li>High-level CSS gradients</li>
+              <li>Cards + glass feel</li>
+              <li>Responsive layout</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" data-page="faq">
+        <div class="grid">
+          <div class="section">
+            <h3>FAQ</h3>
+            <p class="big">Quick answers</p>
+            <ul>
+              <li>Can I change themes? Yes.</li>
+              <li>Does it work on mobile? Yes, it stacks.</li>
+              <li>Where is payment? Use “Pay Now”.</li>
+            </ul>
+          </div>
+          <div class="section">
+            <h3>Support</h3>
+            <p class="big">Need help?</p>
+            <ul>
+              <li>Check Contact for a simple form</li>
+              <li>Or update this template content</li>
+              <li>Everything is plain HTML/CSS/JS</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" data-page="contact">
+        <div class="grid">
+          <div class="section">
+            <h3>Contact</h3>
+            <p class="big">Send a message</p>
+            <ul>
+              <li>This is a UI placeholder form</li>
+              <li>Wire it to your backend later</li>
+              <li>Keep it simple for now</li>
+            </ul>
+          </div>
+          <div class="section">
+            <h3>Form</h3>
+            <p class="big">Placeholder UI</p>
+            <ul>
+              <li>Name</li>
+              <li>Email</li>
+              <li>Message</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const app = document.getElementById('app');
+
+    const navButtons = [...document.querySelectorAll('.navBtn')];
+    const pages = [...document.querySelectorAll('.page')];
+    const pageTitle = document.getElementById('pageTitle');
+    const pageSubtitle = document.getElementById('pageSubtitle');
+
+    const titles = {
+      home: ["Home", "A clean, modern single-page storefront UI. Click the menu on the left to switch pages."],
+      products: ["Products", "Browse what you offer with simple, card-based product sections."],
+      pricing: ["Pricing", "Clear plans with minimal styling—easy to customize later."],
+      features: ["Features", "Highlights of the UI and how the page behaves."],
+      faq: ["FAQ", "Quick answers and basic support info."],
+      contact: ["Contact", "A simple contact section placeholder you can connect to your backend."]
+    };
+
+    function setPage(pageKey){
+      navButtons.forEach(b => b.classList.toggle('active', b.dataset.page === pageKey));
+      pages.forEach(p => p.classList.toggle('active', p.dataset.page === pageKey));
+
+      const t = titles[pageKey] || ["", ""];
+      pageTitle.textContent = t[0];
+      pageSubtitle.textContent = t[1];
+    }
+
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => setPage(btn.dataset.page));
+    });
+
+    // Theme switching
+    const themeButtons = [...document.querySelectorAll('.themeBtn')];
+    const themeOrder = {
+      "blue-dark": "blue-dark",
+      "white-red": "white-red",
+      "dark-green": "dark-green",
+      "ocean": "ocean",
+      "cloudy": "cloudy"
+    };
+
+    function setTheme(theme){
+      // set data-theme on html element
+      document.documentElement.setAttribute('data-theme', themeOrder[theme] || theme);
+      themeButtons.forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
+    }
+
+    // default theme
+    document.documentElement.setAttribute('data-theme', 'blue-dark');
+
+    themeButtons.forEach(btn => {
+      btn.addEventListener('click', () => setTheme(btn.dataset.theme));
+    });
+  </script>
+</body>
+</html>

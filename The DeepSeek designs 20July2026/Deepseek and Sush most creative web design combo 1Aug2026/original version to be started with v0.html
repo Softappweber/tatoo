@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Post Grid | Fast Web Dev</title>
+    <style>
+        /* === ADVANCED CSS SETUP === */
+        :root {
+            --bg-primary: #121212;
+            --bg-card: #1E1E1E;
+            --accent-gold: #FFB800;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+            --grid-gap: 1.5rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* === STICKY NAVIGATION === */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0 2rem;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--accent-gold);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-menu a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color var(--transition-speed);
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: width var(--transition-speed);
+        }
+
+        .nav-menu a:hover {
+            color: var(--text-primary);
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* === HERO SECTION === */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #FFFFFF, #FFB800);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        /* === POSTS GRID - ADVANCED CSS GRID === */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--grid-gap);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* === POST CARD === */
+        .post-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .post-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(255, 184, 0, 0.15);
+        }
+
+        .post-image-container {
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .post-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .post-card:hover .post-image-container img {
+            transform: scale(1.05);
+        }
+
+        .post-number {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent-gold);
+            color: #000;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            z-index: 2;
+        }
+
+        .post-content {
+            padding: 1.5rem;
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--accent-gold);
+        }
+
+        .post-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* === FOOTER === */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 3rem;
+        }
+
+        /* === ANIMATIONS === */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .nav-menu {
+                gap: 1.5rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .posts-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- STICKY NAVIGATION -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">⚡ RapidSite</div>
+            <ul class="nav-menu">
+                <!-- MENU ITEMS - WILL BE UPDATED AS PER YOUR REQUEST -->
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">Articles</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <h1>Our Latest Stories</h1>
+        <p>Explore our collection of articles, insights, and visual journeys.</p>
+    </section>
+
+    <!-- DYNAMIC POSTS GRID - JS WILL POPULATE THIS -->
+    <div class="posts-grid" id="postsGrid">
+        <!-- Posts will be dynamically inserted here by JavaScript -->
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2026 RapidSite. Built with speed and precision.</p>
+    </footer>
+
+    <script>
+        // === ADVANCED JAVASCRIPT: POST MANAGEMENT ENGINE ===
+        
+        // Post data array - Add as many posts as you want here!
+        // I'll populate initial 4 placeholder posts. Update with your images and text.
+        const postsData = [
+            {
+                id: 1,
+                image: '1.jpg', // Upload your image named 1.jpg
+                title: 'Post Title 1',
+                description: 'This is the description for post number one. Replace this with your detailed article or description text.'
+            },
+            {
+                id: 2,
+                image: '2.jpg', // Upload your image named 2.jpg
+                title: 'Post Title 2',
+                description: 'This is the description for post number two. Replace this with your detailed article or description text.'
+            },
+            {
+                id: 3,
+                image: '3.jpg', // Upload your image named 3.jpg
+                title: 'Post Title 3',
+                description: 'This is the description for post number three. Replace this with your detailed article or description text.'
+            },
+            {
+                id: 4,
+                image: '4.jpg', // Upload your image named 4.jpg
+                title: 'Post Title 4',
+                description: 'This is the description for post number four. Replace this with your detailed article or description text.'
+            }
+        ];
+
+        // Function to create a single post card
+        function createPostCard(post) {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'post-card';
+            
+            // Add staggered animation delay based on post id
+            cardDiv.style.animationDelay = `${post.id * 0.1}s`;
+            
+            cardDiv.innerHTML = `
+                <div class="post-image-container">
+                    <img src="${post.image}" alt="${post.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x400/1E1E1E/FFB800?text=Image+${post.id}'">
+                    <span class="post-number">${post.id}</span>
+                </div>
+                <div class="post-content">
+                    <h2 class="post-title">${post.title}</h2>
+                    <p class="post-description">${post.description}</p>
+                </div>
+            `;
+            
+            return cardDiv;
+        }
+
+        // Function to render all posts to the grid
+        function renderAllPosts() {
+            const grid = document.getElementById('postsGrid');
+            if (!grid) return;
+            
+            // Clear existing content
+            grid.innerHTML = '';
+            
+            // Add each post card
+            postsData.forEach(post => {
+                const card = createPostCard(post);
+                grid.appendChild(card);
+            });
+            
+            console.log(`✅ Rendered ${postsData.length} posts successfully.`);
+        }
+
+        // Function to add a new post dynamically (for future expansion)
+        function addNewPost(id, image, title, description) {
+            postsData.push({ id, image, title, description });
+            renderAllPosts(); // Re-render all posts
+            console.log(`➕ Added Post #${id}: "${title}"`);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAllPosts();
+            console.log('🚀 RapidSite Engine Initialized. Ready for commands.');
+        });
+
+        // Expose addNewPost globally so we can call it from console or future modules
+        window.addNewPost = addNewPost;
+    </script>
+</body>
+</html>

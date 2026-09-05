@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Innovative Products</title>
+  <meta name="description" content="Innovative Products — fast, eye-catching landing page." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- HERO BACKDROP ORBS -->
+  <div class="orbs" aria-hidden="true">
+    <span class="orb o1"></span>
+    <span class="orb o2"></span>
+    <span class="orb o3"></span>
+    <span class="orb o4"></span>
+  </div>
+
+  <!-- NAV -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>
+          <span class="brand-name">Innovative Products</span>
+          <span class="brand-tag">Landing Page</span>
+        </span>
+      </a>
+
+      <nav class="nav">
+        <a href="#features">Features</a>
+        <a href="#proof">Results</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact" class="nav-cta">Get started</a>
+      </nav>
+
+      <button class="menu" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-left">
+          <div class="badge-row">
+            <span class="badge glow">● Launch-ready</span>
+            <span class="badge gold">⚡ Fast + responsive</span>
+            <span class="badge cyan">✨ No templates</span>
+          </div>
+
+          <h1>
+            Make your product look
+            <span class="type-glow" data-text="expensive">expensive</span>
+            — and convert.
+          </h1>
+
+          <p class="sub">
+            A single-page landing that mixes <b>neon cyber</b>, <b>luxury gold</b>, and <b>aggressive contrast</b>.
+            Drop your text, swap your images, hit publish.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="#contact">
+              <span class="btn-ic" aria-hidden="true">🚀</span>
+              Start free
+              <span class="btn-arr" aria-hidden="true">→</span>
+            </a>
+
+            <a class="btn ghost" href="#features">
+              <span class="btn-ic" aria-hidden="true">👀</span>
+              See what you get
+            </a>
+          </div>
+
+          <div class="hero-metrics" id="metrics">
+            <div class="metric">
+              <div class="metric-top">
+                <span class="num" data-count="98">0</span><span class="pct">%</span>
+              </div>
+              <div class="metric-bot">Lighthouse vibe</div>
+            </div>
+            <div class="metric">
+              <div class="metric-top">
+                <span class="num" data-count="2">0</span><span class="pct">s</span>
+              </div>
+              <div class="metric-bot">First paint</div>
+            </div>
+            <div class="metric">
+              <div class="metric-top">
+                <span class="num" data-count="3">0</span><span class="pct">x</span>
+              </div>
+              <div class="metric-bot">Conversion lift</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="showcase">
+            <div class="showcase-top">
+              <span class="chip neon">NEON</span>
+              <span class="chip gold">GOLD</span>
+              <span class="chip cyan">CYAN</span>
+              <span class="chip hot">HOT</span>
+            </div>
+
+            <div class="device">
+              <div class="device-screen">
+                <div class="screen-glow"></div>
+
+                <div class="screen-card">
+                  <div class="screen-title">Product Impact</div>
+                  <div class="bars" aria-hidden="true">
+                    <span style="--h:78%"></span>
+                    <span style="--h:54%"></span>
+                    <span style="--h:88%"></span>
+                    <span style="--h:66%"></span>
+                    <span style="--h:92%"></span>
+                  </div>
+                  <div class="screen-row">
+                    <div class="tag">Live</div>
+                    <div class="tag soft">Optimized</div>
+                  </div>
+                </div>
+
+                <div class="screen-bubble b1"></div>
+                <div class="screen-bubble b2"></div>
+                <div class="screen-bubble b3"></div>
+              </div>
+
+              <div class="device-stand"></div>
+            </div>
+          </div>
+
+          <div class="note">
+            <span class="note-ic" aria-hidden="true">★</span>
+            Replace screenshots + copy. Keep the glow. Keep the punch.
+          </div>
+        </div>
+      </div>
+
+      <!-- COLOR MODE (selector per your request) -->
+      <div class="container modebar" id="colorMode">
+        <div class="mode-left">
+          <div class="mode-title">Pick a style:</div>
+          <div class="mode-sub">Neon cyber / Luxury gold / Clean minimal / “All”</div>
+        </div>
+
+        <div class="mode-buttons" role="tablist" aria-label="Color themes">
+          <button class="mode-btn" data-theme="neon" role="tab" aria-selected="true">Neon Cyber</button>
+          <button class="mode-btn" data-theme="gold" role="tab" aria-selected="false">Luxury Gold</button>
+          <button class="mode-btn" data-theme="clean" role="tab" aria-selected="false">Clean Minimal</button>
+          <button class="mode-btn" data-theme="all" role="tab" aria-selected="false">ALL (Hybrid)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2>Features that sell (not “AI template” vibes)</h2>
+          <p>Hard-hitting visuals, clean structure, and aggressive call-to-action placement.</p>
+        </div>
+
+        <div class="grid3">
+          <article class="card">
+            <div class="card-ic">⚡</div>
+            <h3>Instant impact hero</h3>
+            <p>Big typography, glow accents, and a product “device” showcase that grabs attention.</p>
+          </article>
+          <article class="card">
+            <div class="card-ic">🎯</div>
+            <h3>Conversion-ready layout</h3>
+            <p>CTA buttons stay visible in context. Social proof and pricing are right where users look.</p>
+          </article>
+          <article class="card">
+            <div class="card-ic">🧊</div>
+            <h3>Glass + contrast</h3>
+            <p>Modern glass panels with high contrast for readability on both mobile and desktop.</p>
+          </article>
+        </div>
+
+        <div class="split">
+          <div class="split-left">
+            <div class="mini-title">What you can customize</div>
+            <h3 class="split-h">
+              Swap text, icons, images — keep the glow system.
+            </h3>
+            <ul class="checklist">
+              <li><span>Gradient palette</span> controlled by theme switch.</li>
+              <li><span>Buttons</span> with sharp hover response.</li>
+              <li><span>Cards</span> with neon outlines and depth.</li>
+              <li><span>Mobile menu</span> included.</li>
+            </ul>
+            <div class="split-actions">
+              <a class="btn primary" href="#contact">Customize now →</a>
+              <a class="btn ghost" href="#pricing">View pricing</a>
+            </div>
+          </div>
+
+          <div class="split-right">
+            <div class="stack">
+              <div class="stack-item">
+                <div class="stack-top">
+                  <div class="stack-dot neon"></div>
+                  <div><b>Speed</b><span class="muted"> Snappy UI</span></div>
+                  <span class="stack-pill">Fast</span>
+                </div>
+                <p>Lightweight CSS/HTML with animated accents (no heavy libraries).</p>
+              </div>
+
+              <div class="stack-item">
+                <div class="stack-top">
+                  <div class="stack-dot gold"></div>
+                  <div><b>Style</b><span class="muted"> Premium finish</span></div>
+                  <span class="stack-pill">Lux</span>
+                </div>
+                <p>Gold + neon highlights with glass cards for a “high-end product” feel.</p>
+              </div>
+
+              <div class="stack-item">
+                <div class="stack-top">
+                  <div class="stack-dot cyan"></div>
+                  <div><b>Clarity</b><span class="muted"> Crisp layout</span></div>
+                  <span class="stack-pill">Clean</span>
+                </div>
+                <p>Readable typography and strong spacing so your message lands instantly.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROOF / RESULTS -->
+    <section class="section" id="proof">
+      <div class="container">
+        <div class="section-head">
+          <h2>Results section (copy blocks included)</h2>
+          <p>Replace these with your testimonials, stats, and logos.</p>
+        </div>
+
+        <div class="proof-grid">
+          <div class="proof-card">
+            <div class="proof-top">
+              <span class="rating" aria-hidden="true">★★★★★</span>
+              <span class="proof-tag">Top pick</span>
+            </div>
+            <p class="quote">
+              “This landing page looks premium and performs. People actually click the CTA.”
+            </p>
+            <div class="proof-person">
+              <div class="avatar" aria-hidden="true"></div>
+              <div>
+                <b>Alex</b>
+                <div class="muted">Product Lead</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="proof-card alt">
+            <div class="proof-top">
+              <span class="proof-tag">Numbers</span>
+              <span class="rating" aria-hidden="true">⚡</span>
+            </div>
+            <div class="bigstats">
+              <div class="bigstat"><span class="k" data-k="38">0</span><span class="unit">%</span><div class="muted">CTR</div></div>
+              <div class="bigstat"><span class="k" data-k="24">0</span><span class="unit">%</span><div class="muted">Signup</div></div>
+              <div class="bigstat"><span class="k" data-k="2.1">0</span><span class="unit">x</span><div class="muted">Lead quality</div></div>
+            </div>
+          </div>
+
+          <div class="proof-card">
+            <div class="proof-top">
+              <span class="proof-tag">Logos</span>
+              <span class="rating" aria-hidden="true">✦</span>
+            </div>
+            <div class="logos" aria-label="Client logos">
+              <span class="logo-pill">NOVA</span>
+              <span class="logo-pill">VOLT</span>
+              <span class="logo-pill">AURUM</span>
+              <span class="logo-pill">PIXEL</span>
+              <span class="logo-pill">ATLAS</span>
+            </div>
+            <p class="muted small">
+              Add your real company names or screenshots.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-head">
+          <h2>Pricing that feels confident</h2>
+          <p>Three options. One “Best value” highlighted with aggressive contrast.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="price">
+            <div class="price-head">
+              <div class="price-title">Starter</div>
+              <div class="price-sub muted">For new launches</div>
+            </div>
+            <div class="price-num">
+              <span class="currency">$</span>0<span class="per">/mo</span>
+            </div>
+            <ul class="price-list">
+              <li>Hero + features</li>
+              <li>Mobile menu</li>
+              <li>Theme switch</li>
+            </ul>
+            <a class="btn ghost full" href="#contact">Choose Starter</a>
+          </article>
+
+          <article class="price featured" aria-label="Best value plan">
+            <div class="best">Best value</div>
+            <div class="price-head">
+              <div class="price-title">Pro</div>
+              <div class="price-sub muted">For serious conversion</div>
+            </div>
+            <div class="price-num">
+              <span class="currency">$</span>19<span class="per">/mo</span>
+            </div>
+            <ul class="price-list">
+              <li>Everything in Starter</li>
+              <li>Proof + pricing blocks</li>
+              <li>Premium styling system</li>
+            </ul>
+            <a class="btn primary full" href="#contact">Get Pro →</a>
+          </article>
+
+          <article class="price">
+            <div class="price-head">
+              <div class="price-title">Business</div>
+              <div class="price-sub muted">For teams</div>
+            </div>
+            <div class="price-num">
+              <span class="currency">$</span>49<span class="per">/mo</span>
+            </div>
+            <ul class="price-list">
+              <li>Everything in Pro</li>
+              <li>Extra sections (easy)</li>
+              <li>Brand customization help (text)</li>
+            </ul>
+            <a class="btn ghost full" href="#contact">Contact sales</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact" id="contact">
+      <div class="container">
+        <div class="contact-grid">
+          <div>
+            <div class="section-head" style="margin-bottom:16px;">
+              <h2>Get started in minutes</h2>
+              <p>Replace the text. Replace the CTA link. Publish.</p>
+            </div>
+
+            <div class="contact-box">
+              <div class="contact-row">
+                <div class="field">
+                  <label>Name</label>
+                  <input type="text" placeholder="Your name" />
+                </div>
+                <div class="field">
+                  <label>Email</label>
+                  <input type="email" placeholder="you@example.com" />
+                </div>
+              </div>
+              <div class="field">
+                <label>What are you launching?</label>
+                <input type="text" placeholder="Innovative product / app / service..." />
+              </div>
+
+              <div class="contact-row">
+                <a class="btn primary" href="#" onclick="return false;">
+                  <span class="btn-ic" aria-hidden="true">✅</span>
+                  Request demo
+                  <span class="btn-arr" aria-hidden="true">→</span>
+                </a>
+                <a class="btn ghost" href="#pricing">See pricing</a>
+              </div>
+
+              <p class="muted small">
+                (This page is front-end only. Hook the CTA to your email/CRM later.)
+              </p>
+            </div>
+          </div>
+
+          <aside class="contact-side">
+            <div class="side-card">
+              <div class="side-top">
+                <div class="side-ic" aria-hidden="true">📌</div>
+                <div>
+                  <b>Fast checklist</b>
+                  <div class="muted">Do this before publishing</div>
+                </div>
+              </div>
+              <ul class="checklist compact">
+                <li><span>Hero headline</span> your value prop.</li>
+                <li><span>Replace badges</span> with your real differentiators.</li>
+                <li><span>Swap cards</span> with product screenshots.</li>
+                <li><span>Update CTAs</span> (links only).</li>
+              </ul>
+              <div class="side-cta">
+                <a class="btn ghost full" href="#features">Back to features</a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="muted small">© <span id="year"></span> Innovative Products</div>
+      <div class="footer-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

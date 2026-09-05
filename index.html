@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pulse Gradient — 20 Pages (Single File)</title>
+  <style>
+    :root{
+      --bg0:#070A12;
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --line: rgba(255,255,255,.12);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 1120px;
+      --shadow: 0 24px 70px rgba(0,0,0,.45);
+      --focus: rgba(120,170,255,.65);
+
+      --gradA: #78AAFF;
+      --gradB: #FF78C8;
+      --gradC: #3CFFBE;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(120,170,255,.18), transparent 55%),
+        radial-gradient(900px 500px at 90% 20%, rgba(255,120,200,.16), transparent 55%),
+        radial-gradient(1000px 650px at 40% 90%, rgba(60,255,190,.12), transparent 55%),
+        linear-gradient(180deg, #070A12 0%, #060818 60%, #050611 100%);
+      overflow-x:hidden;
+    }
+
+    a{ color: inherit; text-decoration:none; }
+    button { font: inherit; }
+
+    ::selection{ background: rgba(120,170,255,.35); }
+
+    /* Ambient orbs */
+    .bg-orbs{
+      position:fixed;
+      inset:-30vh -20vw auto -20vw;
+      height:78vh;
+      pointer-events:none;
+      z-index:-1;
+      filter: blur(32px);
+      opacity:.95;
+    }
+    .orb{
+      position:absolute;
+      border-radius:999px;
+      mix-blend-mode: screen;
+      transform: translateZ(0);
+    }
+    .orb.o1{ width:420px; height:420px; left:6%;  top:10%; background: rgba(120,170,255,.35); }
+    .orb.o2{ width:360px; height:360px; left:58%; top:2%;  background: rgba(255,120,200,.30); }
+    .orb.o3{ width:470px; height:470px; left:30%; top:40%; background: rgba(60,255,190,.22); }
+
+    /* Nav */
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:30;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(5,6,17,.72), rgba(5,6,17,.35));
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .nav-inner{
+      max-width: var(--max);
+      margin:0 auto;
+      padding: 14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight: 850;
+      letter-spacing:.2px;
+    }
+    .logo{
+      width:34px; height:34px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--gradA), var(--gradB));
+      box-shadow: 0 18px 50px rgba(160,120,255,.25);
+      border:1px solid rgba(255,255,255,.22);
+    }
+    .nav-links{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .chip{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: rgba(255,255,255,.86);
+      font-size: 13px;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+      cursor:pointer;
+      user-select:none;
+      line-height:1;
+    }
+    .chip:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.09);
+      box-shadow: 0 10px 35px rgba(0,0,0,.15);
+    }
+    .chip[aria-current="true"]{
+      border-color: rgba(120,170,255,.45);
+      background: rgba(120,170,255,.15);
+      box-shadow: 0 14px 42px rgba(120,170,255,.10);
+    }
+
+    /* Layout */
+    main{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 18px 18px 80px;
+    }
+    .page{
+      display:block;
+      padding: 26px 0;
+      scroll-margin-top: 90px;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 22px;
+      align-items:start;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 900px){
+      .hero{ grid-template-columns:1fr; }
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.84);
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+    .badge .dot{
+      width:9px; height:9px; border-radius: 99px;
+      background: linear-gradient(135deg, var(--gradA), var(--gradB));
+      box-shadow: 0 0 0 4px rgba(120,170,255,.18);
+    }
+    .h-title{
+      font-size: clamp(28px, 3.2vw, 48px);
+      line-height:1.05;
+      margin: 0 0 10px 0;
+      letter-spacing: -0.7px;
+    }
+    .h-sub{
+      margin:0;
+      color: var(--muted);
+      font-size: 15.5px;
+      line-height:1.6;
+      max-width: 60ch;
+    }
+
+    .hero-card{
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius: var(--radius2);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(600px 220px at 20% 10%, rgba(120,170,255,.35), transparent 60%),
+        radial-gradient(450px 240px at 80% 40%, rgba(255,120,200,.25), transparent 60%),
+        radial-gradient(500px 260px at 40% 90%, rgba(60,255,190,.18), transparent 60%);
+      opacity:.85;
+      z-index:0;
+    }
+    .hero-card > *{ position:relative; z-index:1; }
+
+    .kpis{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .kpi{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.12);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .kpi .num{
+      font-weight: 950;
+      font-size: 22px;
+      letter-spacing:-.2px;
+    }
+    .kpi .lbl{
+      margin-top:4px;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    .pillbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 12px;
+    }
+    .pill{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.82);
+      font-size: 12.5px;
+      white-space:nowrap;
+    }
+
+    /* Cards grid */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .card{
+      grid-column: span 4;
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.25);
+      position:relative;
+      overflow:hidden;
+      min-height: 120px;
+    }
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background:
+        radial-gradient(360px 120px at 20% 0%, rgba(120,170,255,.18), transparent 55%),
+        radial-gradient(360px 140px at 90% 40%, rgba(255,120,200,.14), transparent 55%);
+      opacity:.95;
+      pointer-events:none;
+    }
+    .card > *{ position:relative; z-index:1; }
+    .card h3{
+      margin: 0 0 6px 0;
+      font-size: 16px;
+      letter-spacing:-.2px;
+    }
+    .card p{
+      margin: 0;
+      color: var(--muted);
+      line-height:1.6;
+      font-size: 13.5px;
+    }
+    .card .tag{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.82);
+      font-size: 12.5px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 1000px){
+      .card{ grid-column: span 6; }
+    }
+    @media (max-width: 680px){
+      .card{ grid-column: span 12; }
+    }
+
+    .footer{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      padding: 18px 0 0;
+      color: rgba(255,255,255,.62);
+      font-size: 12.5px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      margin-top: 22px;
+    }
+
+    /* small smoothness */
+    html{ scroll-behavior:smooth; }
+    .sr-only{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+    }
+
+    /* focus */
+    .chip:focus-visible, a:focus-visible, button:focus-visible{
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+  </div>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <span>Pulse Gradient</span>
+      </div>
+      <nav class="nav-links" aria-label="Jump to page">
+        <!-- JS fills these -->
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- JS fills 20 "pages" -->
+  </main>
+
+  <script>
+    const year = 2026;
+
+    const pages = [
+      { badge:"Fresh Start", title:"Gradient-Driven Layouts", sub:"A modern, card-based page designed for clarity, speed, and bold color depth.", pills:["Glass UI","Fast Load","Modern Type"], k1:"12", k1l:"Highlights", k2:"3", k2l:"Components",
+        cards:[
+          {tag:"Typography First", text:"Large headings, calm body text, and consistent rhythm."},
+          {tag:"Soft Visual Depth", text:"Layered gradients for a premium, modern feel."},
+          {tag:"Responsive Grid", text:"Cards adapt smoothly across screen sizes."}
+        ],
+      },
+      { badge:"Design Sprint", title:"Cards That Breathe", sub:"A compact system of sections that stays clean under pressure.", pills:["Componentized","Contrast","Spacing"], k1:"9", k1l:"Sections", k2:"4", k2l:"Patterns",
+        cards:[
+          {tag:"Content Hierarchy", text:"Titles, tags, and summaries guide scanning."},
+          {tag:"Sleek Surfaces", text:"Glass-like panels with controlled opacity."},
+          {tag:"Comfortable Layout", text:"Balanced padding and line height."}
+        ]
+      },
+      { badge:"Color Study", title:"Neon Calm", sub:"High-energy gradients softened into a refined interface.", pills:["Vibrant Gradients","Smooth UI","Clean"], k1:"16", k1l:"Energy", k2:"5", k2l:"Polish",
+        cards:[
+          {tag:"Gradient Orbs", text:"Ambient color anchors the page."},
+          {tag:"Accessible Contrast", text:"Readable text against dark backgrounds."},
+          {tag:"Elegant Cards", text:"Consistent radius, border, and shadow."}
+        ]
+      },
+      { badge:"Product Page", title:"Ship-Ready Sections", sub:"A layout that works for features, services, or documentation previews.", pills:["Feature Blocks","Scalable","Minimal"], k1:"8", k1l:"Modules", k2:"6", k2l:"Signals",
+        cards:[
+          {tag:"Fast Scanning", text:"Short summaries that land clearly."},
+          {tag:"Modern Tags", text:"Label key ideas with pill-style metadata."},
+          {tag:"Compact Footers", text:"Simple, subtle closing details."}
+        ]
+      },
+      { badge:"UX Polish", title:"Readable by Default", sub:"Typography tuned for focus: strong headings, calm supporting copy.", pills:["Legible","System Fonts","Tidy"], k1:"14", k1l:"Clarity", k2:"4", k2l:"Rhythm",
+        cards:[
+          {tag:"Line Rhythm", text:"Spacing that feels consistent and natural."},
+          {tag:"Soft Borders", text:"Borders separate layers without harshness."},
+          {tag:"Responsive Behavior", text:"Cards reflow cleanly across widths."}
+        ]
+      },
+      { badge:"Launch Mode", title:"Performance Mindset", sub:"Simple structure, minimal dependencies, quick render.", pills:["No Frameworks","Lightweight","Clean"], k1:"1", k1l:"JS", k2:"3", k2l:"Layers",
+        cards:[
+          {tag:"Simple JS", text:"Small script only—no heavy libraries."},
+          {tag:"Lean CSS", text:"Modern effects without bloat."},
+          {tag:"Instant Structure", text:"Layout works immediately."}
+        ]
+      },
+      { badge:"Brand Kit", title:"Consistent Identity", sub:"A repeatable style so each page still feels like one site.", pills:["Unified Style","Reusable","Cohesive"], k1:"10", k1l:"Consistency", k2:"7", k2l:"Components",
+        cards:[
+          {tag:"Shared Components", text:"Nav, hero, cards, footer."},
+          {tag:"Consistent Radii", text:"Slick edges across elements."},
+          {tag:"Stable Spacing", text:"Predictable padding for readability."}
+        ]
+      },
+      { badge:"Creative Tools", title:"Gradient Systems", sub:"Ambient glow, glass panels, and modern shadows.", pills:["Glow","Glass UI","Depth"], k1:"6", k1l:"Atmosphere", k2:"8", k2l:"Layers",
+        cards:[
+          {tag:"Orb Atmosphere", text:"Fixed ambient color creates mood."},
+          {tag:"Card Lighting", text:"Highlights appear in different areas."},
+          {tag:"Balanced Contrast", text:"Not too bright, not too dim."}
+        ]
+      },
+      { badge:"Content Focus", title:"Make Text Feel Premium", sub:"Readable, modern typography that matches the visual polish.", pills:["Better Copy","Smooth Type","Focus"], k1:"11", k1l:"Comprehension", k2:"4", k2l:"Comfort",
+        cards:[
+          {tag:"Muted Supporting Text", text:"Guides attention, reduces fatigue."},
+          {tag:"Clear Titles", text:"Strong hierarchy improves understanding."},
+          {tag:"Friendly Footer", text:"A simple closing note."}
+        ]
+      },
+      { badge:"Layout Engine", title:"Grid That Scales", sub:"A responsive 12-column grid that stays organized.", pills:["12-Grid","Responsive","Order"], k1:"20", k1l:"Width Modes", k2:"3", k2l:"Breakpoints",
+        cards:[
+          {tag:"Column Spans", text:"Cards span 4/6/12 by breakpoint."},
+          {tag:"Spacing Between", text:"Gap values keep breathing room."},
+          {tag:"Mobile-Friendly", text:"No cramped layouts."}
+        ]
+      },
+      { badge:"UI Mood", title:"Modern, Not Noisy", sub:"A calm interface with just enough energy.", pills:["Calm UI","Clean Borders","Soft Glow"], k1:"7", k1l:"Calm", k2:"5", k2l:"Focus",
+        cards:[
+          {tag:"Controlled Opacity", text:"Glass layers stay elegant."},
+          {tag:"Consistent Shadows", text:"Depth without distraction."},
+          {tag:"Easy Reading", text:"Typography is comfortable."}
+        ]
+      },
+      { badge:"Navigation", title:"Quick Jump Pages", sub:"Simple nav chips help visitors move between the site.", pills:["Links","Simple Nav","Friendly"], k1:"3", k1l:"Quick", k2:"6", k2l:"Wayfinding",
+        cards:[
+          {tag:"Sticky Header", text:"Navigation stays visible as you scroll."},
+          {tag:"Backdrop Blur", text:"Modern separation from the page."},
+          {tag:"Compact Chips", text:"Quick, scannable links."}
+        ]
+      },
+      { badge:"System Thinking", title:"Components Over Chaos", sub:"Every page follows the same pattern for a professional feel.", pills:["System","Templates","Predictable"], k1:"15", k1l:"Structure", k2:"7", k2l:"Speed",
+        cards:[
+          {tag:"Reusable Hero", text:"Badge, headline, subtitle, card."},
+          {tag:"Reusable Card Set", text:"Three feature blocks, consistent styling."},
+          {tag:"Reusable Footer", text:"Consistent site identity."}
+        ]
+      },
+      { badge:"Growth", title:"Add Content Fast", sub:"Swap text, keep the visuals. That’s the whole trick.", pills:["Replace Text","Keep Style","Fast Iteration"], k1:"5", k1l:"Edits", k2:"3", k2l:"Minutes",
+        cards:[
+          {tag:"Simple Editing", text:"Only titles and paragraphs change."},
+          {tag:"Consistent Look", text:"No surprise visual drift."},
+          {tag:"Easy Maintenance", text:"One CSS controls everything."}
+        ]
+      },
+      { badge:"Premium Feel", title:"Soft Lighting", sub:"Layered gradients create a modern ‘lit’ interface.", pills:["Lighting","Depth","Glow"], k1:"13", k1l:"Premium", k2:"4", k2l:"Balance",
+        cards:[
+          {tag:"Ambient Backdrop", text:"Orbs add scene depth."},
+          {tag:"Card Highlights", text:"Subtle gradient overlays on panels."},
+          {tag:"Balanced Motion", text:"No distracting animations."}
+        ]
+      },
+      { badge:"Modern A11y", title:"Readable Contrast", sub:"Dark-mode-like styling with legible text and muted support copy.", pills:["Contrast","Legible","Clarity"], k1:"12", k1l:"Contrast", k2:"4", k2l:"Clarity",
+        cards:[
+          {tag:"Muted Supporting Text", text:"Secondary text stays calm."},
+          {tag:"Strong Headings", text:"Quick comprehension for visitors."},
+          {tag:"Clear Borders", text:"Edges separate sections cleanly."}
+        ]
+      },
+      { badge:"Design Remix", title:"Swap Gradients, Keep Structure", sub:"Tune colors per page without rewriting layout.", pills:["Themeable","Modular","Quick Remix"], k1:"10", k1l:"Modular", k2:"8", k2l:"Scalable",
+        cards:[
+          {tag:"Theme Ready", text:"Gradients centralized in CSS variables."},
+          {tag:"Consistent Rhythm", text:"Spacing stays stable across pages."},
+          {tag:"Scalable Approach", text:"More cards? Duplicate blocks."}
+        ]
+      },
+      { badge:"Feature Focus", title:"What You Offer, Clearly", sub:"Use these cards as placeholders for your real features/services.", pills:["Services","Features","Clarity"], k1:"9", k1l:"Value", k2:"3", k2l:"Focus",
+        cards:[
+          {tag:"Feature Summaries", text:"Short blocks—no walls of text required."},
+          {tag:"Tagging", text:"Add short labels for context."},
+          {tag:"Fast Layout", text:"Works instantly for real content."}
+        ]
+      },
+      { badge:"Modern Footer", title:"Polished End", sub:"A subtle footer that doesn’t steal attention.", pills:["Clean Footer","Subtle","Tidy"], k1:"4", k1l:"Closure", k2:"2", k2l:"Light",
+        cards:[
+          {tag:"Low-Noise Copy", text:"Muted text for calm closure."},
+          {tag:"Consistent Branding", text:"Matches the site identity."},
+          {tag:"Mobile Friendly", text:"Wraps naturally on small screens."}
+        ]
+      },
+      { badge:"Final Page", title:"Done Looks Good", sub:"You now have 20 sections with the same modern gradient system.", pills:["20 Pages","Modern UI","Gradients"], k1:"20", k1l:"Coverage", k2:"20", k2l:"Consistency",
+        cards:[
+          {tag:"Next Steps", text:"Replace placeholders with your real content."},
+          {tag:"Theme Customization", text:"Tune colors in the CSS variables."},
+          {tag:"Add Pages", text:"Duplicate this pattern and keep the vibe."}
+        ]
+      }
+    ];
+
+    const main = document.getElementById('main');
+    const nav = document.querySelector('.nav-links');
+
+    // Build nav chips and 20 sections
+    const chip = (i) => {
+      const a = document.createElement('button');
+      a.className = 'chip';
+      a.type = 'button';
+      a.setAttribute('data-target', `page${i}`);
+      a.setAttribute('aria-current', 'false');
+      a.textContent = String(i);
+      a.addEventListener('click', () => {
+        document.getElementById(`page${i}`).scrollIntoView({behavior:'smooth', block:'start'});
+      });
+      return a;
+    };
+
+    for(let i=1;i<=20;i++){
+      nav.appendChild(chip(i));
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#039;");
+    }
+
+    pages.forEach((p, idx) => {
+      const i = idx + 1;
+      const section = document.createElement('section');
+      section.className = 'page';
+      section.id = `page${i}`;
+      section.setAttribute('data-page', i);
+
+      section.innerHTML = `
+        <div class="hero">
+          <div>
+            <div class="badge"><span class="dot" aria-hidden="true"></span>${escapeHtml(p.badge)}</div>
+            <h1 class="h-title">${escapeHtml(p.title)}</h1>
+            <p class="h-sub">${escapeHtml(p.sub)}</p>
+            <div class="pillbar">
+              ${p.pills.map(x => `<span class="pill">${escapeHtml(x)}</span>`).join('')}
+            </div>
+          </div>
+
+          <aside class="hero-card" aria-label="Highlights card">
+            <div class="kpis">
+              <div class="kpi">
+                <div class="num">${escapeHtml(p.k1)}</div>
+                <div class="lbl">${escapeHtml(p.k1l)}</div>
+              </div>
+              <div class="kpi">
+                <div class="num">${escapeHtml(p.k2)}</div>
+                <div class="lbl">${escapeHtml(p.k2l)}</div>
+              </div>
+            </div>
+            <div style="height:12px"></div>
+            <div style="color: rgba(255,255,255,.78); font-size:13.5px; line-height:1.6;">
+              ${escapeHtml("Balanced contrast, glass panels, and modern spacing—built to feel premium on any screen size.")}
+            </div>
+          </aside>
+        </div>
+
+        <div class="grid">
+          ${p.cards.map(c => `
+            <article class="card">
+              <div class="tag">${escapeHtml(c.tag)}</div>
+              <h3>${escapeHtml(c.tag)}</h3>
+              <p>${escapeHtml(c.text)}</p>
+            </article>
+          `).join('')}
+        </div>
+
+        <div class="footer">
+          <div>© ${year} Pulse Gradient</div>
+          <div>Page ${i} — Modern gradients, cards, and clean typography.</div>
+        </div>
+      `;
+
+      main.appendChild(section);
+    });
+
+    // Update active chip based on scroll position
+    const sections = [...document.querySelectorAll('.page')];
+    const chips = [...document.querySelectorAll('.chip')];
+
+    const io = new IntersectionObserver((entries) => {
+      // pick the most visible intersecting section
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a,b) => (b.intersectionRatio - a.intersectionRatio))[0];
+
+      if(!visible) return;
+      const id = visible.target.id; // pageX
+      const n = id.replace('page','');
+
+      chips.forEach(c => c.setAttribute('aria-current', c.textContent === n ? 'true' : 'false'));
+    }, { threshold: [0.35, 0.5, 0.7] });
+
+    sections.forEach(s => io.observe(s));
+  </script>
+</body>
+</html>

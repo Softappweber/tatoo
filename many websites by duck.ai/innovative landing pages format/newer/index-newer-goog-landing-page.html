@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Innovative Products</title>
+  <style>
+    :root{
+      --bg:#07060a;
+      --ink:#eef0ff;
+      --muted:rgba(238,240,255,.72);
+
+      --a:#00D4FF;   /* cyan */
+      --b:#8B5CF6;   /* violet */
+      --c:#FBBF24;   /* gold */
+      --d:#34D399;   /* green */
+
+      --glass: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.14);
+      --shadow: 0 24px 90px rgba(0,0,0,.55);
+
+      --r: 22px;
+      --max: 1100px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans";
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 650px at 10% -10%, rgba(139,92,246,.35), transparent 55%),
+        radial-gradient(900px 600px at 85% 0%, rgba(0,212,255,.28), transparent 55%),
+        radial-gradient(900px 700px at 60% 110%, rgba(52,211,153,.16), transparent 60%),
+        linear-gradient(180deg, #06050a 0%, #080715 55%, #07060a 100%);
+      overflow-x:hidden;
+    }
+
+    /* Halftone + noise overlay (non-template look) */
+    .fx{
+      position:fixed; inset:0; pointer-events:none; z-index:0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(251,191,36,.18), transparent 35%),
+        radial-gradient(circle at 80% 35%, rgba(0,212,255,.16), transparent 40%),
+        radial-gradient(circle at 55% 80%, rgba(139,92,246,.14), transparent 42%);
+      opacity:.9;
+      mix-blend-mode:screen;
+    }
+    .halftone{
+      position:fixed; inset:-20%;
+      pointer-events:none; z-index:0;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      background-size: 260px 260px;
+      opacity:.10;
+      transform: rotate(-8deg);
+    }
+
+    .wrap{ position:relative; z-index:1; }
+    .container{ width:min(var(--max), 92vw); margin:0 auto; }
+
+    /* Hero layout: no nav/menu */
+    .hero{
+      padding: 56px 0 24px;
+    }
+
+    .hero-top{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 18px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){
+      .hero-top{ grid-template-columns:1fr; }
+    }
+
+    .hero-card{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .hero-card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        conic-gradient(from 180deg,
+          rgba(0,212,255,.0),
+          rgba(0,212,255,.55),
+          rgba(139,92,246,.55),
+          rgba(251,191,36,.35),
+          rgba(52,211,153,.25),
+          rgba(0,212,255,.0));
+      opacity:.26;
+      filter: blur(22px);
+      animation: pulse 6.5s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{ transform: translateY(0) scale(1); opacity:.22; }
+      50%{ transform: translateY(-10px) scale(1.02); opacity:.34; }
+    }
+
+    .hero-left{
+      padding: 26px;
+    }
+
+    .kicker-row{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-bottom: 14px;
+      align-items:center;
+    }
+
+    .tag{
+      padding: 9px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      font-weight:900;
+      font-size: 12.5px;
+      color: rgba(238,240,255,.85);
+      letter-spacing: .2px;
+      display:flex; align-items:center; gap:10px;
+      user-select:none;
+    }
+    .tag i{
+      width:10px; height:10px; border-radius: 50%;
+      background: var(--a);
+      box-shadow: 0 0 0 6px rgba(0,212,255,.12);
+      display:inline-block;
+    }
+    .tag.gold i{ background: var(--c); box-shadow: 0 0 0 6px rgba(251,191,36,.12); }
+    .tag.violet i{ background: var(--b); box-shadow: 0 0 0 6px rgba(139,92,246,.14); }
+    .tag.green i{ background: var(--d); box-shadow: 0 0 0 6px rgba(52,211,153,.14); }
+
+    h1{
+      margin: 0;
+      font-size: clamp(38px, 4.6vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -1.3px;
+      font-weight: 1000;
+      position:relative;
+    }
+
+    /* “Not template” headline effect */
+    .glitch{
+      display:inline-block;
+      position:relative;
+      padding: 0 .06em;
+      background: linear-gradient(90deg, rgba(0,212,255,1), rgba(139,92,246,1), rgba(251,191,36,1));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      text-shadow:
+        0 0 26px rgba(0,212,255,.18),
+        0 0 46px rgba(139,92,246,.12);
+    }
+    .glitch::before,
+    .glitch::after{
+      content: attr(data-text);
+      position:absolute; left:0; top:0;
+      opacity:.35;
+      filter: blur(.2px);
+      pointer-events:none;
+    }
+    .glitch::before{ transform: translate(1.5px, 0); color: rgba(0,212,255,.9); }
+    .glitch::after{ transform: translate(-1.5px, 0); color: rgba(251,191,36,.85); }
+
+    .lead{
+      margin: 14px 0 18px;
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: 16.5px;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .cta-row{
+      display:flex; flex-wrap:wrap; gap:12px; align-items:center;
+      margin-top: 18px;
+    }
+
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      text-decoration:none;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-weight:1000;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--ink);
+      box-shadow: 0 18px 60px rgba(0,0,0,.25);
+      transition: transform .14s ease, background .14s ease, border-color .14s ease;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.22); }
+    .btn.primary{
+      border-color: rgba(0,212,255,.30);
+      background: linear-gradient(135deg, rgba(0,212,255,.95), rgba(139,92,246,.90));
+      color:#051016;
+      box-shadow: 0 26px 90px rgba(0,212,255,.12);
+    }
+    .btn .arrow{ opacity:.9; }
+
+    .micro{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-top: 14px;
+      color: rgba(238,240,255,.62);
+      font-weight:800;
+      font-size: 12.8px;
+    }
+    .micro span{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.14);
+      padding: 8px 10px;
+      border-radius: 999px;
+    }
+    .micro b{ color: rgba(238,240,255,.9); }
+
+    /* Right: “product impact” panel */
+    .hero-right{
+      padding: 18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .mini-panel{
+      position:relative;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+      padding: 16px;
+    }
+
+    .mini-panel::after{
+      content:"";
+      position:absolute; inset:-1px;
+      background:
+        radial-gradient(400px 200px at 10% 0%, rgba(0,212,255,.22), transparent 60%),
+        radial-gradient(420px 240px at 90% 30%, rgba(139,92,246,.18), transparent 55%),
+        radial-gradient(420px 240px at 70% 110%, rgba(251,191,36,.14), transparent 55%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .mini-panel > *{ position:relative; z-index:1; }
+
+    .panel-title{
+      display:flex; justify-content:space-between; align-items:center;
+      gap:10px; margin-bottom: 10px;
+    }
+    .panel-title h3{
+      margin:0;
+      font-size: 14px;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+      color: rgba(238,240,255,.78);
+      font-weight:1000;
+    }
+    .pill{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      font-weight:1000;
+      font-size: 12px;
+      color: rgba(238,240,255,.85);
+      user-select:none;
+    }
+
+    .meter{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+      margin-top: 8px;
+    }
+    .mcard{
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      padding: 12px;
+    }
+    .mnum{
+      font-size: 28px;
+      font-weight: 1000;
+      letter-spacing: -1px;
+      margin:0;
+    }
+    .mlab{
+      margin-top: 6px;
+      color: rgba(238,240,255,.65);
+      font-weight:900;
+      font-size: 12.5px;
+      line-height:1.4;
+    }
+
+    .bars{
+      display:grid; gap:10px;
+      margin-top: 14px;
+    }
+    .bar{
+      display:grid;
+      grid-template-columns: 92px 1fr 52px;
+      gap:10px;
+      align-items:center;
+    }
+    .bar label{
+      color: rgba(238,240,255,.76);
+      font-weight:1000;
+      font-size: 12.5px;
+      user-select:none;
+    }
+    .track{
+      height: 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+    }
+    .fill{
+      height:100%;
+      width: var(--w);
+      background: linear-gradient(90deg, var(--a), var(--b), var(--c));
+      box-shadow: 0 0 18px rgba(0,212,255,.18);
+      border-right: 1px solid rgba(255,255,255,.18);
+    }
+    .val{
+      text-align:right;
+      color: rgba(238,240,255,.80);
+      font-weight:1000;
+      font-size: 12.5px;
+    }
+
+    /* Sections */
+    .section{
+      padding: 22px 0 10px;
+    }
+    .section-head{
+      display:flex; justify-content:space-between; align-items:flex-end; gap:12px;
+      margin: 18px 0 12px;
+      flex-wrap:wrap;
+    }
+    .section-head h2{
+      margin:0;
+      font-size: clamp(24px, 2.4vw, 34px);
+      letter-spacing:-.8px;
+      font-weight:1000;
+    }
+    .section-head p{
+      margin:0;
+      color: rgba(238,240,255,.68);
+      font-weight:800;
+      line-height:1.6;
+      max-width: 60ch;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 980px){ .grid{ grid-template-columns:1fr; } }
+
+    .feature{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 16px;
+      box-shadow: 0 18px 70px rgba(0,0,0,.25);
+      position:relative;
+      overflow:hidden;
+    }
+    .feature::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(600px 200px at 20% 0%, rgba(0,212,255,.18), transparent 60%),
+                  radial-gradient(600px 260px at 90% 30%, rgba(139,92,246,.18), transparent 58%);
+      opacity:.55;
+      pointer-events:none;
+    }
+    .feature > *{ position:relative; z-index:1; }
+    .icon{
+      width: 46px; height: 46px;
+      border-radius: 16px;
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      font-size: 18px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.25);
+      user-select:none;
+    }
+    .feature h3{
+      margin: 12px 0 8px;
+      font-size: 16px;
+      font-weight:1000;
+      letter-spacing:-.2px;
+    }
+    .feature p{
+      margin:0;
+      color: rgba(238,240,255,.70);
+      font-weight:800;
+      line-height:1.7;
+      font-size: 14.5px;
+    }
+
+    /* Pricing */
+    .pricing{
+      display:grid;
+      grid-template-columns: 1.1fr 1fr 1fr;
+      gap: 14px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){ .pricing{ grid-template-columns:1fr; } }
+
+    .plan{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 18px;
+      position:relative;
+      overflow:hidden;
+      box-shadow: 0 18px 70px rgba(0,0,0,.25);
+    }
+    .plan.featured{
+      border-color: rgba(0,212,255,.35);
+      background: linear-gradient(180deg, rgba(0,212,255,.10), rgba(255,255,255,.04));
+    }
+    .plan .label{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      margin-bottom: 10px;
+    }
+    .plan .label b{
+      font-weight:1000;
+      letter-spacing:.2px;
+    }
+    .badge{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color: rgba(238,240,255,.85);
+      font-weight:1000;
+      font-size: 12.2px;
+      user-select:none;
+    }
+    .price{
+      font-family: ui-sans-serif, system-ui;
+      font-weight: 1000;
+      font-size: 44px;
+      letter-spacing: -1.2px;
+      margin: 6px 0 8px;
+    }
+    .per{ font-size: 13px; color: rgba(238,240,255,.66); font-weight:900; margin-left:6px; }
+    .plan ul{
+      list-style:none; padding:0; margin: 12px 0 16px;
+      display:grid; gap:10px;
+    }
+    .plan li{
+      padding: 10px 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      color: rgba(238,240,255,.74);
+      font-weight:900;
+      font-size: 13.5px;
+      line-height:1.45;
+    }
+
+    /* Contact (no menu) */
+    .contact{
+      padding: 28px 0 70px;
+    }
+    .contact-wrap{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .contact-wrap{ grid-template-columns:1fr; } }
+
+    .form{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 18px;
+      box-shadow: 0 18px 70px rgba(0,0,0,.25);
+    }
+    .form h3{ margin: 0 0 6px; font-weight:1000; letter-spacing:-.3px; }
+    .form p{ margin: 0 0 14px; color: rgba(238,240,255,.68); font-weight:800; line-height:1.7; }
+
+    .row2{ display:grid; grid-template-columns:1fr 1fr; gap: 12px; }
+    @media (max-width: 620px){ .row2{ grid-template-columns:1fr; } }
+
+    label{
+      display:block; margin: 10px 0 8px;
+      color: rgba(238,240,255,.78);
+      font-weight:1000;
+      font-size: 13px;
+    }
+    input, textarea{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.20);
+      color: var(--ink);
+      font-weight:900;
+      outline:none;
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+    input:focus, textarea:focus{
+      box-shadow: 0 0 0 4px rgba(0,212,255,.18);
+      border-color: rgba(0,212,255,.35);
+    }
+
+    .side{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 18px;
+      box-shadow: 0 18px 70px rgba(0,0,0,.25);
+    }
+    .side h3{ margin:0 0 10px; font-weight:1000; letter-spacing:-.2px; }
+    .steps{ display:grid; gap:10px; }
+    .step{
+      padding: 12px 12px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      color: rgba(238,240,255,.76);
+      font-weight:900;
+      line-height:1.6;
+      display:flex; gap:12px; align-items:flex-start;
+    }
+    .step .n{
+      width:26px; height:26px;
+      border-radius: 10px;
+      display:grid; place-items:center;
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.14);
+      color: rgba(238,240,255,.88);
+      flex:0 0 auto;
+    }
+
+    footer{
+      padding: 18px 0 26px;
+      color: rgba(238,240,255,.55);
+      font-weight:800;
+      font-size: 13px;
+    }
+    .foot-row{
+      display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      align-items:center;
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="fx" aria-hidden="true"></div>
+  <div class="halftone" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header class="hero">
+      <div class="container hero-top">
+        <section class="hero-card hero-left" aria-label="Hero">
+          <div class="kicker-row">
+            <span class="tag"><i></i> innovative products</span>
+            <span class="tag violet"><i></i> neon + gold energy</span>
+            <span class="tag green"><i></i> launch-ready landing</span>
+          </div>
+
+          <h1>
+            Make your product look
+            <span class="glitch" data-text="unstoppable">unstoppable</span>
+          </h1>
+
+          <p class="lead">
+            No menu spam. No template layout. Just a high-contrast landing that hits fast:
+            bold headline, punchy feature blocks, and a CTA that feels urgent.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn primary" href="#contact">
+              Get early access <span class="arrow">→</span>
+            </a>
+            <a class="btn" href="#pricing">
+              See plans <span class="arrow">↘</span>
+            </a>
+          </div>
+
+          <div class="micro" aria-label="Trust notes">
+            <span>⚡ <b>Fast</b> load</span>
+            <span>🧊 <b>Readable</b> glass UI</span>
+            <span>🎯 <b>Focused</b> conversion</span>
+          </div>
+        </section>
+
+        <aside class="hero-card hero-right" aria-label="Impact panel">
+          <div class="mini-panel">
+            <div class="panel-title">
+              <h3>Impact panel</h3>
+              <span class="pill">LIVE</span>
+            </div>
+
+            <div class="meter">
+              <div class="mcard">
+                <p class="mnum" id="n1">0%</p>
+                <div class="mlab">CTA click intent</div>
+              </div>
+              <div class="mcard">
+                <p class="mnum" id="n2">0</p>
+                <div class="mlab">Seconds to “wow”</div>
+              </div>
+            </div>
+
+            <div class="bars" aria-hidden="true">
+              <div class="bar">
+                <label>Clarity</label>
+                <div class="track"><div class="fill" style="--w:86%"></div></div>
+                <div class="val">86</div>
+              </div>
+              <div class="bar">
+                <label>Energy</label>
+                <div class="track"><div class="fill" style="--w:93%"></div></div>
+                <div class="val">93</div>
+              </div>
+              <div class="bar">
+                <label>Trust</label>
+                <div class="track"><div class="fill" style="--w:78%"></div></div>
+                <div class="val">78</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-panel">
+            <div class="panel-title">
+              <h3>Switch tone (demo)</h3>
+              <span class="pill" id="tone">NEON</span>
+            </div>
+            <div class="cta-row" style="margin-top:10px;">
+              <button class="btn" type="button" onclick="setTone('neon')">Neon</button>
+              <button class="btn" type="button" onclick="setTone('gold')">Gold</button>
+              <button class="btn" type="button" onclick="setTone('clean')">Clean</button>
+              <button class="btn" type="button" onclick="setTone('all')">All</button>
+            </div>
+            <p style="margin:12px 0 0; color:rgba(238,240,255,.68); font-weight:900; line-height:1.6; font-size:13.8px;">
+              This changes the accents only—layout stays brutal + clean.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="section" id="features">
+        <div class="section-head">
+          <h2>Built to look expensive (without looking AI)</h2>
+          <p>Hard edges, strong glow, readable contrast, and blocks that don’t feel like a slideshow.</p>
+        </div>
+
+        <div class="grid">
+          <article class="feature">
+            <div class="icon">⚡</div>
+            <h3>Hero that grabs instantly</h3>
+            <p>Large type + glitch-lite gradient headline. The page feels “designed”, not “copied”.</p>
+          </article>
+
+          <article class="feature">
+            <div class="icon">🎯</div>
+            <h3>Conversion structure</h3>
+            <p>CTA above the fold, proof-ish panel, then pricing, then contact—no distractions.</p>
+          </article>
+
+          <article class="feature">
+            <div class="icon">🧊</div>
+            <h3>Glass + contrast balance</h3>
+            <p>Readable text on dark UI with subtle strokes and depth so it doesn’t blur out.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="proof">
+        <div class="section-head">
+          <h2>Results blocks (replace with real numbers)</h2>
+          <p>Copy-ready blocks so you can swap testimonials/logos later.</p>
+        </div>
+
+        <div class="grid">
+          <article class="feature">
+            <div class="icon">★</div>
+            <h3>“Premium feel” feedback</h3>
+            <p>“People didn’t ask about the design—they asked about the product.”</p>
+          </article>
+
+          <article class="feature">
+            <div class="icon">↗</div>
+            <h3>Better CTA attention</h3>
+            <p>Stronger hierarchy: headline → buttons → pricing → contact.</p>
+          </article>
+
+          <article class="feature">
+            <div class="icon">⏱</div>
+            <h3>Fast page vibe</h3>
+            <p>Lightweight CSS/HTML. No heavy frameworks needed.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="pricing">
+        <div class="section-head">
+          <h2>Pricing that doesn’t look fake</h2>
+          <p>Pick one. Highlight the best value. CTA stays consistent.</p>
+        </div>
+
+        <div class="pricing">
+          <article class="plan">
+            <div class="label">
+              <b>Starter</b>
+              <span class="badge">simple launch</span>
+            </div>
+            <div class="price">$0<span class="per">/mo</span></div>
+            <ul>
+              <li>Landing layout + glow system</li>
+              <li>Theme accents (neon/gold/clean)</li>
+              <li>Editable copy blocks</li>
+            </ul>
+            <a class="btn" href="#contact">Choose Starter →</a>
+          </article>
+
+          <article class="plan featured">
+            <div class="label">
+              <b>Pro</b>
+              <span class="badge">best value</span>
+            </div>
+            <div class="price">$19<span class="per">/mo</span></div>
+            <ul>
+              <li>Everything in Starter</li>
+              <li>Stronger UI depth + sections</li>
+              <li>CTA-focused structure</li>
+            </ul>
+            <a class="btn primary" href="#contact">Get Pro →</a>
+          </article>
+
+          <article class="plan">
+            <div class="label">
+              <b>Business</b>
+              <span class="badge">teams</span>
+            </div>
+            <div class="price">$49<span class="per">/mo</span></div>
+            <ul>
+              <li>Everything in Pro</li>
+              <li>More blocks for testimonials</li>
+              <li>Custom copy styling help</li>
+            </ul>
+            <a class="btn" href="#contact">Contact sales →</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <div class="contact-wrap">
+          <div class="form">
+            <h3>Get early access</h3>
+            <p>Front-end only form UI. Hook it to your backend later.</p>
+
+            <form onsubmit="event.preventDefault(); fakeSubmit();">
+              <div class="row2">
+                <div>
+                  <label>Your name</label>
+                  <input type="text" placeholder="Amit" required />
+                </div>
+                <div>
+                  <label>Email</label>
+                  <input type="email" placeholder="amit@example.com" required />
+                </div>
+              </div>
+
+              <label>What are you launching?</label>
+              <input type="text" placeholder="Innovative product..." required />
+
+              <label>Short message</label>
+              <textarea placeholder="Tell us what makes it different..." required></textarea>
+
+              <div class="cta-row">
+                <button class="btn primary" type="submit">Request demo →</button>
+                <button class="btn" type="button" onclick="fillDemo()">Use demo data</button>
+              </div>
+              <p id="submitMsg" style="margin:12px 0 0; color:rgba(238,240,255,.65); font-weight:900;"></p>
+            </form>
+          </div>
+
+          <aside class="side">
+            <h3>Simple process</h3>
+            <div class="steps">
+              <div class="step"><div class="n">1</div><div>Drop your copy + product images.</div></div>
+              <div class="step"><div class="n">2</div><div>Pick a tone: neon / gold / clean / all.</div></div>
+              <div class="step"><div class="n">3</div><div>Publish. Keep CTA consistent.</div></div>
+            </div>
+
+            <div style="margin-top:14px; color:rgba(238,240,255,.68); font-weight:900; line-height:1.7; font-size:13.8px;">
+              Tip: replace the headline and the 3 feature descriptions. That alone makes it feel 100% yours.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <footer>
+        <div class="foot-row">
+          <div>© <span id="year"></span> Innovative Products</div>
+          <div>Landing page • No menu • High-contrast UI</div>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const year = document.getElementById('year');
+    year.textContent = new Date().getFullYear();
+
+    // Animate numbers
+    function animate(el, from, to, dur=900){
+      const start = performance.now();
+      function tick(now){
+        const t = Math.min(1,(now-start)/dur);
+        const ease = 1 - Math.pow(1-t,3);
+        const v = from + (to-from)*ease;
+        el.textContent = (to % 1 === 0) ? String(Math.round(v)) : v.toFixed(1);
+        if(t<1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    animate(document.getElementById('n1'), 0, 98, 900);
+    animate(document.getElementById('n2'), 0, 2, 900);
+
+    // Tone switching (accent colors only)
+    const root = document.documentElement;
+    const tone = document.getElementById('tone');
+
+    const tones = {
+      neon: { a:'#00D4FF', b:'#8B5CF6', c:'#FBBF24' },
+      gold: { a:'#F59E0B', b:'#FBBF24', c:'#8B5CF6' },
+      clean:{ a:'#60A5FA', b:'#34D399', c:'#FBBF24' },
+      all:  { a:'#00D4FF', b:'#8B5CF6', c:'#FBBF24' }
+    };
+
+    function setTone(t){
+      const v = tones[t] || tones.neon;
+      root.style.setProperty('--a', v.a);
+      root.style.setProperty('--b', v.b);
+      root.style.setProperty('--c', v.c);
+      tone.textContent = t.toUpperCase();
+    }
+    window.setTone = setTone;
+
+    function fakeSubmit(){
+      const msg = document.getElementById('submitMsg');
+      msg.textContent = "✅ Request received (demo). Replace with your backend later.";
+    }
+    function fillDemo(){
+      const form = document.querySelector('form');
+      const inputs = form.querySelectorAll('input, textarea');
+      inputs[0].value = "Amit";
+      inputs[1].value = "amit@example.com";
+      inputs[2].value = "Innovative products for teams";
+      inputs[3].value = "We want a landing that looks custom, not template.";
+      document.getElementById('submitMsg').textContent = "Demo data filled.";
+    }
+    window.fillDemo = fillDemo;
+  </script>
+</body>
+</html>

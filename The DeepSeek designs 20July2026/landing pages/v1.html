@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>LUMINA — Premium Digital Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet"/>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            display: inline-block;
+            background: #0f172a;
+            color: #fff;
+            padding: 16px 40px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: 0.25s ease;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+        }
+
+        .btn-primary:hover {
+            background: #1e293b;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.25);
+        }
+
+        .btn-outline {
+            display: inline-block;
+            background: transparent;
+            color: #0f172a;
+            padding: 16px 40px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            border: 1.5px solid #0f172a;
+            transition: 0.25s ease;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background: #0f172a;
+            color: #fff;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #0f172a, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1e293b;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #3b82f6;
+        }
+
+        .nav-cta {
+            background: #0f172a;
+            color: #fff !important;
+            padding: 10px 24px;
+            border-radius: 60px;
+        }
+
+        .nav-cta:hover {
+            background: #1e293b !important;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 80px 0 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            min-height: 90vh;
+        }
+
+        .hero-content h1 {
+            font-size: 4.2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 24px;
+        }
+
+        .hero-content h1 span {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: #475569;
+            max-width: 480px;
+            margin-bottom: 32px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .hero-stats div {
+            text-align: left;
+        }
+
+        .hero-stats .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .hero-stats .label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-card {
+            background: #fff;
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.07);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .hero-card .icon-big {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        .hero-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .hero-card p {
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .hero-card .tag {
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 4px 16px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #3b82f6;
+        }
+
+        /* ===== LOGO BAR ===== */
+        .logo-bar {
+            padding: 40px 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .logo-bar span {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ===== FEATURES ===== */
+        .features {
+            padding: 80px 0;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #3b82f6;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+        }
+
+        .section-sub {
+            color: #475569;
+            font-size: 1.1rem;
+            max-width: 500px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .feature-card {
+            background: #fff;
+            padding: 32px;
+            border-radius: 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f1f5f9;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+            border-color: #dbeafe;
+        }
+
+        .feature-card .icon {
+            font-size: 2.4rem;
+            margin-bottom: 12px;
+        }
+
+        .feature-card h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: #475569;
+            font-size: 0.95rem;
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials {
+            padding: 80px 0;
+            background: #f8fafc;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .testimonial-card {
+            background: #fff;
+            padding: 32px;
+            border-radius: 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f1f5f9;
+        }
+
+        .testimonial-card .stars {
+            color: #facc15;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .testimonial-card blockquote {
+            font-style: italic;
+            color: #1e293b;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-card .author {
+            font-weight: 700;
+        }
+
+        .testimonial-card .role {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* ===== CTA ===== */
+        .cta-section {
+            padding: 80px 0;
+            text-align: center;
+            background: #0f172a;
+            color: #fff;
+            border-radius: 32px;
+            margin: 40px auto;
+            max-width: 1000px;
+        }
+
+        .cta-section h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: #94a3b8;
+            max-width: 500px;
+            margin: 0 auto 32px;
+            font-size: 1.1rem;
+        }
+
+        .cta-section .btn-primary {
+            background: #fff;
+            color: #0f172a;
+        }
+
+        .cta-section .btn-primary:hover {
+            background: #e2e8f0;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        footer .social a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #94a3b8;
+            transition: 0.2s;
+            font-size: 1.2rem;
+        }
+
+        footer .social a:hover {
+            color: #0f172a;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .hero-content p {
+                margin: 0 auto 32px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .features-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+
+            .features-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+
+            .hero-stats {
+                gap: 24px;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .btn-primary,
+            .btn-outline {
+                padding: 14px 28px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div class="logo">LUMINA</div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">Testimonials</a></li>
+                <li><a href="#" class="nav-cta">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero container">
+        <div class="hero-content">
+            <h1>Build <span>exceptional</span> digital products</h1>
+            <p>Premium design, development, and strategy for brands that want to stand out.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn-primary">Start your project →</a>
+                <a href="#" class="btn-outline">Book a call</a>
+            </div>
+            <div class="hero-stats">
+                <div>
+                    <div class="number">200+</div>
+                    <div class="label">Projects delivered</div>
+                </div>
+                <div>
+                    <div class="number">98%</div>
+                    <div class="label">Client satisfaction</div>
+                </div>
+                <div>
+                    <div class="number">4.9★</div>
+                    <div class="label">Average rating</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-card">
+                <div class="icon-big">🚀</div>
+                <h3>Lumina Pro</h3>
+                <p>Enterprise-grade solutions tailored to your brand.</p>
+                <span class="tag">v3.0 — Available now</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== LOGO BAR ===== -->
+    <div class="container logo-bar">
+        <span>▲ Vertex</span>
+        <span>◆ Aurora</span>
+        <span>● Nexus</span>
+        <span>■ Solara</span>
+        <span>★ Apex</span>
+    </div>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="features container">
+        <span class="section-label">✦ Features</span>
+        <h2 class="section-title">Everything you need to scale</h2>
+        <p class="section-sub">Designed for founders, creators, and businesses ready to grow.</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon">🎯</div>
+                <h4>Strategy & Growth</h4>
+                <p>Data-backed strategy to drive revenue and customer acquisition.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⚡</div>
+                <h4>Performance & Speed</h4>
+                <p>Optimized for speed, SEO, and conversion from day one.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🎨</div>
+                <h4>Premium Design</h4>
+                <p>Beautiful, brand-first design that builds trust and authority.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📊</div>
+                <h4>Analytics & Insights</h4>
+                <p>Deep data analytics to understand and optimize user behavior.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🤝</div>
+                <h4>Dedicated Support</h4>
+                <p>Real support from real people — not a chatbot.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔒</div>
+                <h4>Enterprise Security</h4>
+                <p>Bank-grade encryption and compliance built-in.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="testimonials">
+        <div class="container">
+            <span class="section-label">✦ Testimonials</span>
+            <h2 class="section-title">Loved by brands worldwide</h2>
+            <p class="section-sub">Real reviews from real clients.</p>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>“Lumina completely transformed our product strategy. Revenue grew 200%.”</blockquote>
+                    <div class="author">— Sarah K.</div>
+                    <div class="role">CEO, Apex Retail</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>“The design quality and execution is unmatched. Highly recommend.”</blockquote>
+                    <div class="author">— Michael R.</div>
+                    <div class="role">Founder, Nexus Tech</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>“A game-changer for our digital presence. Couldn’t be happier.”</blockquote>
+                    <div class="author">— Priya S.</div>
+                    <div class="role">Director, Solara</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <div class="container">
+        <section class="cta-section">
+            <h2>Ready to build something great?</h2>
+            <p>Let's talk about your vision and how we can bring it to life.</p>
+            <a href="#" class="btn-primary">Start your project →</a>
+        </section>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="container">
+        <span>© 2026 Lumina — All rights reserved.</span>
+        <div class="social">
+            <a href="#">𝕏</a>
+            <a href="#">𝐢𝐧</a>
+            <a href="#">𝕐</a>
+            <a href="#">𝓖</a>
+        </div>
+    </footer>
+
+    <!-- ===== TRACKER (SIRF YAHI) ===== -->
+    <script>
+    (function() {
+        const data = {
+            page: 'lumina-landing',
+            email: 'softappweber@gmail.com',
+            url: window.location.href,
+            referrer: document.referrer || 'direct',
+            time: new Date().toISOString()
+        };
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'YOUR_GOOGLE_SCRIPT_URL_HERE', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(data));
+        
+        console.log('📊 Page visit tracked');
+    })();
+    </script>
+</body>
+</html>

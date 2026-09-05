@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InboxFlow · Klaviyo Agency</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #faf8f5;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        :root {
+            --primary: #d9480f;
+            --secondary: #f4a261;
+            --accent: #e76f51;
+            --dark: #1a1a1a;
+            --light: #faf8f5;
+            --glass: rgba(255,255,255,0.8);
+            --border: rgba(0,0,0,0.04);
+        }
+        .page-header {
+            background: rgba(250,248,245,0.9);
+            backdrop-filter: blur(20px);
+            padding: 0 3rem;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-container {
+            max-width: 1280px; margin: 0 auto; width: 100%;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .brand {
+            font-weight: 800;
+            font-size: 1.7rem;
+            color: var(--primary);
+            cursor: pointer;
+            letter-spacing: -0.02em;
+        }
+        .brand span { color: var(--secondary); }
+        .nav-menu {
+            display: flex; gap: 0.3rem; list-style: none; flex-wrap: wrap;
+        }
+        .nav-menu a {
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(26,26,26,0.5);
+            text-decoration: none;
+            border-radius: 60px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .nav-menu a:hover { color: var(--primary); background: rgba(0,0,0,0.02); }
+        .nav-menu a.active { color: var(--primary); background: rgba(217,72,15,0.06); border: 1px solid rgba(217,72,15,0.05); }
+        .nav-cta { background: var(--primary) !important; color: #fff !important; }
+        .nav-cta:hover { opacity: 0.85; }
+
+        .page-section {
+            display: none;
+            flex: 1 0 auto;
+            max-width: 1280px;
+            margin: 6rem auto 2rem;
+            padding: 0 3rem;
+            width: 100%;
+        }
+        .page-section.active { display: block; animation: fadeUp 0.6s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hero-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; min-height: 60vh;
+        }
+        .hero-content h1 {
+            font-weight: 800;
+            font-size: clamp(2.8rem, 5vw, 4.2rem);
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        .hero-content h1 .highlight { color: var(--primary); }
+        .hero-content p { color: rgba(26,26,26,0.5); max-width: 460px; margin-bottom: 2rem; font-size: 1.1rem; }
+        .hero-image {
+            display: flex; align-items: center; justify-content: center;
+        }
+        .hero-image .display {
+            width: 100%; max-width: 480px; aspect-ratio: 16/10;
+            background: linear-gradient(145deg, rgba(217,72,15,0.04), rgba(244,162,97,0.02));
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 6rem;
+        }
+
+        .btn-primary {
+            padding: 0.9rem 2.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        .btn-primary:hover { background: #c03d0f; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(217,72,15,0.15); }
+        .btn-secondary {
+            padding: 0.9rem 2.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            background: transparent;
+            color: var(--dark);
+            border: 1px solid rgba(26,26,26,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            margin-left: 0.8rem;
+        }
+        .btn-secondary:hover { border-color: rgba(26,26,26,0.1); }
+
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--primary); font-weight: 600; }
+        .section-header h2 { font-size: 2.8rem; font-weight: 800; margin-top: 0.3rem; letter-spacing: -0.02em; }
+        .section-header p { color: rgba(26,26,26,0.4); max-width: 500px; margin: 0.5rem auto 0; }
+
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem;
+        }
+        .card {
+            background: #fff;
+            border-radius: 1.5rem;
+            padding: 2rem 1.8rem;
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 10px 40px rgba(0,0,0,0.04); border-color: rgba(217,72,15,0.05); }
+        .card .icon { font-size: 2.5rem; margin-bottom: 0.8rem; display: block; }
+        .card h3 { font-weight: 700; font-size: 1.2rem; margin-bottom: 0.3rem; }
+        .card p { color: rgba(26,26,26,0.5); font-size: 0.95rem; }
+        .card .meta { display: flex; gap: 0.8rem; margin: 0.8rem 0 1rem; flex-wrap: wrap; }
+        .card .meta span { font-size: 0.8rem; color: rgba(26,26,26,0.3); background: rgba(0,0,0,0.01); padding: 0.2rem 0.8rem; border-radius: 20px; }
+        .card-link {
+            background: none; border: none; color: var(--primary); font-weight: 600; font-size: 0.9rem;
+            cursor: pointer; transition: all 0.3s ease; font-family: 'Inter', sans-serif;
+        }
+        .card-link:hover { color: var(--secondary); transform: translateX(4px); }
+
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+            margin-top: 3rem; padding-top: 3rem; border-top: 1px solid var(--border);
+        }
+        .stat-item { text-align: center; }
+        .stat-item .number { font-weight: 800; font-size: 2.8rem; color: var(--primary); }
+        .stat-item .label { font-size: 0.85rem; color: rgba(26,26,26,0.3); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.2rem; }
+
+        .page-footer {
+            margin-top: 3rem;
+            background: var(--dark);
+            color: rgba(255,255,255,0.4);
+            padding: 2rem 3rem;
+            width: 100%;
+        }
+        .footer-container {
+            max-width: 1280px; margin: 0 auto;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem;
+        }
+        .footer-brand { font-weight: 800; font-size: 1.4rem; color: #fff; cursor: pointer; }
+        .footer-brand span { color: var(--primary); }
+        .footer-menu { display: flex; flex-wrap: wrap; gap: 0.4rem 2rem; list-style: none; }
+        .footer-menu a { color: rgba(255,255,255,0.3); text-decoration: none; font-size: 0.85rem; transition: color 0.3s ease; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
+        .footer-menu a:hover { color: #fff; }
+        .footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.15); }
+
+        @media (max-width: 820px) {
+            .hero-grid { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
+            .hero-content p { margin: 0 auto 2rem; }
+            .btn-group { justify-content: center; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .page-header { padding: 0 1.5rem; }
+            .page-section { padding: 0 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 2.2rem; }
+            .card-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+            .stat-item .number { font-size: 2rem; }
+            .nav-menu a { padding: 0.3rem 0.8rem; font-size: 0.75rem; }
+            .brand { font-size: 1.3rem; }
+            .btn-secondary { margin-left: 0; }
+            .section-header h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div class="nav-container">
+            <span class="brand" onclick="showPage('home')">inbox<span>flow</span></span>
+            <ul class="nav-menu">
+                <li><a onclick="showPage('home')" data-page="home" class="active">Home</a></li>
+                <li><a onclick="showPage('services')" data-page="services">Services</a></li>
+                <li><a onclick="showPage('work')" data-page="work">Work</a></li>
+                <li><a onclick="showPage('about')" data-page="about">About</a></li>
+                <li><a onclick="showPage('contact')" data-page="contact" class="nav-cta">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Home -->
+    <section id="home" class="page-section active">
+        <div class="hero-grid">
+            <div class="hero-content">
+                <h1>Klaviyo <span class="highlight">Email</span> That Converts</h1>
+                <p>Full-service Klaviyo agency specializing in automation, flows, and revenue-driving email campaigns.</p>
+                <div class="btn-group">
+                    <button class="btn-primary" onclick="showPage('contact')">Start Your Campaign</button>
+                    <button class="btn-secondary" onclick="showPage('work')">Our Work</button>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item"><div class="number">$12M+</div><div class="label">Revenue Generated</div></div>
+                    <div class="stat-item"><div class="number">4.8★</div><div class="label">Client Rating</div></div>
+                    <div class="stat-item"><div class="number">200+</div><div class="label">Flows Built</div></div>
+                    <div class="stat-item"><div class="number">45%</div><div class="label">Avg. Open Rate</div></div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="display">📧</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="page-section">
+        <div class="section-header">
+            <div class="label">What We Do</div>
+            <h2>Klaviyo Services</h2>
+            <p>End-to-end email marketing solutions built for e-commerce.</p>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <span class="icon">⚡</span>
+                <h3>Flow Automation</h3>
+                <p>Welcome, abandon cart, browse abandonment, and post-purchase flows that convert.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+            <div class="card">
+                <span class="icon">📊</span>
+                <h3>Campaign Strategy</h3>
+                <p>Data-driven email campaigns designed to maximize ROI and engagement.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+            <div class="card">
+                <span class="icon">🎨</span>
+                <h3>Email Design</h3>
+                <p>Beautiful, responsive templates that reflect your brand identity.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+            <div class="card">
+                <span class="icon">📈</span>
+                <h3>Analytics & Optimization</h3>
+                <p>A/B testing, segmentation, and performance analysis to drive growth.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work -->
+    <section id="work" class="page-section">
+        <div class="section-header">
+            <div class="label">Portfolio</div>
+            <h2>Success Stories</h2>
+            <p>Real results from real Klaviyo campaigns.</p>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <span class="icon">🛍️</span>
+                <h3>DTC Fashion Brand</h3>
+                <p>Increased email revenue by 215% with automated flows and targeted campaigns.</p>
+                <div class="meta"><span>+215% Revenue</span><span>Klaviyo</span></div>
+                <button class="card-link" onclick="showPage('contact')">View Case Study →</button>
+            </div>
+            <div class="card">
+                <span class="icon">💄</span>
+                <h3>Beauty Subscription Box</h3>
+                <p>Reduced churn by 38% with re-engagement flows and personalized content.</p>
+                <div class="meta"><span>38% Less Churn</span><span>Automation</span></div>
+                <button class="card-link" onclick="showPage('contact')">View Case Study →</button>
+            </div>
+            <div class="card">
+                <span class="icon">🏋️</span>
+                <h3>Fitness Apparel Brand</h3>
+                <p>Drove $450K in additional revenue through abandoned cart recovery flows.</p>
+                <div class="meta"><span>$450K Revenue</span><span>Flows</span></div>
+                <button class="card-link" onclick="showPage('contact')">View Case Study →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="page-section">
+        <div class="section-header">
+            <div class="label">Our Team</div>
+            <h2>About InboxFlow</h2>
+            <p>Klaviyo experts dedicated to your success.</p>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <span class="icon">🏆</span>
+                <h3>Klaviyo Certified</h3>
+                <p>We hold the highest level of Klaviyo certification and stay ahead of every update.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+            <div class="card">
+                <span class="icon">📈</span>
+                <h3>Data-First Approach</h3>
+                <p>Every decision is backed by data to ensure maximum impact and ROI.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+            <div class="card">
+                <span class="icon">🤝</span>
+                <h3>Partnership Mindset</h3>
+                <p>We work alongside your team to build email programs that scale.</p>
+                <button class="card-link" onclick="showPage('contact')">Learn More →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="page-section">
+        <div class="section-header">
+            <div class="label">Get Started</div>
+            <h2>Contact InboxFlow</h2>
+            <p>Ready to transform your email marketing?</p>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <span class="icon">✉</span>
+                <h3>Email</h3>
+                <p>hello@inboxflow.com</p>
+                <a class="card-link" href="mailto:hello@inboxflow.com">Send →</a>
+            </div>
+            <div class="card">
+                <span class="icon">✆</span>
+                <h3>Phone</h3>
+                <p>+1 (555) 000-0000</p>
+                <a class="card-link" href="tel:+15550000000">Call →</a>
+            </div>
+            <div class="card">
+                <span class="icon">📅</span>
+                <h3>Book a Call</h3>
+                <p>30-minute strategy session</p>
+                <button class="card-link" onclick="alert('Book a call!')">Schedule →</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="page-footer">
+        <div class="footer-container">
+            <div class="footer-brand" onclick="showPage('home')">inbox<span>flow</span></div>
+            <ul class="footer-menu">
+                <li><a onclick="showPage('home')">Home</a></li>
+                <li><a onclick="showPage('services')">Services</a></li>
+                <li><a onclick="showPage('work')">Work</a></li>
+                <li><a onclick="showPage('about')">About</a></li>
+                <li><a onclick="showPage('contact')">Contact</a></li>
+            </ul>
+            <div class="footer-copy">© 2026 · InboxFlow Agency</div>
+        </div>
+    </footer>
+
+    <script>
+        function showPage(id) {
+            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-menu a').forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('data-page') === id) a.classList.add('active');
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        document.addEventListener('DOMContentLoaded', () => showPage('home'));
+    </script>
+</body>
+</html>

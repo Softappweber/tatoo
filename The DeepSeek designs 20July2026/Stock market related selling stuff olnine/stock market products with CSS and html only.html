@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bull & Bear | Stock Market Office Decor</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bull: #00c853;
+            --bear: #ff1744;
+            --gold: #ffd700;
+            --navy: #0a0e27;
+            --dark: #060918;
+            --card-bg: #0d1130;
+            --text: #e0e0e0;
+            --text-dim: #8892b0;
+            --accent: #64ffda;
+            --border: rgba(255, 255, 255, 0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Background */
+        .bg-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .bg-orb {
+            position: fixed; border-radius: 50%; filter: blur(120px); z-index: -1; opacity: 0.12;
+        }
+        .bg-orb.green { width: 500px; height: 500px; background: #00c853; top: -150px; right: -100px; }
+        .bg-orb.red { width: 400px; height: 400px; background: #ff1744; bottom: -100px; left: -80px; }
+        .bg-orb.gold { width: 300px; height: 300px; background: #ffd700; top: 50%; left: 50%; opacity: 0.06; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(10, 14, 39, 0.92); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-container {
+            max-width: 1400px; margin: 0 auto; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+        .logo-icon { font-size: 2rem; }
+        .logo-text {
+            font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--bull), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .nav-links { display: flex; gap: 0.4rem; list-style: none; align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: var(--text-dim); font-weight: 500; font-size: 0.85rem;
+            padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--accent); background: rgba(100, 255, 218, 0.05); }
+
+        /* Cart Button with counter via CSS counter */
+        .cart-btn {
+            background: rgba(100, 255, 218, 0.1) !important;
+            border: 1px solid rgba(100, 255, 218, 0.2) !important;
+            color: var(--accent) !important;
+            position: relative;
+        }
+
+        /* Main Layout */
+        .main-content { padding-top: 80px; }
+
+        /* Intro + Featured Product Row */
+        .intro-product-row {
+            display: flex; gap: 2rem; max-width: 1400px; margin: 0 auto; padding: 2rem;
+            align-items: stretch; min-height: 480px;
+        }
+
+        .intro-panel {
+            flex: 0 0 380px; background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 20px; padding: 2.5rem 2rem; display: flex; flex-direction: column;
+            justify-content: center; position: relative; overflow: hidden;
+        }
+        .intro-panel::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: linear-gradient(180deg, var(--bull), var(--gold), var(--bear));
+        }
+        .mini-chart {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--bull);
+            margin-bottom: 1.5rem; letter-spacing: 2px; opacity: 0.8;
+        }
+        .intro-panel h1 {
+            font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 800;
+            line-height: 1.15; margin-bottom: 1rem;
+        }
+        .intro-panel h1 .bull { color: var(--bull); }
+        .intro-panel h1 .bear { color: var(--bear); }
+        .intro-panel h1 .gold { color: var(--gold); }
+        .intro-panel p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem; }
+        .ticker-strip { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .ticker {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; padding: 0.3rem 0.8rem;
+            border-radius: 5px; font-weight: 600;
+        }
+        .ticker.up { background: rgba(0, 200, 83, 0.15); color: var(--bull); border: 1px solid rgba(0, 200, 83, 0.3); }
+        .ticker.down { background: rgba(255, 23, 68, 0.15); color: var(--bear); border: 1px solid rgba(255, 23, 68, 0.3); }
+
+        /* Featured Product */
+        .featured-product {
+            flex: 1; background: var(--card-bg); border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px; overflow: hidden; transition: all 0.4s ease; display: flex;
+            flex-direction: column; text-decoration: none; color: inherit;
+        }
+        .featured-product:hover {
+            border-color: rgba(255, 215, 0, 0.5);
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.1); transform: translateY(-5px);
+        }
+        .featured-badge {
+            position: absolute; top: 15px; left: 15px;
+            background: linear-gradient(135deg, var(--gold), #ff8c00); color: #000;
+            padding: 0.4rem 1rem; border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700; z-index: 2;
+        }
+        .featured-image {
+            flex: 1; background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(0,200,83,0.05));
+            display: flex; align-items: center; justify-content: center; font-size: 8rem;
+            position: relative; min-height: 280px;
+        }
+        .featured-info { padding: 1.5rem; }
+        .featured-category {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--gold);
+            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.4rem;
+        }
+        .featured-name {
+            font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: #fff;
+        }
+        .featured-price-row {
+            display: flex; justify-content: space-between; align-items: center; margin-top: 0.8rem;
+        }
+        .featured-price {
+            font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 700; color: var(--gold);
+        }
+        .featured-original { font-size: 0.8rem; color: rgba(255,255,255,0.3); text-decoration: line-through; margin-left: 0.5rem; }
+
+        /* ===== HIDDEN CHECKBOX MAGIC ===== */
+        /* Cart items stored as checked checkboxes */
+        .cart-checkbox { display: none; }
+
+        /* Cart summary display using :checked pseudo-class */
+        .cart-summary {
+            position: fixed; top: 80px; right: 20px; z-index: 999;
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+            padding: 0.8rem 1.2rem; display: none; max-width: 300px;
+        }
+
+        /* Products Grid */
+        .products-section { max-width: 1400px; margin: 0 auto; padding: 0 2rem 3rem; }
+        .section-title {
+            font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+        .section-subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 2rem; }
+        .products-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.3rem;
+        }
+
+        .product-card {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
+            overflow: hidden; transition: all 0.35s ease; position: relative; display: flex;
+            flex-direction: column; text-decoration: none; color: inherit;
+        }
+        .product-card:hover {
+            transform: translateY(-6px); border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        .product-badge {
+            position: absolute; top: 12px; right: 12px; padding: 0.25rem 0.7rem; border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 700; z-index: 2;
+        }
+        .product-badge.hot { background: rgba(255, 23, 68, 0.2); color: var(--bear); border: 1px solid rgba(255, 23, 68, 0.3); }
+        .product-badge.trending { background: rgba(0, 200, 83, 0.2); color: var(--bull); border: 1px solid rgba(0, 200, 83, 0.3); }
+        .product-badge.limited { background: rgba(255, 215, 0, 0.2); color: var(--gold); border: 1px solid rgba(255, 215, 0, 0.3); }
+
+        .product-image {
+            width: 100%; height: 220px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            display: flex; align-items: center; justify-content: center; font-size: 5rem;
+            position: relative; transition: all 0.3s ease;
+        }
+        .product-card:hover .product-image { transform: scale(1.03); }
+        .product-info { padding: 1.2rem; }
+        .product-category {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--accent);
+            text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.3rem;
+        }
+        .product-name {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: #fff;
+            margin-bottom: 0.3rem;
+        }
+        .product-desc { color: var(--text-dim); font-size: 0.78rem; margin-bottom: 0.8rem; }
+        .product-price-row { display: flex; justify-content: space-between; align-items: center; }
+        .product-price { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+        .product-original { font-size: 0.7rem; color: rgba(255,255,255,0.25); text-decoration: line-through; margin-left: 0.4rem; }
+
+        /* Add to cart checkbox label styled as button */
+        .cart-label {
+            display: inline-block; padding: 0.45rem 1rem;
+            background: rgba(100, 255, 218, 0.1); border: 1px solid rgba(100, 255, 218, 0.25);
+            color: var(--accent); border-radius: 6px; font-weight: 500; font-size: 0.75rem;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .cart-label:hover {
+            background: rgba(100, 255, 218, 0.2); border-color: var(--accent);
+        }
+        /* When checkbox is checked, change label text */
+        .cart-checkbox:checked + .cart-label {
+            background: rgba(0, 200, 83, 0.2); border-color: var(--bull); color: var(--bull);
+        }
+        .cart-label .add-text { display: inline; }
+        .cart-label .added-text { display: none; }
+        .cart-checkbox:checked + .cart-label .add-text { display: none; }
+        .cart-checkbox:checked + .cart-label .added-text { display: inline; }
+
+        /* ===== CART PAGE (via :target) ===== */
+        .cart-page {
+            display: none; position: fixed; top: 0; right: 0; width: 420px; height: 100vh;
+            background: rgba(13, 17, 48, 0.98); backdrop-filter: blur(30px);
+            border-left: 1px solid var(--border); z-index: 3000;
+            flex-direction: column; box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
+            overflow-y: auto;
+        }
+        .cart-page:target { display: flex; }
+
+        /* Overlay when cart is open */
+        .cart-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
+            z-index: 2999;
+        }
+        .cart-page:target ~ .cart-overlay { display: block; }
+
+        .cart-header {
+            padding: 1.5rem; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .cart-header h2 { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.3rem; }
+        .cart-close {
+            text-decoration: none; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); color: #fff; width: 32px; height: 32px;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; transition: all 0.3s ease;
+        }
+        .cart-close:hover { background: rgba(255,23,68,0.2); border-color: rgba(255,23,68,0.3); }
+
+        .cart-items-list { flex: 1; padding: 1rem; }
+
+        /* Each cart item is tied to a checkbox */
+        .cart-item-row {
+            display: none; padding: 0.8rem; background: rgba(255,255,255,0.02);
+            border-radius: 10px; margin-bottom: 0.8rem; border: 1px solid rgba(255,255,255,0.04);
+            align-items: center; gap: 0.8rem;
+        }
+        /* Show cart item when its checkbox is checked */
+        #item1:checked ~ .cart-items-list .cart-item-1 { display: flex; }
+        #item2:checked ~ .cart-items-list .cart-item-2 { display: flex; }
+        #item3:checked ~ .cart-items-list .cart-item-3 { display: flex; }
+        #item4:checked ~ .cart-items-list .cart-item-4 { display: flex; }
+        #item5:checked ~ .cart-items-list .cart-item-5 { display: flex; }
+        #item6:checked ~ .cart-items-list .cart-item-6 { display: flex; }
+        #item7:checked ~ .cart-items-list .cart-item-7 { display: flex; }
+        #item8:checked ~ .cart-items-list .cart-item-8 { display: flex; }
+        #item9:checked ~ .cart-items-list .cart-item-9 { display: flex; }
+        #item10:checked ~ .cart-items-list .cart-item-10 { display: flex; }
+        #item11:checked ~ .cart-items-list .cart-item-11 { display: flex; }
+        #item12:checked ~ .cart-items-list .cart-item-12 { display: flex; }
+        #item13:checked ~ .cart-items-list .cart-item-13 { display: flex; }
+        #item14:checked ~ .cart-items-list .cart-item-14 { display: flex; }
+        #item15:checked ~ .cart-items-list .cart-item-15 { display: flex; }
+
+        .cart-item-img {
+            width: 55px; height: 55px; background: rgba(255,255,255,0.03);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+        }
+        .cart-item-info { flex: 1; color: #fff; }
+        .cart-item-name { font-weight: 600; font-size: 0.85rem; }
+        .cart-item-price { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.8rem; font-weight: 600; }
+        .cart-item-remove-label {
+            background: rgba(255,23,68,0.1); border: 1px solid rgba(255,23,68,0.2);
+            color: var(--bear); padding: 0.2rem 0.6rem; border-radius: 5px; cursor: pointer;
+            font-size: 0.7rem; transition: all 0.3s ease;
+        }
+        .cart-item-remove-label:hover { background: rgba(255,23,68,0.2); }
+
+        .cart-footer {
+            padding: 1.5rem; border-top: 1px solid var(--border);
+            position: sticky; bottom: 0; background: rgba(13, 17, 48, 0.98);
+        }
+        .cart-total-row { display: flex; justify-content: space-between; color: #fff; font-weight: 600; margin-bottom: 1rem; }
+        .cart-total-amount { font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 1.2rem; }
+
+        .checkout-btn {
+            display: block; width: 100%; padding: 0.8rem; text-align: center;
+            background: linear-gradient(135deg, var(--gold), #ff8c00); color: #000;
+            border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .checkout-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3); }
+
+        .empty-cart-msg { color: #8892b0; text-align: center; padding: 2rem; }
+        /* Hide empty message when any item is checked */
+        #item1:checked ~ .cart-items-list .empty-cart-msg,
+        #item2:checked ~ .cart-items-list .empty-cart-msg,
+        #item3:checked ~ .cart-items-list .empty-cart-msg,
+        #item4:checked ~ .cart-items-list .empty-cart-msg,
+        #item5:checked ~ .cart-items-list .empty-cart-msg,
+        #item6:checked ~ .cart-items-list .empty-cart-msg,
+        #item7:checked ~ .cart-items-list .empty-cart-msg,
+        #item8:checked ~ .cart-items-list .empty-cart-msg,
+        #item9:checked ~ .cart-items-list .empty-cart-msg,
+        #item10:checked ~ .cart-items-list .empty-cart-msg,
+        #item11:checked ~ .cart-items-list .empty-cart-msg,
+        #item12:checked ~ .cart-items-list .empty-cart-msg,
+        #item13:checked ~ .cart-items-list .empty-cart-msg,
+        #item14:checked ~ .cart-items-list .empty-cart-msg,
+        #item15:checked ~ .cart-items-list .empty-cart-msg { display: none; }
+
+        /* ===== CHECKOUT PAGE (via :target) ===== */
+        .checkout-page {
+            display: none; position: fixed; inset: 0; z-index: 4000;
+            background: rgba(6, 9, 24, 0.97); backdrop-filter: blur(20px);
+            flex-direction: column; align-items: center; justify-content: center; padding: 2rem;
+            overflow-y: auto;
+        }
+        .checkout-page:target { display: flex; }
+
+        .checkout-container {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px;
+            max-width: 550px; width: 100%; padding: 2.5rem;
+        }
+        .checkout-container h2 {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #fff;
+            margin-bottom: 0.5rem; text-align: center;
+        }
+        .checkout-container .subtitle { color: var(--text-dim); text-align: center; margin-bottom: 2rem; font-size: 0.9rem; }
+
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label {
+            display: block; color: var(--text-dim); font-size: 0.8rem; margin-bottom: 0.3rem;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .form-group input, .form-group select {
+            width: 100%; padding: 0.8rem 1rem; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff;
+            font-family: 'Inter', sans-serif; font-size: 0.95rem; transition: all 0.3s ease;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none; border-color: var(--gold); box-shadow: 0 0 20px rgba(255,215,0,0.1);
+        }
+        .form-row { display: flex; gap: 1rem; }
+        .form-row .form-group { flex: 1; }
+
+        /* Payment method radio buttons styled as cards */
+        .payment-methods { display: flex; flex-direction: column; gap: 0.8rem; margin: 1.5rem 0; }
+        .payment-radio { display: none; }
+        .payment-label {
+            display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px; cursor: pointer; transition: all 0.3s ease; color: #fff;
+        }
+        .payment-label:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
+        .payment-radio:checked + .payment-label {
+            background: rgba(255, 215, 0, 0.08); border-color: var(--gold);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.1);
+        }
+        .payment-icon { font-size: 1.8rem; }
+        .payment-label strong { font-family: 'Inter', sans-serif; }
+        .payment-label small { color: var(--text-dim); font-size: 0.75rem; display: block; }
+
+        /* UPI input - shown when UPI radio is checked */
+        .upi-details { display: none; margin-top: 0.5rem; }
+        #payUpi:checked ~ .upi-details { display: block; }
+        #payCard:checked ~ .upi-details { display: block; }
+        #payNet:checked ~ .upi-details { display: block; }
+        #payIntl:checked ~ .upi-details { display: block; }
+
+        .place-order-btn {
+            display: block; width: 100%; padding: 1rem; margin-top: 1rem;
+            background: linear-gradient(135deg, var(--gold), #ff8c00); color: #000;
+            border: none; border-radius: 10px; font-family: 'Inter', sans-serif;
+            font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease;
+            text-align: center; text-decoration: none;
+        }
+        .place-order-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3); }
+
+        /* Success page */
+        .success-page {
+            display: none; position: fixed; inset: 0; z-index: 5000;
+            background: rgba(6, 9, 24, 0.97); backdrop-filter: blur(20px);
+            flex-direction: column; align-items: center; justify-content: center;
+        }
+        .success-page:target { display: flex; }
+        .success-box { text-align: center; }
+        .success-icon { font-size: 6rem; margin-bottom: 1rem; }
+        .success-box h2 {
+            font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--bull); margin-bottom: 1rem;
+        }
+        .success-box p { color: var(--text-dim); font-size: 1.1rem; margin-bottom: 2rem; }
+        .back-btn {
+            display: inline-block; padding: 0.8rem 2rem;
+            background: rgba(100, 255, 218, 0.1); border: 1px solid var(--accent);
+            color: var(--accent); border-radius: 10px; text-decoration: none;
+            font-weight: 600; transition: all 0.3s ease;
+        }
+        .back-btn:hover { background: rgba(100, 255, 218, 0.2); }
+
+        .close-checkout {
+            position: absolute; top: 20px; right: 30px; text-decoration: none;
+            color: #fff; font-size: 1.5rem; background: rgba(255,255,255,0.05);
+            width: 40px; height: 40px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; transition: all 0.3s ease;
+        }
+        .close-checkout:hover { background: rgba(255,23,68,0.2); }
+
+        /* Footer */
+        footer {
+            text-align: center; padding: 2rem; color: var(--text-dim); font-size: 0.8rem;
+            border-top: 1px solid var(--border); margin-top: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .intro-product-row { flex-direction: column; }
+            .intro-panel { flex: none; width: 100%; }
+            .featured-image { min-height: 200px; font-size: 5rem; }
+            .cart-page { width: 100%; }
+        }
+        @media (max-width: 768px) {
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+            .nav-links a { font-size: 0.7rem; padding: 0.4rem 0.6rem; }
+            .logo-text { font-size: 1.3rem; }
+            .intro-panel h1 { font-size: 1.8rem; }
+        }
+        @media (max-width: 480px) {
+            .products-grid { grid-template-columns: 1fr; }
+            .nav-container { padding: 0.8rem 1rem; }
+            .form-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-orb green"></div>
+    <div class="bg-orb red"></div>
+    <div class="bg-orb gold"></div>
+
+    <!-- Hidden Cart Checkboxes (these track what's in the cart) -->
+    <input type="checkbox" class="cart-checkbox" id="item1">
+    <input type="checkbox" class="cart-checkbox" id="item2">
+    <input type="checkbox" class="cart-checkbox" id="item3">
+    <input type="checkbox" class="cart-checkbox" id="item4">
+    <input type="checkbox" class="cart-checkbox" id="item5">
+    <input type="checkbox" class="cart-checkbox" id="item6">
+    <input type="checkbox" class="cart-checkbox" id="item7">
+    <input type="checkbox" class="cart-checkbox" id="item8">
+    <input type="checkbox" class="cart-checkbox" id="item9">
+    <input type="checkbox" class="cart-checkbox" id="item10">
+    <input type="checkbox" class="cart-checkbox" id="item11">
+    <input type="checkbox" class="cart-checkbox" id="item12">
+    <input type="checkbox" class="cart-checkbox" id="item13">
+    <input type="checkbox" class="cart-checkbox" id="item14">
+    <input type="checkbox" class="cart-checkbox" id="item15">
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">📈</span>
+                <span class="logo-text">Bull & Bear</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#shop">Shop</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#cart" class="cart-btn">🛒 Cart</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Intro + Featured Product Row -->
+        <div class="intro-product-row">
+            <div class="intro-panel">
+                <div class="mini-chart">▲ SENSEX 72,456.32 +1.24% | ▼ NIFTY 21,892.15 -0.38%</div>
+                <h1>
+                    Trade Like a <span class="bull">Bull</span><br>
+                    Think Like a <span class="bear">Bear</span><br>
+                    Decor Like <span class="gold">Gold</span>
+                </h1>
+                <p>Elevate your workspace with premium stock market inspired office decor. Every piece tells a story of ambition, risk, and reward.</p>
+                <div class="ticker-strip">
+                    <span class="ticker up">▲ RELIANCE +2.1%</span>
+                    <span class="ticker up">▲ TCS +1.8%</span>
+                    <span class="ticker down">▼ INFY -0.5%</span>
+                    <span class="ticker up">▲ HDFC +3.2%</span>
+                </div>
+            </div>
+
+            <!-- Featured Product -->
+            <div class="featured-product" style="position: relative;">
+                <div class="featured-badge">⭐ Featured</div>
+                <div class="featured-image">🐂</div>
+                <div class="featured-info">
+                    <div class="featured-category">Desk Sculpture</div>
+                    <div class="featured-name">The Bull Run - Brass Desk Statue</div>
+                    <p style="color: #8892b0; font-size: 0.85rem; margin: 0.3rem 0;">Hand-crafted brass bull statue symbolizing market optimism.</p>
+                    <div class="featured-price-row">
+                        <div>
+                            <span class="featured-price">₹2,499</span>
+                            <span class="featured-original">₹4,999</span>
+                        </div>
+                        <label for="item1" class="cart-label">
+                            <span class="add-text">Add to Cart</span>
+                            <span class="added-text">✓ Added</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-section" id="shop">
+            <h2 class="section-title">🔥 More Market-Inspired Decor</h2>
+            <p class="section-subtitle">14 unique pieces to transform your workspace into a trading floor</p>
+            <div class="products-grid">
+                
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-badge hot">🔥 Hot</div>
+                    <div class="product-image">🕯️</div>
+                    <div class="product-info">
+                        <div class="product-category">Desk Accessories</div>
+                        <div class="product-name">Candlestick Pattern Coasters</div>
+                        <div class="product-desc">Set of 6 ceramic coasters with classic candlestick patterns.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹599</span><span class="product-original">₹999</span></div>
+                            <label for="item2" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-badge trending">📈 Trending</div>
+                    <div class="product-image">🎨</div>
+                    <div class="product-info">
+                        <div class="product-category">Wall Art</div>
+                        <div class="product-name">Wall Street Bull Canvas</div>
+                        <div class="product-desc">Premium canvas print of the iconic Charging Bull.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹1,299</span><span class="product-original">₹2,499</span></div>
+                            <label for="item3" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image">☕</div>
+                    <div class="product-info">
+                        <div class="product-category">Drinkware</div>
+                        <div class="product-name">Bear Market Mug</div>
+                        <div class="product-desc">Ceramic mug with 'Bear Market Survivor' print. 400ml.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹449</span><span class="product-original">₹799</span></div>
+                            <label for="item4" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card">
+                    <div class="product-badge hot">🔥 Hot</div>
+                    <div class="product-image">📟</div>
+                    <div class="product-info">
+                        <div class="product-category">Tech Decor</div>
+                        <div class="product-name">LED Ticker Display</div>
+                        <div class="product-desc">Programmable LED ticker showing stock quotes. USB powered.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹3,499</span><span class="product-original">₹5,999</span></div>
+                            <label for="item5" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card">
+                    <div class="product-badge limited">💎 Limited</div>
+                    <div class="product-image">📚</div>
+                    <div class="product-info">
+                        <div class="product-category">Desk Sculpture</div>
+                        <div class="product-name">Bull vs Bear Bookends</div>
+                        <div class="product-desc">Resin bookends depicting the eternal market battle.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹1,899</span><span class="product-original">₹3,499</span></div>
+                            <label for="item6" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="product-card">
+                    <div class="product-image">🧶</div>
+                    <div class="product-info">
+                        <div class="product-category">Stress Relief</div>
+                        <div class="product-name">Market Crash Stress Ball</div>
+                        <div class="product-desc">Squeeze away market anxiety. Printed crash chart.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹299</span><span class="product-original">₹599</span></div>
+                            <label for="item7" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="product-card">
+                    <div class="product-badge trending">📈 Trending</div>
+                    <div class="product-image">🖱️</div>
+                    <div class="product-info">
+                        <div class="product-category">Desk Accessories</div>
+                        <div class="product-name">Trader's Desk Mat</div>
+                        <div class="product-desc">Large desk mat with stock heatmap design. 80×40cm.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹899</span><span class="product-original">₹1,499</span></div>
+                            <label for="item8" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 9 -->
+                <div class="product-card">
+                    <div class="product-image">🖊️</div>
+                    <div class="product-info">
+                        <div class="product-category">Desk Organizer</div>
+                        <div class="product-name">Golden Bull Pen Holder</div>
+                        <div class="product-desc">Gold-plated bull-shaped holder. Fits 5 pens.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹799</span><span class="product-original">₹1,299</span></div>
+                            <label for="item9" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 10 -->
+                <div class="product-card">
+                    <div class="product-badge limited">💎 Limited</div>
+                    <div class="product-image">🔔</div>
+                    <div class="product-info">
+                        <div class="product-category">Collectible</div>
+                        <div class="product-name">IPO Opening Bell Replica</div>
+                        <div class="product-desc">Miniature brass exchange bell. Ring when you profit!</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹4,499</span><span class="product-original">₹8,999</span></div>
+                            <label for="item10" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 11 -->
+                <div class="product-card">
+                    <div class="product-badge trending">📈 Trending</div>
+                    <div class="product-image">🕐</div>
+                    <div class="product-info">
+                        <div class="product-category">Wall Decor</div>
+                        <div class="product-name">Stock Chart Wall Clock</div>
+                        <div class="product-desc">Silent clock with candlestick design. Stock symbol numbers.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹1,499</span><span class="product-original">₹2,799</span></div>
+                            <label for="item11" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 12 -->
+                <div class="product-card">
+                    <div class="product-image">📓</div>
+                    <div class="product-info">
+                        <div class="product-category">Stationery</div>
+                        <div class="product-name">Dividend Notebook Set</div>
+                        <div class="product-desc">3 notebooks: Assets, Liabilities, Dividends covers.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹399</span><span class="product-original">₹699</span></div>
+                            <label for="item12" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 13 -->
+                <div class="product-card">
+                    <div class="product-badge hot">🔥 Hot</div>
+                    <div class="product-image">💡</div>
+                    <div class="product-info">
+                        <div class="product-category">Lighting</div>
+                        <div class="product-name">Market Open Neon Sign</div>
+                        <div class="product-desc">LED neon 'Market is Open' in green glow. USB powered.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹2,499</span><span class="product-original">₹4,499</span></div>
+                            <label for="item13" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 14 -->
+                <div class="product-card">
+                    <div class="product-image">🎯</div>
+                    <div class="product-info">
+                        <div class="product-category">Desk Accessories</div>
+                        <div class="product-name">Risk-Reward Coaster Set</div>
+                        <div class="product-desc">Glass coasters etched with '1:3 Risk Reward' ratios.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹699</span><span class="product-original">₹1,199</span></div>
+                            <label for="item14" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 15 -->
+                <div class="product-card">
+                    <div class="product-badge limited">💎 Limited</div>
+                    <div class="product-image">🌿</div>
+                    <div class="product-info">
+                        <div class="product-category">Home Decor</div>
+                        <div class="product-name">Fibonacci Spiral Plant Pot</div>
+                        <div class="product-desc">Ceramic pot with golden ratio spiral. Plant included.</div>
+                        <div class="product-price-row">
+                            <div><span class="product-price">₹999</span><span class="product-original">₹1,799</span></div>
+                            <label for="item15" class="cart-label">
+                                <span class="add-text">Add</span>
+                                <span class="added-text">✓</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- CART PAGE (opens via #cart) -->
+    <div class="cart-page" id="cart">
+        <div class="cart-header">
+            <h2>🛒 Your Cart</h2>
+            <a href="#" class="cart-close">✕</a>
+        </div>
+        <div class="cart-items-list">
+            <p class="empty-cart-msg">Your cart is empty. Browse products above!</p>
+            
+            <!-- Cart items - shown/hidden by checkboxes -->
+            <div class="cart-item-row cart-item-1">
+                <div class="cart-item-img">🐂</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">The Bull Run - Brass Desk Statue</div>
+                    <div class="cart-item-price">₹2,499</div>
+                </div>
+                <label for="item1" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-2">
+                <div class="cart-item-img">🕯️</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Candlestick Pattern Coasters</div>
+                    <div class="cart-item-price">₹599</div>
+                </div>
+                <label for="item2" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-3">
+                <div class="cart-item-img">🎨</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Wall Street Bull Canvas</div>
+                    <div class="cart-item-price">₹1,299</div>
+                </div>
+                <label for="item3" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-4">
+                <div class="cart-item-img">☕</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Bear Market Mug</div>
+                    <div class="cart-item-price">₹449</div>
+                </div>
+                <label for="item4" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-5">
+                <div class="cart-item-img">📟</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">LED Ticker Display</div>
+                    <div class="cart-item-price">₹3,499</div>
+                </div>
+                <label for="item5" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-6">
+                <div class="cart-item-img">📚</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Bull vs Bear Bookends</div>
+                    <div class="cart-item-price">₹1,899</div>
+                </div>
+                <label for="item6" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-7">
+                <div class="cart-item-img">🧶</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Market Crash Stress Ball</div>
+                    <div class="cart-item-price">₹299</div>
+                </div>
+                <label for="item7" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-8">
+                <div class="cart-item-img">🖱️</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Trader's Desk Mat</div>
+                    <div class="cart-item-price">₹899</div>
+                </div>
+                <label for="item8" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-9">
+                <div class="cart-item-img">🖊️</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Golden Bull Pen Holder</div>
+                    <div class="cart-item-price">₹799</div>
+                </div>
+                <label for="item9" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-10">
+                <div class="cart-item-img">🔔</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">IPO Opening Bell Replica</div>
+                    <div class="cart-item-price">₹4,499</div>
+                </div>
+                <label for="item10" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-11">
+                <div class="cart-item-img">🕐</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Stock Chart Wall Clock</div>
+                    <div class="cart-item-price">₹1,499</div>
+                </div>
+                <label for="item11" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-12">
+                <div class="cart-item-img">📓</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Dividend Notebook Set</div>
+                    <div class="cart-item-price">₹399</div>
+                </div>
+                <label for="item12" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-13">
+                <div class="cart-item-img">💡</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Market Open Neon Sign</div>
+                    <div class="cart-item-price">₹2,499</div>
+                </div>
+                <label for="item13" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-14">
+                <div class="cart-item-img">🎯</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Risk-Reward Coaster Set</div>
+                    <div class="cart-item-price">₹699</div>
+                </div>
+                <label for="item14" class="cart-item-remove-label">✕</label>
+            </div>
+            <div class="cart-item-row cart-item-15">
+                <div class="cart-item-img">🌿</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">Fibonacci Spiral Plant Pot</div>
+                    <div class="cart-item-price">₹999</div>
+                </div>
+                <label for="item15" class="cart-item-remove-label">✕</label>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Estimated Total:</span>
+                <span class="cart-total-amount">Check items above ↑</span>
+            </div>
+            <a href="#checkout" class="checkout-btn">Proceed to Checkout →</a>
+        </div>
+    </div>
+    <div class="cart-overlay"></div>
+
+    <!-- CHECKOUT PAGE (opens via #checkout) -->
+    <div class="checkout-page" id="checkout">
+        <a href="#" class="close-checkout">✕</a>
+        <div class="checkout-container">
+            <h2>💳 Complete Your Order</h2>
+            <p class="subtitle">Fill in your details & choose payment method</p>
+            
+            <form action="#success" method="get">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="+91 98765 43210" required>
+                </div>
+                <div class="form-group">
+                    <label>Shipping Address</label>
+                    <input type="text" placeholder="Full address with pincode" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" placeholder="Mumbai" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Pincode</label>
+                        <input type="text" placeholder="400001" required>
+                    </div>
+                </div>
+
+                <h3 style="color: #fff; margin: 1.5rem 0 1rem; font-family: 'Playfair Display', serif;">Payment Method</h3>
+                
+                <div class="payment-methods">
+                    <input type="radio" name="payment" class="payment-radio" id="payUpi" checked>
+                    <label for="payUpi" class="payment-label">
+                        <span class="payment-icon">📱</span>
+                        <div><strong>UPI Payment</strong><small>Google Pay, PhonePe, Paytm</small></div>
+                    </label>
+
+                    <input type="radio" name="payment" class="payment-radio" id="payCard">
+                    <label for="payCard" class="payment-label">
+                        <span class="payment-icon">💳</span>
+                        <div><strong>Credit / Debit Card</strong><small>Visa, Mastercard, RuPay</small></div>
+                    </label>
+
+                    <input type="radio" name="payment" class="payment-radio" id="payNet">
+                    <label for="payNet" class="payment-label">
+                        <span class="payment-icon">🏦</span>
+                        <div><strong>Net Banking</strong><small>All major Indian banks</small></div>
+                    </label>
+
+                    <input type="radio" name="payment" class="payment-radio" id="payIntl">
+                    <label for="payIntl" class="payment-label">
+                        <span class="payment-icon">🌍</span>
+                        <div><strong>International Payment</strong><small>PayPal, Stripe, Wise</small></div>
+                    </label>
+                </div>
+
+                <div class="upi-details">
+                    <div class="form-group">
+                        <label id="paymentDetailLabel">UPI ID</label>
+                        <input type="text" placeholder="yourname@upi" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="place-order-btn">Place Order →</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SUCCESS PAGE -->
+    <div class="success-page" id="success">
+        <div class="success-box">
+            <div class="success-icon">🎉</div>
+            <h2>Order Confirmed!</h2>
+            <p>Your stock market decor is on its way!<br>📧 Confirmation sent to your email.<br>🚚 Delivery within 5-7 business days.</p>
+            <a href="#" class="back-btn">← Continue Shopping</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="about">
+        <p>© 2024 Bull & Bear Decor | Designed for Market Enthusiasts | 📈 Trade. Hustle. Decorate. | <a href="#shop" style="color: var(--accent);">Back to Shop</a></p>
+    </footer>
+</body>
+</html>
